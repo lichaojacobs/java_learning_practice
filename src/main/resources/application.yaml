@@ -1,0 +1,4 @@
+# REDIS (RedisProperties)
+spring:
+  profiles:
+    active: test

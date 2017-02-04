@@ -11,7 +11,7 @@ public class Palidrome {
   }
 
   /**
-   * 利用栈实现,考虑到即偶数的情况,使用俩个指针不同速率
+   * 利用栈实现,考虑到奇偶数的情况,使用俩个指针不同速率
    */
   public boolean isPalidrome1(Node head) {
     if (head == null) {

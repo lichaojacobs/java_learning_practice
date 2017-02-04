@@ -6,7 +6,9 @@ package com.example.algorithm.dp;
  */
 public class LCST {
   public static void main(String[] args) {
-
+    String str1 = "abcdresdfar";
+    String str2 = "cdresasdfaere";
+    System.out.println(getLCS(str1, str2));
   }
 
   /**

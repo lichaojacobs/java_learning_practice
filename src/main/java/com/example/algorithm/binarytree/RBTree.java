@@ -92,4 +92,47 @@ public class RBTree<T extends Comparable<T>> {
   }
 
 
+  public void insertFixUp(RBTNode<T> node) {
+    RBTNode<T> parent, gparent;
+
+    while (((parent = node.parent) != null) && parent.color) {
+      gparent = parent.parent;
+
+      if (parent == gparent.left) {
+        RBTNode<T> uncleNode = gparent.right;
+        //左孩子
+        if (gparent.right != null && uncleNode.color) {
+          //case 1: 当前节点父节点和叔叔节点均为红色，策略:父节点和叔叔节点
+          //变成黑色，祖父节点变成红色，并将当前节点指向祖父节点
+          parent.color = false;
+          uncleNode.color = false;
+          gparent.color = true;
+          node = gparent;
+
+          continue;
+        }
+
+        if (parent.right == node && !uncleNode.color) {
+          //case 2:当前节点是父节点的右孩子，并且叔叔节点是黑色
+          //策略：将当前节点指向父节点，并以父节点为基础左旋
+          leftRotate(parent);
+          node = parent;
+        }
+
+        if (parent.left == node && !uncleNode.color) {
+          //case 3: 当前节点是父节点的左孩子，并且叔叔节点是黑色
+          //策略:将祖父节点变为红色，父节点变成黑色，并以祖父节点为基础右旋
+          gparent.color = true;
+          parent.color = false;
+          rightRotate(gparent);
+        }
+      } else {
+        //若当前父节点是祖父节点的右孩子（对称的逻辑）
+
+      }
+
+    }
+  }
+
+
 }

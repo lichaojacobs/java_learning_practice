@@ -1,11 +1,18 @@
 package com.example.java8pratice;
+
+import com.google.common.collect.Lists;
+
+import com.alibaba.fastjson.JSON;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
@@ -17,34 +24,85 @@ import java.util.stream.Stream;
  */
 public class Lambda {
   public static void main(String[] args) {
+    testCollectors();
+  }
+
+  public static void testCollectors() {
+    List<Person> personList = Lists.newArrayList(Person.builder()
+        .age(22)
+        .firstName("chao")
+        .lastName("li")
+        .salary(12000)
+        .build(), Person.builder()
+        .firstName("chao")
+        .lastName("wang")
+        .age(23)
+        .salary(11111)
+        .build(), Person.builder()
+        .salary(15000)
+        .age(22)
+        .firstName("lu")
+        .lastName("wang")
+        .build());
+
+    Map<Integer, List<Person>> mapGroupbyAge = personList.stream()
+        .collect(Collectors.groupingBy(Person::getAge));
+    System.out.println(JSON.toJSONString(mapGroupbyAge));
+
+    System.out.println(personList.stream()
+        .collect(Collectors.summingInt(Person::getAge)));
+
+    //join
+    System.out.println(personList.stream()
+        .map(Person::getFirstName)
+        .collect(Collectors.joining(", ")));
+
+    //所有特殊情况的一般化
+    personList.stream()
+        .collect(Collectors.reducing(0, Person::getAge, (i, j) -> i + j));
+
+    System.out.println(personList.stream()
+        .map(Person::getSalary)
+        .reduce(Integer::sum)
+        .get());
+  }
+
+  public static void testMapReduce() {
     List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 6, 5, 7, 8, 9, 10);
-    //    IntSummaryStatistics stats = numbers
-    //        .stream()
-    //        .mapToInt((x) -> x)
-    //        .summaryStatistics();
-    //    System.out.println("List中最大的数字 : " + stats.getMax());
-    //    System.out.println("List中最小的数字 : " + stats.getMin());
-    //    System.out.println("所有数字的总和   : " + stats.getSum());
-    //    System.out.println("所有数字的平均值 : " + stats.getAverage());
+    IntSummaryStatistics stats = numbers
+        .stream()
+        .mapToInt((x) -> x)
+        .summaryStatistics();
+    System.out.println("List中最大的数字 : " + stats.getMax());
+    System.out.println("List中最小的数字 : " + stats.getMin());
+    System.out.println("所有数字的总和   : " + stats.getSum());
+    System.out.println("所有数字的平均值 : " + stats.getAverage());
 
-    //numbers.stream().sorted().map(integer -> {return "结果"+integer.toString();}).collect(Collectors.toList()).forEach(System.out::println);
-    //numbers.stream().reduce((sum,item)->{ return sum=sum+item;}).ifPresent((i)->System.out.println(i));
-    // numbers.stream().sorted().forEach(integer -> System.out.println(integer));
-    //testFlatMap();
-    //tesReduce();
+    numbers.stream()
+        .sorted()
+        .map(integer -> "结果" + integer.toString())
+        .collect(Collectors.toList())
+        .forEach(System.out::println);
+    numbers.stream()
+        .reduce((sum, item) -> sum = sum + item)
+        .ifPresent((i) -> System.out.println(i));
+    numbers.stream()
+        .sorted()
+        .forEach(integer -> System.out.println(integer));
+    testFlatMap();
+    tesReduce();
 
-    //    Properties props = new Properties();
-    //    props.put("a", 5);
-    //    props.put("b", "true");
-    //    props.put("c", "-3");
-
-    //    testFuture().thenApply(() -> "world").thenCompose();
-
+    Properties props = new Properties();
+    props.put("a", 5);
+    props.put("b", "true");
+    props.put("c", "-3");
   }
 
   public static int readDuration(Properties properties, String name) {
-    return Optional.ofNullable(properties.getProperty(name)).flatMap(Lambda::stringToInt)
-        .filter(integer -> integer > 0).orElse(0);
+    return Optional.ofNullable(properties.getProperty(name))
+        .flatMap(Lambda::stringToInt)
+        .filter(integer -> integer > 0)
+        .orElse(0);
   }
 
   public static Optional<Integer> stringToInt(String s) {
@@ -69,13 +127,16 @@ public class Lambda {
 
   public static void tesReduce() {
     List<Integer> numbers = new ArrayList<>(); //Arrays.asList(1, 2, 3, 4, 6, 5, 7, 8, 9, 10);
-    numbers.stream().collect(() -> new ArrayList<Integer>(), (list, item) -> list.add(item),
-        (list1, list2) -> list1.addAll(list2));
+    numbers.stream()
+        .collect(() -> new ArrayList<Integer>(), (list, item) -> list.add(item),
+            (list1, list2) -> list1.addAll(list2));
   }
 
   public static void testFiles() {
     try (Stream<String> lines = Files.lines(Paths.get(""), Charset.defaultCharset())) {
-      long uniqueWrods = lines.flatMap(line -> Arrays.stream(line.split(""))).distinct().count();
+      long uniqueWrods = lines.flatMap(line -> Arrays.stream(line.split("")))
+          .distinct()
+          .count();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -85,7 +146,9 @@ public class Lambda {
   public static void testFlatMap() {
     List<Integer> number1 = Arrays.asList(1, 2, 3);
     List<Integer> number2 = Arrays.asList(3, 4);
-    List<int[]> list = number1.stream().flatMap(i -> number2.stream().map(j -> new int[]{i, j}))
+    List<int[]> list = number1.stream()
+        .flatMap(i -> number2.stream()
+            .map(j -> new int[]{i, j}))
         .collect(Collectors.toList());
     list.forEach(ints -> {
       for (int i = 0; i < ints.length; i++) {
@@ -149,9 +212,11 @@ public class Lambda {
       }
     };
 
-    javaProgrammers.sort((a1, a2) -> a1.getFirstName().compareTo(a2.getFirstName()));
+    javaProgrammers.sort((a1, a2) -> a1.getFirstName()
+        .compareTo(a2.getFirstName()));
 
-    javaProgrammers.stream().collect(Collectors.groupingBy(Person::getSalary))
+    javaProgrammers.stream()
+        .collect(Collectors.groupingBy(Person::getSalary))
         .forEach((integer, persons) -> {
           System.out.println(integer + ":" + persons.toString());
         });

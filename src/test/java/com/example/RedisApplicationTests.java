@@ -1,41 +1,31 @@
 package com.example;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.aspects.LogMethod;
 import com.example.aspects.LogService;
+import com.example.elasticserach.ElasticSearchService;
 import com.example.module.User;
 import com.example.resource.Demo;
 import com.example.task.Task;
 
-import org.apache.tomcat.jni.Thread;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.ZooKeeper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.LongAccumulator;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = RedisApplication.class)
-@WebAppConfiguration
+@SpringBootTest(classes = RedisApplication.class)
 public class RedisApplicationTests {
 
   @Resource
@@ -46,10 +36,12 @@ public class RedisApplicationTests {
   LogMethod logMethod;
   @Resource
   Task task;
+  @Resource
+  ElasticSearchService elasticSearchService;
 
   @Test
   public void contextLoads() {
-
+    elasticSearchService.getTestReuslt();
   }
 
   @Test

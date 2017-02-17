@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class JerseyConfig extends ResourceConfig {
   public JerseyConfig() {
     register(TestResource.class);
-    register(PoweredByResponseFilter.class).register(AuthorizationRequestFilter.class);
+    register(PoweredByResponseFilter.class)
+        .register(AuthorizationRequestFilter.class);
   }
 }

@@ -1,7 +1,0 @@
-namespace java com.example.thrift //defines the namespace
-
-typedef i32 int //get convinent names for types
-
-service AdditionService{
-    int add(1:int n1,2:int n2);
-}

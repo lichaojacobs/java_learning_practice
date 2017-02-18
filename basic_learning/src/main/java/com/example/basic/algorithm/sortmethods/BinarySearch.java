@@ -1,4 +1,4 @@
-package com.example.basic.sortmethods;
+package com.example.basic.algorithm.sortmethods;
 
 /**
  * 二分排序决定必须是有序序列

@@ -99,4 +99,56 @@ public class ChaperForLinkedList {
 
     return head;
   }
+
+
+  /**
+   * Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+   * reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+   * You must do this in-place without altering the nodes' values.
+   * For example,
+   * Given{1,2,3,4}, reorder it to{1,4,2,3}.
+   * 解题思路：快慢指针寻找到中间节点（使得前半段大于等于后半段，然后后半段逆序，再合并）
+   */
+  public void reorderList(Node head) {
+    if (head == null || head.next == null) {
+      return;
+    }
+    Node slow = head;
+    Node fast = head;
+    while (fast.next != null && fast.next.next != null) {
+      fast = fast.next.next;
+      slow = slow.next;
+    }
+
+    slow.next = reverse(slow.next);
+    merge(head, slow.next);
+  }
+
+  public Node reverse(Node head) {
+    if (head == null || head.next == null) {
+      return head;
+    }
+    Node pre = null;
+    Node next = null;
+    while (head != null) {
+      next = head.next;
+      head.next = pre;
+      pre = head;
+      head = next;
+    }
+
+    return pre;
+  }
+
+  public void merge(Node head, Node aft) {
+    Node p = head;
+    Node q = aft.next;
+    while (p != null && q != null) {
+      aft.next = q.next;
+      q.next = p.next;
+      p.next = q;
+      p = p.next.next;
+      q = aft.next;
+    }
+  }
 }

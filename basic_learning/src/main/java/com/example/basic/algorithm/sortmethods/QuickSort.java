@@ -1,6 +1,8 @@
-package com.example.basic.sortmethods;
+package com.example.basic.algorithm.sortmethods;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by lichao on 2017/1/21.
@@ -11,6 +13,7 @@ public class QuickSort {
     sort(list, 0, list.length - 1);
     Arrays.stream(list)
         .forEach(System.out::println);
+    ArrayList<Integer> list1=new ArrayList<>();
   }
 
   public static void sort(int[] list, int low, int high) {

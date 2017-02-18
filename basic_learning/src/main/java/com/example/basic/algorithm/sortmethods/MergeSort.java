@@ -1,4 +1,4 @@
-package com.example.basic.sortmethods;
+package com.example.basic.algorithm.sortmethods;
 
 import java.util.Arrays;
 

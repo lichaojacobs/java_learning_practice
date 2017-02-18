@@ -2,6 +2,8 @@ package com.example.basic.algorithm.binarytree;
 
 import com.example.basic.algorithm.Node;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Stack;
 
 /**
@@ -9,6 +11,11 @@ import java.util.Stack;
  */
 public class BinaryTreeRecur {
   public static void main(String[] args) {
+    Node head = new Node(1);
+    head.right = new Node(2);
+    postorderTraversal(head).stream()
+        .sorted(Comparator.naturalOrder())
+        .forEach(System.out::println);
   }
 
   /**
@@ -155,5 +162,30 @@ public class BinaryTreeRecur {
         lastPrin = current;
       }
     }
+  }
+
+  public static ArrayList<Integer> postorderTraversal(Node root) {
+    ArrayList<Integer> list = new ArrayList<>();
+    if (root == null) {
+      return list;
+    }
+    Stack<Node> stack = new Stack<>();
+    Node lastPrint = null;
+    Node curr = null;
+    stack.push(root);
+
+    while (!stack.isEmpty()) {
+      curr = stack.peek();
+      if (curr.left != null && curr.left != lastPrint && curr.right != lastPrint) {
+        stack.push(curr.left);
+      } else if (curr.right != null && curr.right != lastPrint) {
+        stack.push(curr.right);
+      } else {
+        list.add(stack.pop().value);
+        lastPrint = curr;
+      }
+    }
+
+    return list;
   }
 }

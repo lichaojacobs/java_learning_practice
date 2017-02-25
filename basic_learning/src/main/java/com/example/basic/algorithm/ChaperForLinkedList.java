@@ -1,12 +1,20 @@
 package com.example.basic.algorithm;
 
+import java.util.Stack;
+
 /**
  * Created by lichao on 2016/11/2.
  */
 public class ChaperForLinkedList {
-  //  public static void main(String[] args) {
-  //
-  //  }
+  public static void main(String[] args) {
+    Node head = new Node(1);
+    head.next = new Node(2);
+    head.next.next = new Node(3);
+    head.next.next.next = new Node(2);
+    head.next.next.next.next = new Node(1);
+
+    System.out.println(isPalindromeLinkedList1(head));
+  }
 
   /**
    * 打印俩个有序链表的公共部分
@@ -98,6 +106,37 @@ public class ChaperForLinkedList {
     }
 
     return head;
+  }
+
+
+  public static boolean isPalindromeLinkedList1(Node head) {
+    Node pre = head;
+    Node aft = head;
+    Stack<Node> stackData = new Stack<>();
+    //stackData.push(head);
+
+    while (pre != null && aft != null && aft.next != null && aft.next.next != null) {
+      stackData.push(pre);
+      pre = pre.next;
+      aft = aft.next.next;
+    }
+
+    if (aft.next != null) {
+      stackData.push(pre);
+    }
+
+    pre = pre.next;
+
+    //从中间节点开始走，stack依次弹出。
+    while (!stackData.isEmpty() && pre != null) {
+      Node tempNode = stackData.pop();
+      if (tempNode.value != pre.value) {
+        return false;
+      }
+      pre = pre.next;
+    }
+
+    return true;
   }
 
 

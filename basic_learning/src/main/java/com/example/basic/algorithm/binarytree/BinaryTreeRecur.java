@@ -13,9 +13,11 @@ public class BinaryTreeRecur {
   public static void main(String[] args) {
     Node head = new Node(1);
     head.right = new Node(2);
-    postorderTraversal(head).stream()
-        .sorted(Comparator.naturalOrder())
-        .forEach(System.out::println);
+//    postorderTraversal(head).stream()
+//        .sorted(Comparator.naturalOrder())
+//        .forEach(System.out::println);
+
+    System.out.println(postorderTraversal(head).size());
   }
 
   /**

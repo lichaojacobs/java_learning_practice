@@ -9,9 +9,10 @@ import java.util.LinkedList;
 public class MaxWindow {
   public static void main(String[] args) {
     int[] arr = {4, 3, 5, 4, 3, 3, 6, 7};
-    Arrays.stream(getMaxArray(arr, 3)).forEach(number -> {
-      System.out.println(number);
-    });
+    Arrays.stream(getMaxArray(arr, 3))
+        .forEach(number -> {
+          System.out.println(number);
+        });
   }
 
   /**
@@ -63,7 +64,7 @@ public class MaxWindow {
     int[] res = new int[arr.length - w + 1];
     int index = 0;
     for (int i = 0; i < arr.length; i++) {
-      while (!qmax.isEmpty() && arr[qmax.peekFirst()] < arr[i]) {
+      while (!qmax.isEmpty() && arr[qmax.peekLast()] < arr[i]) {
         qmax.pollLast();
       }
       qmax.add(i);

@@ -1,23 +1,31 @@
 package com.example.basic.algorithm.binarytree;
 
+import com.google.common.collect.Lists;
+
 import com.example.basic.algorithm.Node;
+import com.example.basic.algorithm.dp.LIS;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 /**
  * Created by lichao on 2017/2/8.
  */
-public class BinaryTreeRecur {
+public class BinaryTree {
   public static void main(String[] args) {
     Node head = new Node(1);
     head.right = new Node(2);
-//    postorderTraversal(head).stream()
-//        .sorted(Comparator.naturalOrder())
-//        .forEach(System.out::println);
+    //    postorderTraversal(head).stream()
+    //        .sorted(Comparator.naturalOrder())
+    //        .forEach(System.out::println);
 
-    System.out.println(postorderTraversal(head).size());
+    //System.out.println(postorderTraversal(head).size());
+    Node root = constructTree(Lists.newArrayList(1, 2, 4, 5, 3, 6), 0,
+        5, Lists.newArrayList(4, 2, 5, 1, 6, 3), 0, 5);
+    preOrderRecur2(root);
   }
 
   /**
@@ -189,5 +197,125 @@ public class BinaryTreeRecur {
     }
 
     return list;
+  }
+
+
+  /**
+   * 根据先序和中序恢复二叉树
+   */
+  public static Node constructTree(List<Integer> preOrderList, int startPre, int endPre,
+      List<Integer> inOrderList,
+      int startIn, int endIn) {
+    if ((endPre - startPre) != (endIn - startIn)) {
+      return null;
+    }
+
+
+    if (startPre > endPre) {
+      return null;
+    }
+
+    Integer rootValue = preOrderList.get(startPre);
+    Node root = new Node(rootValue);
+    root.left = null;
+    root.right = null;
+
+    //终止条件
+    if (startPre == endPre) {
+      return root;
+    }
+
+    ///分拆子树的左子树和右子树
+    int index = 0, length = 0;
+    for (index = startIn; index <= endIn; index++) {
+      if (inOrderList.get(index) == preOrderList.get(startPre)) {
+        break;
+      }
+    }
+
+    if (index > startIn) {
+      length = index - startIn;
+      root.left = constructTree(preOrderList, startPre + 1, startPre + 1 + length - 1, inOrderList,
+          startIn, startIn + length - 1);
+    }
+
+    if (index < endIn) {
+      root.right = constructTree(preOrderList, endPre - length + 1, endPre, inOrderList,
+          endIn - length + 1, endIn);
+    }
+
+    return root;
+  }
+
+  /**
+   * 层次遍历(队列)
+   */
+  public void layerorder(Node root) {
+    System.out.print("binaryTree层次遍历:");
+    LinkedList<Node> queue = new LinkedList<Node>();
+    queue.addLast(root);
+    Node current = null;
+    while (!queue.isEmpty()) {
+      current = queue.removeFirst();
+      if (current.left != null) {
+        queue.addLast(current.left);
+      }
+      if (current.right != null) {
+        queue.addLast(current.right);
+      }
+      System.out.print(current.value);
+    }
+    System.out.println();
+  }
+
+  /**
+   * 深入优先遍历(栈)，找出从跟节点到目标节点路径
+   */
+  public static int getDistance(Node head, Node left, Node right) {
+    if (head == null || left == null || right == null) {
+      return 0;
+    }
+
+
+    List<Node> leftList = getPathList(head, left);
+    List<Node> rightList = getPathList(head, right);
+
+    leftList.stream()
+        .forEach(System.out::print);
+    System.out.println();
+    rightList.stream()
+        .forEach(System.out::print);
+
+    return 0;
+
+  }
+
+  public static List<Node> getPathList(Node head, Node dest) {
+    Stack<Node> nodeStack = new Stack<>();
+    Node lasCurr = null;
+    Node curr = null;
+    nodeStack.push(head);
+    List<Node> nodeList = Lists.newArrayList();
+
+    while (!nodeStack.isEmpty()) {
+      curr = nodeStack.peek();
+      if (curr == dest) {
+        break;
+      }
+      if (curr.left != null && curr.left != lasCurr && curr.right != lasCurr) {
+        nodeStack.push(curr.left);
+      } else if (curr.right != null && curr.right != lasCurr) {
+        nodeStack.push(curr.right);
+      } else {
+        nodeStack.pop();
+        lasCurr = curr;
+      }
+    }
+
+    while (!nodeStack.isEmpty()) {
+      nodeList.add(nodeStack.pop());
+    }
+
+    return nodeList;
   }
 }

@@ -5,10 +5,14 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.aspects.LogMethod;
 import com.example.aspects.LogService;
 import com.example.elasticserach.ElasticSearchService;
+import com.example.hbase.HBaseTemplate;
+import com.example.hbase.callback.TableCallback;
+import com.example.hbase.results.PutExtension;
 import com.example.module.User;
 import com.example.resource.Demo;
 import com.example.task.Task;
 
+import org.apache.hadoop.hbase.client.Table;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +29,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = RedisApplication.class)
+@SpringBootTest(classes = Application.class)
 public class RedisApplicationTests {
 
   @Resource
@@ -38,6 +42,8 @@ public class RedisApplicationTests {
   Task task;
   @Resource
   ElasticSearchService elasticSearchService;
+  @Resource
+  HBaseTemplate hBaseTemplate;
 
   @Test
   public void contextLoads() {
@@ -53,6 +59,24 @@ public class RedisApplicationTests {
       e.printStackTrace();
     }
     demo.testCache();
+  }
+
+  @Test
+  public void testHBase() {
+    String tableName = "test";
+    String columnFamilyName = "i";
+
+    String userName = "user_name";
+    String age = "age";
+
+
+    hBaseTemplate.execute(tableName, table -> {
+      PutExtension putExtension = new PutExtension(columnFamilyName, "row2".getBytes()).build(
+          userName, "wanglu")
+          .build(age, 22);
+      table.put(putExtension);
+      return true;
+    });
   }
 
   @Test

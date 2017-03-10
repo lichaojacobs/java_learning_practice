@@ -15,3 +15,7 @@ elasticsearch:
   clusterName: test
   nodes:
     - 127.0.0.1:9300
+
+hbase:
+  quorum: 127.0.0.1
+  port: 2181

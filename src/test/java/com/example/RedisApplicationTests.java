@@ -8,11 +8,14 @@ import com.example.elasticserach.ElasticSearchService;
 import com.example.hbase.HBaseTemplate;
 import com.example.hbase.callback.TableCallback;
 import com.example.hbase.results.PutExtension;
+import com.example.hbase.results.RowMapper;
 import com.example.module.User;
 import com.example.resource.Demo;
 import com.example.task.Task;
 
+import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,6 +80,25 @@ public class RedisApplicationTests {
       table.put(putExtension);
       return true;
     });
+
+  }
+
+  @Test
+  public void testGetHBase() {
+    String tableName = "test";
+    String columnFamilyName = "i";
+
+    List<User> users = hBaseTemplate.find(tableName, columnFamilyName, "i", (result, i) -> {
+      return result.listCells()
+          .stream()
+          .findFirst()
+          .map(cell -> Bytes.toString(cell.getValueArray(), cell.getValueOffset(),
+              cell.getValueLength()))
+          .map(jsonStr -> JSON.parseObject(jsonStr, User.class))
+          .orElse(null);
+    });
+
+    System.out.println(JSON.toJSONString(users));
   }
 
   @Test

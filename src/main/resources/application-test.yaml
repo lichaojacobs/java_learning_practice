@@ -1,5 +1,8 @@
 spring:
+  application:
+    name: my_project
   profiles: test
+
 
 redis:
   host: 127.0.0.1
@@ -9,13 +12,17 @@ redis:
 server:
   port: 9000
 
-message: hahahha
+logging:
+  level: info
 
-elasticsearch:
-  clusterName: test
-  nodes:
-    - 127.0.0.1:9300
 
-hbase:
-  quorum: 127.0.0.1
-  port: 2181
+#redisCondition: true
+
+#elasticsearch:
+#  clusterName: test
+#  nodes:
+#    - 127.0.0.1:9300
+
+#hbase:
+#  quorum: 127.0.0.1
+#  port: 2181

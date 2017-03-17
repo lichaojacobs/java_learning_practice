@@ -49,6 +49,11 @@ public class RedisApplicationTests {
   HBaseTemplate hBaseTemplate;
 
   @Test
+  public void testConfig() {
+
+  }
+
+  @Test
   public void contextLoads() {
     elasticSearchService.getTestReuslt();
   }

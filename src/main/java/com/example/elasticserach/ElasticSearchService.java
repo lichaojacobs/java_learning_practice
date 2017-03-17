@@ -7,6 +7,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
  * Created by lichao on 2017/2/17.
  */
 @Component
+@ConditionalOnBean(name = "transportClient")
 public class ElasticSearchService {
   @Autowired
   @Qualifier("transportClient")

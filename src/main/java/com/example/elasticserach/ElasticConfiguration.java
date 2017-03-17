@@ -4,8 +4,12 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 import java.net.InetAddress;
@@ -18,9 +22,10 @@ import javax.annotation.Resource;
  */
 @EnableConfigurationProperties
 @Configuration
+@ConditionalOnBean(name = "config")
 public class ElasticConfiguration {
 
-  @Resource
+  @Autowired
   private ElasticsearchProperties config;
 
   @Bean

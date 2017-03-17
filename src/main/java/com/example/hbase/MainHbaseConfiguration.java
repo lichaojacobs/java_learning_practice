@@ -4,6 +4,7 @@ import com.example.hbase.factory.MainHTableFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @EnableConfigurationProperties({ZookeeperConfig.class, AdminConfig.class})
 public class MainHbaseConfiguration {
 
-
   @Bean
-  @ConditionalOnMissingBean
+  @ConditionalOnBean(name = "zookeeperConfig")
   public org.apache.hadoop.conf.Configuration configuration(ZookeeperConfig zookeeperConfig) {
     org.apache.hadoop.conf.Configuration config = HBaseConfiguration.create();
     if (StringUtils.isNotBlank(zookeeperConfig.getQuorum())) {
@@ -50,7 +50,7 @@ public class MainHbaseConfiguration {
   }
 
   @Bean
-  @ConditionalOnMissingBean
+  @ConditionalOnBean(name = "configuration")
   public MainHTableFactory mainHTableFactory(org.apache.hadoop.conf.Configuration configuration) {
     MainHTableFactory mainHTableFactory = new MainHTableFactory(configuration);
     log.info("HTable factory init ok");
@@ -58,7 +58,7 @@ public class MainHbaseConfiguration {
   }
 
   @Bean(name = "hbaseTemplate")
-  @ConditionalOnMissingBean
+  @ConditionalOnBean(name = {"configuration","mainHTableFactory"})
   public HBaseTemplate hBaseTemplate(org.apache.hadoop.conf.Configuration configuration,
       MainHTableFactory mainHTableFactory) {
     HBaseTemplate hBaseTemplate = new HBaseTemplate(configuration);

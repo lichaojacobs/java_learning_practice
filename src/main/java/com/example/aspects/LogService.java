@@ -1,5 +1,7 @@
 package com.example.aspects;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -7,8 +9,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class LogService {
+
+  @Value("test.name")
+  private String testConfig;
+
   @Log
-  public void logTest(){
-    System.out.println("this is the method");
+  public void logTest() {
+    System.out.println("this is the method" + testConfig);
   }
 }

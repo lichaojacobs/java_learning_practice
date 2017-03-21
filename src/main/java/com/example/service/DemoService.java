@@ -1,6 +1,5 @@
-package com.example.redis;
+package com.example.service;
 
-import com.example.module.Address;
 import com.example.module.User;
 
 import org.springframework.cache.annotation.Cacheable;

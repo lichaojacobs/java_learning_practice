@@ -1,7 +1,7 @@
 package com.example.resource;
 
 import com.example.module.User;
-import com.example.redis.DemoService;
+import com.example.service.DemoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -5,7 +5,7 @@ package com.example.basic.algorithm.string;
  */
 public class LongestPalindrome {
   public static void main(String[] args) {
-
+    System.out.println(longestPalindrome1("abcdce"));
   }
 
   /**

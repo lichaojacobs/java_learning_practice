@@ -5,19 +5,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.aspects.LogMethod;
 import com.example.aspects.LogService;
 import com.example.elasticserach.ElasticSearchService;
-import com.example.hbase.HBaseTemplate;
-import com.example.hbase.callback.TableCallback;
-import com.example.hbase.results.PutExtension;
-import com.example.hbase.results.RowMapper;
 import com.example.module.User;
 import com.example.resource.Demo;
 import com.example.task.Task;
 
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.Table;
-import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,8 +25,11 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
+@Slf4j
 public class RedisApplicationTests {
 
   @Resource
@@ -43,20 +40,16 @@ public class RedisApplicationTests {
   LogMethod logMethod;
   @Resource
   Task task;
-  @Resource
-  ElasticSearchService elasticSearchService;
-  @Resource
-  HBaseTemplate hBaseTemplate;
 
   @Test
   public void testConfig() {
 
   }
 
-  @Test
-  public void contextLoads() {
-    elasticSearchService.getTestReuslt();
-  }
+//  @Test
+  //  public void contextLoads() {
+  //    elasticSearchService.getTestReuslt();
+  //  }
 
   @Test
   public void testRedis() {
@@ -69,46 +62,48 @@ public class RedisApplicationTests {
     demo.testCache();
   }
 
-  @Test
-  public void testHBase() {
-    String tableName = "test";
-    String columnFamilyName = "i";
+  //  @Test
+  //  public void testHBase() {
+  //    String tableName = "test";
+  //    String columnFamilyName = "i";
+  //
+  //    String userName = "user_name";
+  //    String age = "age";
+  //
+  //
+  //    hBaseTemplate.execute(tableName, table -> {
+  //      PutExtension putExtension = new PutExtension(columnFamilyName, "row2".getBytes()).build(
+  //          userName, "wanglu")
+  //          .build(age, 22);
+  //      table.put(putExtension);
+  //      return true;
+  //    });
+  //
+  //  }
 
-    String userName = "user_name";
-    String age = "age";
-
-
-    hBaseTemplate.execute(tableName, table -> {
-      PutExtension putExtension = new PutExtension(columnFamilyName, "row2".getBytes()).build(
-          userName, "wanglu")
-          .build(age, 22);
-      table.put(putExtension);
-      return true;
-    });
-
-  }
-
-  @Test
-  public void testGetHBase() {
-    String tableName = "test";
-    String columnFamilyName = "i";
-
-    List<User> users = hBaseTemplate.find(tableName, columnFamilyName, "i", (result, i) -> {
-      return result.listCells()
-          .stream()
-          .findFirst()
-          .map(cell -> Bytes.toString(cell.getValueArray(), cell.getValueOffset(),
-              cell.getValueLength()))
-          .map(jsonStr -> JSON.parseObject(jsonStr, User.class))
-          .orElse(null);
-    });
-
-    System.out.println(JSON.toJSONString(users));
-  }
+  //  @Test
+  //  public void testGetHBase() {
+  //    String tableName = "test";
+  //    String columnFamilyName = "i";
+  //
+  //    List<User> users = hBaseTemplate.find(tableName, columnFamilyName, "i", (result, i) -> {
+  //      return result.listCells()
+  //          .stream()
+  //          .findFirst()
+  //          .map(cell -> Bytes.toString(cell.getValueArray(), cell.getValueOffset(),
+  //              cell.getValueLength()))
+  //          .map(jsonStr -> JSON.parseObject(jsonStr, User.class))
+  //          .orElse(null);
+  //    });
+  //
+  //    System.out.println(JSON.toJSONString(users));
+  //  }
 
   @Test
   public void aopTest() {
+    log.info("say hello begin");
     logMethod.sayHello();
+    log.info("say hello end");
   }
 
   @Test
@@ -192,7 +187,6 @@ public class RedisApplicationTests {
     user2.setFirstName("wang");
     user2.setLastName("lu");
     user2.setId(2l);
-    users.add(user2);
 
     User temp = users.get(0);
     temp.setLastName("jacobs");

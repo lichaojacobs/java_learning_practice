@@ -25,11 +25,10 @@ import java.lang.reflect.Method;
  * Created by lichao on 16/7/20.
  */
 
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
-  @Autowired
   private RedisSettings redisSettings;
 
   @Bean
@@ -38,7 +37,8 @@ public class RedisConfig extends CachingConfigurerSupport {
       @Override
       public Object generate(Object target, Method method, Object... params) {
         StringBuilder sb = new StringBuilder();
-        sb.append(target.getClass().getName());
+        sb.append(target.getClass()
+            .getName());
         sb.append(method.getName());
         for (Object obj : params) {
           sb.append(obj.toString());

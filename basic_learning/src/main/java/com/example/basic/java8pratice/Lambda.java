@@ -24,8 +24,11 @@ import java.util.stream.Stream;
  */
 public class Lambda {
   public static void main(String[] args) {
-    testCollectors();
+    //testCollectors();
+    System.out.println(anInterface.parseString(555));
   }
+
+  static FcInterfaceTest<String> anInterface = (int number) -> String.valueOf(number);
 
   public static void testCollectors() {
     List<Person> personList = Lists.newArrayList(Person.builder()

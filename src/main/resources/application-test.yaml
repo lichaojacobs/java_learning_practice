@@ -3,20 +3,22 @@ spring:
     name: my_project
   profiles: test
 
-
 redis:
-  host: 127.0.0.1
-  port: 6379
-  timeout: 5000
+  common:
+    timeout: 5000
+    connection: 54.159.208.93
+    pool:
+      maxTotal: 1024
+      maxIdle: 200
+      minIdle: 20
+      maxWaitMillis: 1000
+      testOnBorrow: true
 
 server:
   port: 9000
 
 logging:
   level: info
-
-
-#redisCondition: true
 
 #elasticsearch:
 #  clusterName: test

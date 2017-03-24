@@ -4,5 +4,6 @@ package com.example.constants;
  * Created by lichao on 2017/3/16.
  */
 public class BaseConstant {
-  public static String PROJECT_NAME;
+  public static final String PROJECT_NAME = "java_learning_practice";
+  public static final String REDIS_NAME = "common";
 }

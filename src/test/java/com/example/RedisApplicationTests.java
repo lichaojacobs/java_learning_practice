@@ -28,7 +28,8 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Application.class)
+//@SpringBootTest(classes = Application.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @Slf4j
 public class RedisApplicationTests {
 
@@ -46,7 +47,7 @@ public class RedisApplicationTests {
 
   }
 
-//  @Test
+  //  @Test
   //  public void contextLoads() {
   //    elasticSearchService.getTestReuslt();
   //  }
@@ -101,10 +102,9 @@ public class RedisApplicationTests {
 
   @Test
   public void aopTest() {
-    log.info("say hello begin");
     logMethod.sayHello();
-    log.info("say hello end");
   }
+
 
   @Test
   public void FastJsonTes() {

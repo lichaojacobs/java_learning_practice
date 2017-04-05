@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,11 @@ public class LogAspect {
     System.out.println("Hello");
     proceedingJoinPoint.proceed();
     System.out.println("World");
+  }
+
+  @Before("@annotation(com.example.aspects.LogBefore)")
+  public void executeBefore() {
+    System.out.println("print before method");
   }
 
 }

@@ -9,7 +9,7 @@ import java.sql.SQLSyntaxErrorException;
  */
 @Component
 public class LogMethod {
-  @Log
+  @LogBefore
   public void sayHello(){
     System.out.println("this is my Log");
   }

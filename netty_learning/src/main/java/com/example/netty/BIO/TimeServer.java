@@ -1,4 +1,4 @@
-package com.example.netty.BIO;
+package com.example.netty.bio;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -60,7 +60,13 @@ public class DataHttpUtil {
   private OkHttpClient okHttpClient;
 
   enum HttpMethod {
-    GET(), POST()
+    GET(), POST(), PUT(), DELETE()
+  }
+
+  @FunctionalInterface
+  private interface UnCheckedFunction<T, R> {
+
+    R apply(T t) throws Exception;
   }
 
   private <T, R> Function<T, R> unChecked(UnCheckedFunction<T, R> function) {
@@ -245,7 +251,7 @@ public class DataHttpUtil {
 
       header.forEach(params -> builder.header(params.getKey(), params.getValue()));
 
-      if (HttpMethod.POST.equals(method)) {
+      if (HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method)) {
         if (jsonBody) {
           RequestBody requestBody = RequestBody
               .create(MediaType.parse("application/json; charset=utf-8"), json);

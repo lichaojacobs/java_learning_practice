@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="com.example.logger.MyLogLayOut"/>
+    </encoder>
+  </appender>
+
+  <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <remoteHost>127.0.0.1</remoteHost>
+    <port>9250</port>
+    <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>
+  </appender>
+
+  <property name="LOG_FILE"
+    value="/Users/lichao/Desktop/logs/spring-boot-logging.logs"/>
+  <property name="FILE_LOG_PATTERN"
+    value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+  <appender name="FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+      <pattern>${FILE_LOG_PATTERN}</pattern>
+    </encoder>
+    <file>${LOG_FILE}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>${LOG_FILE}.%i</fileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy
+      class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>10MB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+
+  <springProfile name="test,staging">
+    <logger name="guru.springframework.controllers" level="DEBUG" additivity="false">
+      <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="FILE"/>
+    </logger>
+  </springProfile>
+
+  <root level="INFO">
+    <!--<appender-ref ref="FILE"/>-->
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="stash"/>
+  </root>
+</configuration>

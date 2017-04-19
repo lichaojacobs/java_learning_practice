@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: my_project
+  profiles: test
+#配置Controller的错误拦截如果不用Jersey的话
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  data:
+    mongodb:
+      uri: mongodb://zjy:zjy@ec2-54-159-208-93.compute-1.amazonaws.com:27017/test
+
+redis:
+  common:
+    timeout: 5000
+    connection: 54.159.208.93
+    pool:
+      maxTotal: 1024
+      maxIdle: 200
+      minIdle: 20
+      maxWaitMillis: 1000
+      testOnBorrow: true
+
+server:
+  port: 9000
+
+elasticsearch:
+  clusterName: test
+  nodes:
+    - 127.0.0.1:19303
+
+
+#hbase:
+#  quorum: 127.0.0.1
+#  port: 2181

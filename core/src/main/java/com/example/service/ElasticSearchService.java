@@ -1,5 +1,6 @@
-package com.example.elasticserach;
+package com.example.service;
 
+import com.example.conditional.ElasticServiceCondition;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.elasticsearch.action.search.SearchResponse;
@@ -10,17 +11,17 @@ import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by lichao on 2017/2/17.
  */
 @Component
-//@ConditionalOnBean(name = "transportClient")
+@Conditional({ElasticServiceCondition.class})
 public class ElasticSearchService {
 
   @Autowired
-  @Qualifier("transportClient")
   private Client client;
 
   private static final String indexName = "megacorp";

@@ -20,7 +20,7 @@ public class JerseyTest {
    */
   @Test
   public void testGetIt() {
-    String responseMsg = target.path("hello")
+    String responseMsg = target.path("v1/hello/message")
         .request()
         .get(String.class);
     System.out.println("Got it" + responseMsg);

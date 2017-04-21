@@ -2,6 +2,8 @@ package com.example;
 
 import com.alibaba.fastjson.JSON;
 import com.example.module.User;
+import com.google.common.collect.Maps;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,13 +17,16 @@ public class CommonTest {
 //    ExecutorService executorService = Executors.newCachedThreadPool();
 
     //Thread.currentThread().join();
-    System.out.println("hhhhh");
-    User user = new User();
-    user.setFirstName("chao");
-    user.setLastName("li");
-    user.setId(111L);
-
-    System.out.println(JSON.toJSONString(user));
+//    System.out.println("hhhhh");
+//    User user = new User();
+//    user.setFirstName("chao");
+//    user.setLastName("li");
+//    user.setId(111L);
+//
+//    System.out.println(JSON.toJSONString(user));
+    Map<String, Boolean> map = Maps.newHashMap();
+    map.put("test", true);
+    System.out.println(map.get("test"));
   }
 
   class CallTask implements Callable<Integer> {

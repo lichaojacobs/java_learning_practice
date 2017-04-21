@@ -9,37 +9,38 @@
   </appender>
 
   <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <!--<remoteHost>ali-hz-hadoop-namenode-1</remoteHost>-->
     <remoteHost>127.0.0.1</remoteHost>
     <port>9250</port>
     <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>
   </appender>
 
-  <property name="LOG_FILE"
-    value="/Users/lichao/Desktop/logs/spring-boot-logging.logs"/>
-  <property name="FILE_LOG_PATTERN"
-    value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+  <!--<property name="LOG_FILE"-->
+  <!--value="/Users/lichao/Desktop/logs/spring-boot-logging.logs"/>-->
+  <!--<property name="FILE_LOG_PATTERN"-->
+  <!--value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } -&#45;&#45; [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>-->
 
-  <appender name="FILE"
-    class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <encoder>
-      <pattern>${FILE_LOG_PATTERN}</pattern>
-    </encoder>
-    <file>${LOG_FILE}</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>${LOG_FILE}.%i</fileNamePattern>
-    </rollingPolicy>
-    <triggeringPolicy
-      class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-      <MaxFileSize>10MB</MaxFileSize>
-    </triggeringPolicy>
-  </appender>
+  <!--<appender name="FILE"-->
+  <!--class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+  <!--<encoder>-->
+  <!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
+  <!--</encoder>-->
+  <!--<file>${LOG_FILE}</file>-->
+  <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
+  <!--<fileNamePattern>${LOG_FILE}.%i</fileNamePattern>-->
+  <!--</rollingPolicy>-->
+  <!--<triggeringPolicy-->
+  <!--class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+  <!--<MaxFileSize>10MB</MaxFileSize>-->
+  <!--</triggeringPolicy>-->
+  <!--</appender>-->
 
-  <springProfile name="test,staging">
-    <logger name="guru.springframework.controllers" level="DEBUG" additivity="false">
-      <appender-ref ref="CONSOLE"/>
-      <appender-ref ref="FILE"/>
-    </logger>
-  </springProfile>
+  <!--<springProfile name="test,staging">-->
+  <!--<logger name="guru.springframework.controllers" level="DEBUG" additivity="false">-->
+  <!--<appender-ref ref="CONSOLE"/>-->
+  <!--<appender-ref ref="FILE"/>-->
+  <!--</logger>-->
+  <!--</springProfile>-->
 
   <root level="INFO">
     <!--<appender-ref ref="FILE"/>-->

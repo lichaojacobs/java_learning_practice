@@ -1,12 +1,17 @@
 package com.example.resource;
 
-import com.example.elasticserach.ElasticSearchService;
+import com.example.jersey.ParamDesc;
+import com.example.module.TestCase;
+import com.example.service.ElasticSearchService;
 import com.example.module.User;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +46,24 @@ public class TestResource {
   @Path("elastic")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Object testElastic() {
+  public Object testElastic(
+      @ParamDesc(isRequired = true, desc = "test key")
+      @QueryParam("test_key")
+          String testStr,
+      @ParamDesc(isRequired = true, desc = "test value")
+      @QueryParam("test_value")
+          String value
+  ) {
     return elasticSearchService.getTestReuslt();
+  }
+
+  @Path("test_case")
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  public TestCase getTestCase(
+      @BeanParam TestCase testCase
+  ) {
+
+    return TestCase.builder().build();
   }
 }

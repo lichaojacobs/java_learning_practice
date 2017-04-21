@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.aspects.LogMethod;
 import com.example.aspects.LogService;
-import com.example.elasticserach.ElasticSearchService;
 import com.example.module.User;
 import com.example.resource.Demo;
 import com.example.task.Task;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

@@ -16,7 +16,7 @@ public class EndPointAutoConfig {
   private List<MemStatus> status = new ArrayList<>();
 
   public EndPointAutoConfig() {
-    log.info("EndPointAutoConfig 初始化");
+    log.info("application:java_learning_project EndPointAutoConfig 初始化");
   }
 
   @Bean

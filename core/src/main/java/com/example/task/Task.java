@@ -11,6 +11,7 @@ import java.util.concurrent.Future;
  */
 @Component
 public class Task {
+
   @Async
   public Future<String> doTaskOne() throws Exception {
     System.out.println("开始做任务一");

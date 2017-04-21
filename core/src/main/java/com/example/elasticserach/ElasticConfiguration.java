@@ -1,5 +1,6 @@
 package com.example.elasticserach;
 
+import com.example.conditional.ElasticServiceCondition;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -20,9 +21,9 @@ import javax.annotation.Resource;
 /**
  * Created by lichao on 2017/2/17.
  */
-@EnableConfigurationProperties
 @Configuration
-//@ConditionalOnBean(name = "config")
+@Conditional({ElasticServiceCondition.class})
+@EnableConfigurationProperties(ElasticsearchProperties.class)
 public class ElasticConfiguration {
 
   @Autowired

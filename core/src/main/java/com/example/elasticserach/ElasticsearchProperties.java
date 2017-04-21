@@ -1,6 +1,7 @@
 package com.example.elasticserach;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.List;
  * Created by lichao on 2017/2/17.
  */
 
-@Component
 @ConfigurationProperties(
     prefix = "elasticsearch"
 )

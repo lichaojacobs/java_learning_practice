@@ -28,7 +28,7 @@ server:
 elasticsearch:
   clusterName: test
   nodes:
-    - 127.0.0.1:19303
+    - 127.0.0.1:9300
 
 
 #hbase:

@@ -4,15 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.aspects.LogMethod;
 import com.example.aspects.LogService;
+import com.example.constants.BaseConstant;
 import com.example.module.User;
-import com.example.resource.Demo;
+import com.example.resource.DemoResource;
 import com.example.task.Task;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
+import com.google.common.collect.Lists;
+import com.mobvoi.data.cache.commands.StringCommand;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,25 +17,33 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
-
 import javax.annotation.Resource;
-
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@SpringBootTest(classes = Application.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(classes = Application.class)
+@PropertySource(value = "classpath:configs.properties")
 @Slf4j
 public class RedisApplicationTests {
 
   @Resource
-  Demo demo;
+  DemoResource demoResource;
   @Resource
   LogService logService;
   @Resource
   LogMethod logMethod;
   @Resource
   Task task;
+
+  @Resource
+  KafkaTemplate<String, String> dataKafkaProducer;
 
   @Test
   public void testConfig() {
@@ -52,13 +57,13 @@ public class RedisApplicationTests {
 
   @Test
   public void testRedis() {
-    demo.putCache();
+    demoResource.putCache();
     try {
       java.lang.Thread.sleep(2000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    demo.testCache();
+    demoResource.testCache();
   }
 
   //  @Test
@@ -191,14 +196,30 @@ public class RedisApplicationTests {
     users.remove(temp);
 
     users.add(null);
-    //    users.forEach(
-    //        inner -> System.out.println("userName: " + inner.getFirstName() + inner.getLastName()));
     List<User> userList = users.stream()
         .map(user -> Optional.ofNullable(user))
         .filter(Optional::isPresent)
         .map(Optional::get)
         .collect(Collectors.toList());
     System.out.println(JSON.toJSONString(userList));
+  }
+
+  @Test
+  public void testJedis() {
+    List<Integer> list = Lists.newArrayList();
+    for (int i = 0; i < 10000; i++) {
+      list.add(i);
+    }
+
+    list.forEach(integer -> {
+      StringCommand.getJedis(BaseConstant.REDIS_NAME)
+          .setWithExpire("test" + integer, 600, integer.toString());
+    });
+  }
+
+  @Test
+  public void testKafka() {
+    dataKafkaProducer.send("test", "helloworld");
   }
 
 }

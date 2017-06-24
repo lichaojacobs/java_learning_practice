@@ -1,5 +1,6 @@
 package com.example.jersey;
 
+import com.example.exception.CommonExceptionMapper;
 import com.example.exception.CommonValidationMapper;
 import com.example.filters.AuthorizationRequestFilter;
 import com.example.filters.PoweredByResponseFilter;
@@ -17,6 +18,7 @@ public class JerseyConfig extends ResourceConfig {
     register(TestResource.class)//resource样例
         .register(PoweredByResponseFilter.class)//请求拦截样例
         //.register(AuthorizationRequestFilter.class)//权限验证
-        .register(CommonValidationMapper.class);//错误处理
+        .register(CommonValidationMapper.class)
+        .register(CommonExceptionMapper.class);//参数错误处理
   }
 }

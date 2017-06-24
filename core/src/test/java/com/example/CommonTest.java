@@ -1,33 +1,17 @@
 package com.example;
 
-import com.alibaba.fastjson.JSON;
-import com.example.module.User;
-import com.google.common.collect.Maps;
-import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import org.apache.commons.lang.time.FastDateFormat;
 
 /**
  * Created by lichao on 2016/11/24.
  */
 public class CommonTest {
 
-  public static void main(String[] args) throws InterruptedException {
-//    ExecutorService executorService = Executors.newCachedThreadPool();
 
-    //Thread.currentThread().join();
-//    System.out.println("hhhhh");
-//    User user = new User();
-//    user.setFirstName("chao");
-//    user.setLastName("li");
-//    user.setId(111L);
-//
-//    System.out.println(JSON.toJSONString(user));
-    Map<String, Boolean> map = Maps.newHashMap();
-    map.put("test", true);
-    System.out.println(map.get("test"));
-  }
+  private static FastDateFormat formatter = FastDateFormat
+      .getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("GMT"));
 
   class CallTask implements Callable<Integer> {
 

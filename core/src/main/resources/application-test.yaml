@@ -11,16 +11,17 @@ spring:
     mongodb:
       uri: mongodb://zjy:zjy@ec2-54-159-208-93.compute-1.amazonaws.com:27017/test
 
-redis:
-  common:
-    timeout: 5000
-    connection: 54.159.208.93
-    pool:
-      maxTotal: 1024
-      maxIdle: 200
-      minIdle: 20
-      maxWaitMillis: 1000
-      testOnBorrow: true
+#redis:
+#  list:
+#    common:
+#      timeout: 5000
+#      connection: 127.0.0.1:6379
+#      pool:
+#        maxTotal: 1024
+#        maxIdle: 200
+#        minIdle: 20
+#        maxWaitMillis: 1000
+#        testOnBorrow: true
 
 server:
   port: 9000
@@ -30,7 +31,15 @@ elasticsearch:
   nodes:
     - 127.0.0.1:9300
 
+redis:
+  name: common
+  connection: 127.0.0.1:6379
+  password: igTuujYzZSSVd75X
 
 #hbase:
 #  quorum: 127.0.0.1
 #  port: 2181
+
+kafka:
+  servers: localhost:9092
+  groupID: weixiaobao_group

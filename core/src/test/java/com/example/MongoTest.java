@@ -1,21 +1,23 @@
 package com.example;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Sorts.ascending;
-import static com.mongodb.client.model.Sorts.descending;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Sorts.*;
 
 import com.alibaba.fastjson.JSON;
 import com.example.module.MongoUser;
+import com.example.service.DemoService;
 import com.google.common.collect.Lists;
+import com.mongodb.AggregationOptions;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndReplaceOptions;
+import java.util.Arrays;
 import java.util.Base64.Encoder;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.Resource;
+import javax.print.Doc;
 import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +33,8 @@ public class MongoTest {
 
   @Resource
   MongoDatabase mongoDatabase;
+  @Resource
+  DemoService demoService;
 
   public static final String LIKE_COLLECTION = "like";
 
@@ -89,6 +93,37 @@ public class MongoTest {
             .hasNext());
   }
 
+  @Test
+  public void testAggreateFind() {
+    //aggregate 的pipline跟顺序有关,一般是数组从左到右依次pipline,一般pipline aggregation stages有 $match $group $sortByCount...
+    List<Document> documents = mongoDatabase.getCollection("like")
+        .aggregate(Lists.newArrayList(
+            Document.parse(String.format("{$match:{identity:%d}}", getDateSpanDaysFirstSecond(0))),
+            Document.parse(String.format("{$match:{from:{$in:%s}}}", JSON.toJSONString(Lists
+                .newArrayList("296075535799459c9da864418a2cd02e",
+                    "bac374ef017d1c9bb1452fde7a03d9ee")))),
+            Document.parse("{$group:{_id:\"$from\",count:{$sum:1}}}"),
+            Document.parse("{$sort:{count:1}}")))//1表示升序 -1表示降序
+        .into(Lists.newArrayList());
+    System.out.println(JSON.toJSONString(documents));
+  }
+
+  @Test
+  public void testAggreateFind2() {
+    List<Document> documents = Lists.newArrayList();
+    documents.add(new Document("$match", new Document("identity", getDateSpanDaysFirstSecond(0))));
+    documents.add(new Document("$match",
+        new Document("from",
+            new Document("$in", JSON.toJSONString(Lists
+                .newArrayList("296075535799459c9da864418a2cd02e",
+                    "bac374ef017d1c9bb1452fde7a03d9ee"))))));
+    documents.add(new Document("$group", Lists.newArrayList(new Document("_id", "$from"),
+        new Document("count", new Document("$sum", 1)))));
+
+    //mongoDatabase.getCollection("like").aggregate(documents).into(Lists.);
+    System.out.println(JSON.toJSONString(documents));
+  }
+
   public long getDateSpanDaysFirstSecond(int daySpan) {
     Calendar calendar = Calendar.getInstance(Locale.getDefault());
 
@@ -101,5 +136,4 @@ public class MongoTest {
 
     return calendar.getTime().getTime();
   }
-
 }

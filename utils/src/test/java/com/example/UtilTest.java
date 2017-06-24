@@ -1,6 +1,9 @@
 package com.example;
 
 import com.example.DataHttpUtil.HttpResponse;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
@@ -11,6 +14,7 @@ import org.junit.Test;
 public class UtilTest {
 
   private DataHttpUtil dataHttpUtil = DataHttpUtil.builder().build();
+  private SimpleDateFormat simpleDateTime = new SimpleDateFormat("yyyy/MM/dd");
 
   @Test
   public void testGetMethod() {
@@ -27,4 +31,8 @@ public class UtilTest {
     }
   }
 
+  @Test
+  public void regTest() {
+    System.out.println(simpleDateTime.format(Calendar.getInstance().getTime()));
+  }
 }

@@ -11,7 +11,6 @@
   <packaging>jar</packaging>
 
   <name>core</name>
-  <description>core module for java learning</description>
 
   <parent>
     <groupId>com.example</groupId>
@@ -21,13 +20,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-cache</artifactId>
+      <groupId>com.mobvoi.data</groupId>
+      <artifactId>common-data-starter-cache</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
+      <groupId>com.mobvoi.data</groupId>
+      <artifactId>common-data-starter-kafka</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -67,7 +67,6 @@
     <dependency>
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase-client</artifactId>
-      <version>1.3.0</version>
     </dependency>
 
     <dependency>
@@ -83,13 +82,11 @@
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
-      <version>5.0.1</version>
     </dependency>
 
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>transport</artifactId>
-      <version>5.0.1</version>
     </dependency>
 
     <dependency>
@@ -107,11 +104,6 @@
       <artifactId>logstash-logback-encoder</artifactId>
       <version>${logstash-logback.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
     <dependency>
       <groupId>io.netty</groupId>
@@ -119,15 +111,15 @@
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-mongodb</artifactId>
-      <version>1.10.1.RELEASE</version>
-    </dependency>
-    <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongo-java-driver</artifactId>
-      <version>3.0.4</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -143,64 +135,34 @@
           </execution>
         </executions>
       </plugin>
-      <!--<plugin>-->
-      <!--<groupId>org.apache.thrift.tools</groupId>-->
-      <!--<artifactId>maven-thrift-plugin</artifactId>-->
-      <!--<version>0.1.11</version>-->
-      <!--<executions>-->
-      <!--<execution>-->
-      <!--<id>thrift-sources</id>-->
-      <!--<phase>generate-sources</phase>-->
-      <!--<goals>-->
-      <!--<goal>compile</goal>-->
-      <!--</goals>-->
-      <!--</execution>-->
-      <!--<execution>-->
-      <!--<id>thrift-test-sources</id>-->
-      <!--<phase>generate-test-sources</phase>-->
-      <!--<goals>-->
-      <!--<goal>testCompile</goal>-->
-      <!--</goals>-->
-      <!--</execution>-->
-      <!--</executions>-->
-      <!--</plugin>-->
-      <!--<plugin>-->
-      <!--<groupId>com.spotify</groupId>-->
-      <!--<artifactId>docker-maven-plugin</artifactId>-->
-      <!--<version>0.3.8</version>-->
-      <!--<executions>-->
-      <!--<execution>-->
-      <!--<phase>deploy</phase>-->
-      <!--<goals>-->
-      <!--<goal>build</goal>-->
-      <!--<goal>tag</goal>-->
-      <!--</goals>-->
-      <!--</execution>-->
-      <!--</executions>-->
-      <!--<configuration>-->
-      <!--<dockerHost>http://192.168.99.100:2376</dockerHost>-->
-      <!--<imageName>${docker.image.prefix}/${project.artifactId}</imageName>-->
-      <!--<image>${docker.image.prefix}/${project.artifactId}</image>-->
-      <!--<baseImage>docker.io/java:latest</baseImage>-->
-      <!--<env>-->
-      <!--<TZ>'Asia/Shanghai'</TZ>-->
-      <!--<LC_ALL>en_US.UTF-8</LC_ALL>-->
-      <!--</env>-->
-      <!--<dockerDirectory>src/main/docker</dockerDirectory>-->
-      <!--<exposes>-->
-      <!--<expose>8080</expose>-->
-      <!--</exposes>-->
-      <!--<forceTags>true</forceTags>-->
-      <!--<pushImage>false</pushImage>-->
-      <!--<resources>-->
-      <!--<resource>-->
-      <!--<targetPath>/</targetPath>-->
-      <!--<directory>${project.build.directory}</directory>-->
-      <!--<include>${project.build.finalName}.jar</include>-->
-      <!--</resource>-->
-      <!--</resources>-->
-      <!--</configuration>-->
-      <!--</plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>testCompile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

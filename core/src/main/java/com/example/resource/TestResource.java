@@ -6,6 +6,7 @@ import com.example.service.ElasticSearchService;
 import com.example.module.User;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,7 +26,7 @@ public class TestResource {
   ElasticSearchService elasticSearchService;
 
 
-  @Path(("message"))
+  @Path("message")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<User> getMessage() {
@@ -47,7 +48,7 @@ public class TestResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Object testElastic(
-      @ParamDesc(isRequired = true, desc = "test key")
+      @ParamDesc(isRequired = true,range = "str:0~255", desc = "test key")
       @QueryParam("test_key")
           String testStr,
       @ParamDesc(isRequired = true, desc = "test value")

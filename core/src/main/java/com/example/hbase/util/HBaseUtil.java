@@ -6,7 +6,6 @@ import com.example.hbase.factory.TableFactory;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.BufferedMutator;
 import org.apache.hadoop.hbase.client.Table;
-import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -117,7 +116,7 @@ public class HBaseUtil {
     }
   }
 
-  public static DataAccessException convertHBaseException(Exception ex) {
+  public static RuntimeException convertHBaseException(Exception ex) {
     return new HBaseSystemException("", ex);
   }
 

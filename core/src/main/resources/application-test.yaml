@@ -7,9 +7,9 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
-  data:
-    mongodb:
-      uri: mongodb://zjy:zjy@ec2-54-159-208-93.compute-1.amazonaws.com:27017/test
+#  data:
+#    mongodb:
+#      uri: mongodb://useradmin:123456@ec2-54-159-208-93.compute-1.amazonaws.com:27017/test
 
 #redis:
 #  list:
@@ -26,10 +26,10 @@ spring:
 server:
   port: 9000
 
-elasticsearch:
-  clusterName: test
-  nodes:
-    - 127.0.0.1:9300
+#elasticsearch:
+#  clusterName: test
+#  nodes:
+#    - 127.0.0.1:9300
 
 redis:
   name: common
@@ -43,3 +43,17 @@ redis:
 kafka:
   servers: localhost:9092
   groupID: weixiaobao_group
+
+kylin:
+  weixiaobao:
+    userName: admin
+    password: KYLIN
+    decrypt: true
+    connectionUrl: jdbc:kylin://ali-hz-data-platform-7:7070/weixiaobao
+
+mysql:
+  common:
+    userName: root
+    passWord: lichao0903
+    decrypt: false
+    masterUrl: jdbc:mysql://127.0.0.1:3306/kmap?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false

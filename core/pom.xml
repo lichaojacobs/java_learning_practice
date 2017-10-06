@@ -19,14 +19,7 @@
   </parent>
 
   <dependencies>
-    <dependency>
-      <groupId>com.mobvoi.data</groupId>
-      <artifactId>common-data-starter-cache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.mobvoi.data</groupId>
-      <artifactId>common-data-starter-kafka</artifactId>
-    </dependency>
+
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -40,6 +33,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <!--<dependency>-->
+    <!--<groupId>org.springframework.boot.experimental</groupId>-->
+    <!--<artifactId>spring-boot-starter-web-reactive</artifactId>-->
+    <!--</dependency>-->
     <!--AOP-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -58,10 +55,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jersey</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-actuator</artifactId>
     </dependency>
     <!--hbase-->
     <dependency>
@@ -104,22 +97,35 @@
       <artifactId>logstash-logback-encoder</artifactId>
       <version>${logstash-logback.version}</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-all</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>javapoet</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+    </dependency>
+
+    <!--Reactor-->
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.0.3.RELEASE</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -127,38 +133,11 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>1.5.2.RELEASE</version>
         <executions>
           <execution>
             <goals>
               <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-compile</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>default-testCompile</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>testCompile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>testCompile</goal>
             </goals>
           </execution>
         </executions>

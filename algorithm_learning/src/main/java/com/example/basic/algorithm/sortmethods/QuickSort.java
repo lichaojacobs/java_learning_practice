@@ -2,25 +2,25 @@ package com.example.basic.algorithm.sortmethods;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by lichao on 2017/1/21.
  */
 public class QuickSort {
+
   public static void main(String[] args) {
     int[] list = {1, 9, 6, 5, 8, 7};
     sort(list, 0, list.length - 1);
     Arrays.stream(list)
         .forEach(System.out::println);
-    ArrayList<Integer> list1=new ArrayList<>();
+    ArrayList<Integer> list1 = new ArrayList<>();
   }
 
   public static void sort(int[] list, int low, int high) {
     if (low >= high) {
       return;
     }
-    int index = partition2(list, low, high);
+    int index = partition4(list, low, high);
     sort(list, low, index - 1);
     sort(list, index + 1, high);
   }
@@ -74,6 +74,27 @@ public class QuickSort {
     return i;
   }
 
+  public static int partition4(int[] arr, int low, int high) {
+    int temp = arr[low];
+
+    while (low < high) {
+      while ((low < high) && temp <= arr[high]) {
+        high--;
+      }
+
+      arr[low] = arr[high];
+
+      while ((low < high) && temp >= arr[low]) {
+        low++;
+      }
+
+      arr[high] = arr[low];
+    }
+
+    arr[low] = temp;
+    return low;
+  }
+
   public static void swap(int[] list, int a, int b) {
     int temp = list[a];
     list[a] = list[b];
@@ -81,8 +102,7 @@ public class QuickSort {
   }
 
   /**
-   * 快速排序优化对于基准位置的选取一般有三种方法：固定切分，随机切分和三取样切分。固定切分的效率并不是太好，
-   * 随机切分是常用的一种切分，效率比较高，最坏情况下时间复杂度有可能为O(N2).对于三数取中选择基准点是最理想的一种。
+   * 快速排序优化对于基准位置的选取一般有三种方法：固定切分，随机切分和三取样切分。固定切分的效率并不是太好， 随机切分是常用的一种切分，效率比较高，最坏情况下时间复杂度有可能为O(N2).对于三数取中选择基准点是最理想的一种。
    */
   public static int partitionOptimize(int[] array, int lo, int hi) {
     //三数取中

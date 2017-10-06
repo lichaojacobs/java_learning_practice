@@ -1,7 +1,5 @@
 package com.example.netty.timeserver2;
 
-import java.util.Date;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -16,12 +14,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import java.util.Date;
 
 /**
- * Created by lichao on 2017/1/28.
- * 使用LineBaseFrameDecoder 和 StringDecoder 支持tcp 粘包
+ * Created by lichao on 2017/1/28. 使用LineBaseFrameDecoder 和 StringDecoder 支持tcp 粘包
  */
 public class TimeServer {
+
   public void bind(int port) throws Exception {
     EventLoopGroup bossLoopGroup = new NioEventLoopGroup();
     EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -53,7 +52,7 @@ public class TimeServer {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
       socketChannel.pipeline()
-          .addLast(new LineBasedFrameDecoder(1024))
+          .addLast(new LineBasedFrameDecoder(1024))//解决tcp粘包的问题
           .addLast(new StringDecoder())
           .addLast(new TimeServerHandler());
     }
@@ -63,11 +62,11 @@ public class TimeServer {
    * 处理类
    */
   private class TimeServerHandler extends ChannelHandlerAdapter {
+
     private int counter;
 
-    @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-      String body = (String) msg;
+      String body = (String) msg;//加了 StringDecoder之后可以直接强制转换为String类型
       System.out.println(
           "The time server receive order: " + body + " ; the counter is: " + ++counter);
       String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date(
@@ -77,7 +76,7 @@ public class TimeServer {
       ctx.writeAndFlush(resp);
     }
 
-    @Override
+
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
       //为了性能考虑, Netty 的write 方法不能直接将消息写入SocketChannel中
       // ，防止频繁的唤醒Selector进行消息发送。而是写入缓冲数组中，最后通过flush方法将缓冲区的消息全部写到SocketChannel中.

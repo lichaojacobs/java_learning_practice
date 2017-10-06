@@ -4,6 +4,7 @@ package com.example.basic.algorithm.dp;
  * Created by lichao on 2017/2/4.
  */
 public class ChangeCoins {
+
   public static void main(String[] args) {
 
   }
@@ -32,8 +33,7 @@ public class ChangeCoins {
   }
 
   /**
-   * 方法二：记忆搜索法,保存下每一次递归的结果值，下次如果有就直接拿值，省去重复的计算
-   * map[i][j]=-1表示递归过程计算过，但是result为0，map[i][j]=0表示没有计算过
+   * 方法二：记忆搜索法,保存下每一次递归的结果值，下次如果有就直接拿值，省去重复的计算 map[i][j]=-1表示递归过程计算过，但是result为0，map[i][j]=0表示没有计算过
    */
   public static int coins2(int[] arr, int aim) {
     if (arr == null || arr.length == 0 || aim < 0) {
@@ -71,6 +71,7 @@ public class ChangeCoins {
       return 0;
     }
 
+    //dp[i][j] 使用0..i种货币，换j面值的钱的方法数
     int[][] dp = new int[arr.length][aim + 1];
 
     for (int i = 0; i < arr.length; i++) {

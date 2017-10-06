@@ -1,16 +1,16 @@
 package com.example;
 
-import com.example.jersey.EnableJerseyConfiguration;
 import javafx.scene.Parent;
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.util.ResourceUtils;
 
-//SpringBootApplication自动包括了ennableAutoConfiguration ComponentScan Configuration这些,
 @SpringBootApplication
 @EnableAsync
-@EnableJerseyConfiguration(scanPackage = "", applicationPath = "v1")
+//@EnableJerseyConfiguration(scanPackage = "", applicationPath = "v1")
+//@AutoGenerateRowMapper(scanPackage = "com.example.module", annotationFilter = RowMapper.class, outPath = "core/src/main/java/")
 public class Application {
 
   public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class Application {
     new SpringApplicationBuilder()
         .sources(Parent.class)
         .child(Application.class)
-        .bannerMode(Mode.LOG)
+        .bannerMode(Mode.CONSOLE)
         .run(args);
   }
 }

@@ -17,8 +17,7 @@ import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 /**
- * Created by lichao on 2017/1/28.
- * 使用LineBaseFrameDecoder 和 StringDecoder 支持tcp 粘包
+ * Created by lichao on 2017/1/28. 使用LineBaseFrameDecoder 和 StringDecoder 支持tcp 粘包
  */
 public class TimeClient {
 
@@ -64,6 +63,7 @@ public class TimeClient {
   }
 
   private class TimeClientHandler extends ChannelHandlerAdapter {
+
     private byte[] req;
     private int counter;
 
@@ -71,7 +71,6 @@ public class TimeClient {
       req = ("QUERY TIME ORDER" + System.getProperty("line.separator")).getBytes();
     }
 
-    @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
       ByteBuf message;
       for (int i = 0; i < 100; i++) {
@@ -81,7 +80,7 @@ public class TimeClient {
       }
     }
 
-    @Override
+
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
       String body = (String) msg;
       System.out.println("NOW is: " + body + " ; the counter is : " + ++counter);

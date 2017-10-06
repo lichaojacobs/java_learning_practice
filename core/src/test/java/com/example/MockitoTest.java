@@ -1,15 +1,30 @@
 package com.example;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.example.module.Address;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Test;
-
-import static org.mockito.Mockito.*;
 
 /**
  * Created by lichao on 2017/5/5.
  */
 public class MockitoTest {
+
+  @Test
+  public void testGson() {
+    String jsonString = "[{\"id\":1,\"province\":\"Beijing\",\"city\":\"Beijing\"}]";
+    Type type = new TypeToken<List<Address>>() {
+    }.getType();
+    List<Address> beanOnes = new Gson().fromJson(jsonString, type);
+    System.out.println(beanOnes);
+  }
 
   @Test
   public void ListTest() {

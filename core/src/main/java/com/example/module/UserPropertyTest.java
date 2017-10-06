@@ -1,15 +1,14 @@
 package com.example.module;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import com.example.aspects.MapperProcessorAnnotation;
+import lombok.Data;
 
 /**
  * Created by lichao on 2017/4/7.
  */
-@Component
-@PropertySource(value = "classpath:configs.properties")
+@MapperProcessorAnnotation
+@Data
 public class UserPropertyTest {
-  @Value("${test.name}")
+
   private String name;
 }

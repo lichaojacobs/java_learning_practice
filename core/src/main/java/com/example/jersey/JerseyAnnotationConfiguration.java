@@ -16,11 +16,11 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by lichao on 2017/4/19.
  */
-@Configuration
-@AutoConfigureBefore(JerseyAutoConfiguration.class)
-@ConditionalOnBean(
-    annotation = {EnableJerseyConfiguration.class}
-)
+//@Configuration
+//@AutoConfigureBefore(JerseyAutoConfiguration.class)
+//@ConditionalOnBean(
+//    annotation = {EnableJerseyConfiguration.class}
+//)
 @ComponentScan
 public class JerseyAnnotationConfiguration implements ApplicationContextAware {
 

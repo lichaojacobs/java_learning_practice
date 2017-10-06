@@ -10,8 +10,9 @@ import java.util.Stack;
  */
 public class StackReverse {
   public static void main(String[] args) {
-    char[] chars = new char[]{'a', 'b', 'c'};
-    allSortsString(chars, 0, 3);
+//    char[] chars = new char[]{'a', 'b', 'c'};
+//    allSortsString(chars, 0, 3);
+    sortBalls2();
   }
 
   //打印出一个字符串的字符全部排序
@@ -63,7 +64,7 @@ public class StackReverse {
   }
 
   public static void sortBalls2() {
-    String[] balls = new String[]{"R", "B", "G", "G", "R", "B", "B", "G", "R", "G", "R", "B"};
+    String[] balls = new String[]{"B", "B", "G", "G", "R", "B", "B", "G", "R", "G", "R", "R"};
     int r = 0;
     int g = 1;
     int b = 2;

@@ -1,14 +1,14 @@
 package com.example.basic.algorithm.dp;
 
 /**
- * Created by lichao on 2017/2/3.
- * 最长公共字串
+ * Created by lichao on 2017/2/3. 最长公共字串
  */
 public class LCST {
+
   public static void main(String[] args) {
-    String str1 = "abcdresdfar";
-    String str2 = "cdresasdfaere";
-    System.out.println(getLCS(str1, str2));
+    String str1 = "abcdredfar";
+    String str2 = "cdresadfaere";
+    System.out.println(getLCS2(str1, str2));
   }
 
   /**
@@ -62,4 +62,49 @@ public class LCST {
     return str1.substring(end - max + 1, end + 1);
   }
 
+
+  //优化的方案：空间复杂度由O(M)(N) 降到O(1)
+  public static String getLCS2(String str1, String str2) {
+    if (str1 == null || str2 == null || str1.equals("") || str2.equals("")) {
+      return null;
+    }
+
+    char[] chs1 = str1.toCharArray();
+    char[] chs2 = str2.toCharArray();
+    int row = 0;//斜线的开始位置的行
+    int col = chs2.length - 1;//斜线开始位置的列
+    int max = 0;//记录最大长度;
+    int end = 0;//最大长度更新时，记录字串的结尾位置
+
+    while (row < chs1.length) {
+      int j = row;
+      int i = col;
+      int len = 0;
+
+      //从(i,j)开始向右下方遍历
+      while (i < chs1.length && j < chs2.length) {
+        if (chs1[i] != chs2[j]) {
+          len = 0;
+        } else {
+          len++;
+        }
+
+        //记录最大值，以及结束字符的位置
+        if (len > max) {
+          end = i;
+          max = len;
+        }
+        i++;
+        j++;
+      }
+      //斜线开始位置的列先向左移动
+      if (col > 0) {
+        col--;
+      } else {// 列移动到最左之后，行向下移动
+        row++;
+      }
+    }
+
+    return str1.substring(end - max + 1, end + 1);
+  }
 }

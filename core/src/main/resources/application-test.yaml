@@ -1,7 +1,22 @@
 spring:
   application:
-    name: my_project
+    name: java_learning_project
   profiles: test
+  boot:
+    admin:
+      url: http://ali-hz-hbase-name-node:12309
+      username: mobvoi
+      password: mobvoi
+  gson:
+    converter:
+      enable: false
+#      client:
+#        service-url: http://testHost:50000
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
 #配置Controller的错误拦截如果不用Jersey的话
   mvc:
     throw-exception-if-no-handler-found: true

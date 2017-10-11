@@ -4,7 +4,7 @@
 
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-      <layout class="com.example.logger.MyLogLayOut"/>
+      <layout class="com.jacobs.logger.MyLogLayOut"/>
     </encoder>
   </appender>
 

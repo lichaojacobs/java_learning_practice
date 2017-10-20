@@ -27,10 +27,15 @@ public class CommonTest {
 //    java.util.Date date = Date.from(instant);
 //    System.out.println(date);
 //    System.out.println(new Date());
-    long expireTimestamp = System.currentTimeMillis() - 3600000 * 48;
-    System.out.println(expireTimestamp);
+//    long expireTimestamp = System.currentTimeMillis() - 3600000 * 48;
+//    System.out.println(expireTimestamp);
+//    System.out.println("ali-hz-misc-srv-3-docker".replaceAll("-docker", ""));
 
-    System.out.println("ali-hz-misc-srv-3".replaceAll("-docker", ""));
+    //子类必须强转父类
+//    Object testInt = 1;
+//    Integer reult = testInt;
+//    System.out.println(testInt);
+
   }
 
   public static void testQuery(String filePath, int rate) throws Exception {

@@ -1,12 +1,15 @@
 package com.jacobs.basic.algorithm.leetcode;
 
-import com.alibaba.fastjson.JSON;
-import com.jacobs.basic.ListNode;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.models.ListNode;
+import com.jacobs.basic.models.RandomListNode;
+import com.jacobs.basic.models.UndirectedGraphNode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -23,10 +26,26 @@ public class Problems {
 //    root.next = new ListNode(2);
 //    System.out.println(hasCycle_02(root));
 
-    System.out.println(JSON.toJSONString(
-        wordBreak_04("catsanddog", Sets.newHashSet("cats", "cat", "sand", "and", "dog"))));
+//    System.out.println(JSON.toJSONString(
+//        wordBreak_04("catsanddog", Sets.newHashSet("cats", "cat", "sand", "and", "dog"))));
+//
+//    System.out.println(wordBreak_03_2("a", Sets.newHashSet("a")));
+//    RandomListNode testNode = new RandomListNode(1);
+//    RandomListNode resultNode = copyRandomList_05(testNode);
+//    System.out.println(resultNode.label);
 
-    System.out.println(wordBreak_03_2("a", Sets.newHashSet("a")));
+//    System.out.println(candy_11(
+//        new int[]{58, 21, 72, 77, 48, 9, 38, 71, 68, 77, 82, 47, 25, 94, 89, 54, 26, 54, 54, 99, 64,
+//            71, 76, 63, 81, 82, 60, 64, 29, 51, 87, 87, 72, 12, 16, 20, 21, 54, 43, 41, 83, 77, 41,
+//            61, 72, 82, 15, 50, 36, 69, 49, 53, 92, 77, 16, 73, 12, 28, 37, 41, 79, 25, 80, 3, 37,
+//            48, 23, 10, 55, 19, 51, 38, 96, 92, 99, 68, 75, 14, 18, 63, 35, 19, 68, 28, 49, 36, 53,
+//            61, 64, 91, 2, 43, 68, 34, 46, 57, 82, 22, 67, 89}));
+
+    Node root = new Node(4);
+    root.left = new Node(9);
+    root.left.left = new Node(0);
+    root.right = new Node(1);
+    System.out.println(sumNumbers_016(root));
   }
 
 
@@ -228,61 +247,431 @@ public class Problems {
     }
   }
 
-  public static ArrayList<String> wordBreak_2(String s, Set<String> dict) {
-    if (s == null || dict == null || dict.isEmpty()) {
-      return new ArrayList<>();
+  //  A linked list is given such that each node contains an additional random pointer
+// which could point to any node in the list or null.
+//  Return a deep copy of the list.
+  public static RandomListNode copyRandomList_05(RandomListNode head) {
+    if (head == null) {
+      return head;
     }
 
-    ArrayList<String> results = Lists.newArrayList();
-    //当前字母开头的单词的最后一词的下一个位置存一个list
-    List<String> dp[] = new ArrayList[s.length() + 1];
-    dp[0] = new ArrayList<>();
+    RandomListNode pre = head;
+    RandomListNode aft;
 
-    for (int i = 0; i < s.length(); i++) {
-      //只从单词后一个开始,否则跳过
-      if (dp[i] == null) {
-        continue;
+    //first: copy next
+    while (pre != null) {
+      aft = pre.next;
+      RandomListNode tmpNode = new RandomListNode(pre.label);
+      tmpNode.next = aft;
+      pre.next = tmpNode;
+      pre = aft;
+    }
+
+    //second copy random
+    pre = head;
+    aft = pre.next;
+    while (aft != null) {
+      if (pre.random == null) {
+        aft.random = null;
+      } else {
+        aft.random = pre.random.next;
       }
+      pre = pre.next.next;
+      if (aft.next == null) {
+        aft = null;
+      } else {
+        aft = aft.next.next;
+      }
+    }
 
-      for (String word : dict) {
-        int length = word.length();
-        if (i + length > s.length()) {
-          continue;
-        }
+    //third split node
+    pre = head;
+    aft = pre.next;
+    RandomListNode newHead = aft;
+    while (aft != null) {
+      pre.next = aft.next;
+      if (pre.next == null) {
+        aft.next = null;
+      } else {
+        aft.next = pre.next.next;
+      }
+      pre = pre.next;
+      aft = aft.next;
+    }
 
-        String expect = s.substring(i, i + length);
-        if (word.equals(expect)) {
-          if (dp[i + length] == null) {
-            dp[i + length] = Lists.newArrayList(expect);
+    return newHead;
+  }
+
+
+  //Given an array of integers, every element appears three times except for one. Find that single one.
+//  Note:
+//  Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+  public static int singleNumber_06(int[] A) {
+    return 0;
+  }
+
+  //找出都出现俩次的数组中，唯一出现一次的数组
+  public static int singleNumber_07(int[] arr) {
+    if (arr == null || arr.length == 0 || arr.length < 3) {
+      return -1;//非法值
+    }
+
+    int result = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+      result = result ^ arr[i];
+    }
+
+    return result;
+  }
+
+  //所有其他数字出现N（N>=2）次，而一个数字出现1次。思路：每位上1的个数肯定也能被3整除
+  public static int singleNumber_08(int a[], int n) {
+    int bits[] = new int[32];
+    Arrays.fill(bits, 0);
+    int i, j;
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < 32; j++) {
+        bits[j] += ((a[i] >> j) & 1);
+      }
+    }
+    // 如果某位上的结果不能被整除，则肯定目标数字在这一位上为
+    int result = 0;
+    for (j = 0; j < 32; j++) {
+      if (bits[j] % 3 != 0) {
+        result += (1 << j);
+      }
+    }
+    return result;
+  }
+
+  //一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。
+  //思路：将数组分成两部分，每一部分只包含一个出现一次的数字，这样就就能找出两个数字
+  //1. 除了有两个数字只出现了一次，其他数字都出现了两次。异或运算中，任何一个数字和自己本身异或都是0，任何一个数字和0异或都是本身。
+//2. 如果尝试把原数组分成两个子数组，且刚好每个子数组中各自包含一个只出现一次的数字。则在该前提下，每个子数组中，只有一个数字出现了一次，其他数字都出现了两次。
+//3. 针对每个子数组，从头到尾依次异或每个数字，则最后留下来的就是只出现了一次的数字。因为出现两次的都抵消掉了。
+//4. 怎样实现子数组的划分呢。若对原数组从头到尾的进行异或，则最后得到的结果就是两个只出现一次的数字的异或运算结果。这个结果的二进制表示中，至少有一位为1，因为这两个数不相同。该位记为从最低位开始计数的第n位。
+//5. 则分组的标准定为从最低位开始计数的第n位是否为1。因为出现两次的同一个数字，各个位数上都是相同的，所以一定被分到同一个子数组中，且每个子数组中只包含一个出现一次的数字。
+  public static void singleNumber_09(int array[], int[] num1, int[] num2) {
+    int length = array.length;
+    if (length == 2) {
+      num1[0] = array[0];
+      num2[0] = array[1];
+    }
+
+    int bitResult = 0;
+    for (int i = 0; i < length; ++i) {
+      bitResult ^= array[i];
+    }
+
+    //从低位到高位，找到一个为1的位置。因为出现两次的同一个数字，各个位数上都是相同的，所以一定被分到同一个子数组中，且每个子数组中只包含一个出现一次的数字。
+    int index = 0;
+    while (((bitResult & 1) == 0) && index < 32) {
+      bitResult >>= 1;
+      index++;
+    }
+
+    for (int i = 0; i < length; ++i) {
+      if (((array[i] << index) & 1) == 1) {
+        num1[0] ^= array[i];
+      } else {
+        num2[0] ^= array[i];
+      }
+    }
+  }
+
+  // DP Program
+  //  There are N children standing in a line. Each child is assigned a rating value.
+//  You are giving candies to these children subjected to the following requirements:
+//  Each child must have at least one candy.
+//  Children with a higher rating get more candies than their neighbors.
+//  What is the minimum candies you must give?
+  public static int candy_10(int[] ratings) {
+//    if (ratings == null || ratings.length == 0) {
+//      return -1;//非法值
+//    }
+
+    //用来存储每个rating拿到的糖果，dp[i]表示，0到i以前的都已经排好序了
+    int[] dp = new int[ratings.length];
+    //令初始值为1
+    dp[0] = 1;
+    int totalSum = 0;
+
+    for (int i = 1; i < ratings.length; i++) {
+      if (ratings[i] > ratings[i - 1]) {
+        dp[i] = dp[i - 1] + 1;
+      } else if (dp[i - 1] > 1) {
+        dp[i] = 1;
+      } else {
+        //首先dp[i]
+        dp[i] = 1;
+        //重置前面的值
+        for (int j = i; j > 0; j--) {
+          if ((ratings[j - 1] > ratings[j]) && (dp[j - 1] <= dp[j])) {
+            dp[j - 1] = dp[j] + 1;
           } else {
-            dp[i + length].add(expect);
+            break;
           }
         }
       }
     }
 
-    if (dp[s.length()] != null) {
-      backTrack(dp, s.length(), new ArrayList<>(), results);
+    for (int i = 0; i < ratings.length; i++) {
+      totalSum += dp[i];
     }
 
-    return results;
+    return totalSum;
   }
 
-  public static void backTrack(List<String> dp[], int length, ArrayList<String> tmp,
-      ArrayList<String> results) {
-    if (length <= 0) {
-      String path = tmp.get(tmp.size() - 1);
-      for (int i = tmp.size() - 2; i >= 0; i--) {
-        path = path + " " + tmp.get(i);
-      }
-      results.add(path);
-      return;
+  //最佳解法:从左到右遍历一遍，再从右到左遍历一遍，这样就能确保两个方向上的数都是正确的
+  public static int candy_11(int[] ratings) {
+
+    if (ratings == null || ratings.length <= 1) {
+      return 1;
     }
 
-    for (String str : dp[length]) {
-      tmp.add(str);
-      backTrack(dp, length - str.length(), tmp, results);
-      tmp.remove(tmp.size() - 1);
+    int[] candy = new int[ratings.length];
+    int sum = 0;
+    for (int i = 0; i < candy.length; i++) {
+      candy[i] = 1;
     }
+    for (int i = 1; i < candy.length; i++) {
+      if (ratings[i] > ratings[i - 1]) {
+        candy[i] = candy[i - 1] + 1;
+      }
+    }
+    for (int i = candy.length - 1; i > 0; i--) {
+      if (ratings[i] < ratings[i - 1] && candy[i] >= candy[i - 1]) {
+        candy[i - 1] = candy[i] + 1;
+      }
+    }
+
+    for (int i = 0; i < candy.length; i++) {
+      sum += candy[i];
+    }
+    return sum;
+  }
+
+  //  There are N gas stations along a circular route, where the amount of gas at station i isgas[i].
+//  You have a car with an unlimited gas tank and it costscost[i]of gas to travel from station i to its next station (i+1). You begin the journey with an empty tank at one of the gas stations.
+//  Return the starting gas station's index if you can travel around the circuit once, otherwise return -1.
+//  Note:
+//  The solution is guaranteed to be unique.
+  //
+  public static int canCompleteCircuit_012(int[] gas, int[] cost) {
+    if (gas == null || cost == null || gas.length == 0 || cost.length == 0
+        || gas.length != cost.length) {
+      return -1;
+    }
+
+    //计算差值数组
+    int[] minusArr = new int[gas.length];
+    int sum = 0;
+    for (int i = 0; i < gas.length; i++) {
+      minusArr[i] = gas[i] - cost[i];
+      sum += minusArr[i];
+    }
+
+    //差值数组之和如果小于0，则肯定找不到解
+    if (sum < 0) {
+      return -1;
+    }
+
+    //利用贪心求解
+    int index = -1;
+    sum = 0;
+    for (int i = 0; i < minusArr.length; i++) {
+      if (index == -1) {
+        if (minusArr[i] >= 0) {
+          sum += minusArr[i];
+          index = i;
+        }
+      } else {
+        if (sum + minusArr[i] >= 0) {
+          sum += minusArr[i];
+        } else {
+          index = -1;
+        }
+      }
+    }
+
+    return index;
+  }
+
+
+  //Clone an undirected graph. Each node in the graph contains alabeland a list of itsneighbors.
+  //考察图的遍历算法， DFS / BFS。
+  //基本思想， 利用一个map数据结构， 在遍历图的过程中， 创建相对应的新的图的部分
+  public static UndirectedGraphNode cloneGraph_013(UndirectedGraphNode node) {
+    if (node == null) {
+      return null;
+    }
+
+    //存储旧节点到新节点的映射
+    Map<UndirectedGraphNode, UndirectedGraphNode> relationMap = new HashMap<>();
+    UndirectedGraphNode head = new UndirectedGraphNode(node.label);
+    relationMap.put(node, head);
+
+    Stack<UndirectedGraphNode> stack = new Stack<UndirectedGraphNode>();
+    stack.push(node);
+    while (!stack.isEmpty()) {
+      UndirectedGraphNode temp = stack.pop();
+      ArrayList<UndirectedGraphNode> lists = new ArrayList<UndirectedGraphNode>();
+      for (UndirectedGraphNode readyToBeCopyNode : temp.neighbors) {
+        //检查是不是已经复制过
+        if (relationMap.containsKey(readyToBeCopyNode)) {
+          lists.add(relationMap.get(readyToBeCopyNode));
+        } else {
+          UndirectedGraphNode copyNode = new UndirectedGraphNode(temp.label);
+          relationMap.put(readyToBeCopyNode, copyNode);
+          lists.add(copyNode);
+          stack.push(readyToBeCopyNode);
+        }
+      }
+      relationMap.get(temp).neighbors = lists;
+    }
+
+    return head;
+  }
+
+  //递归实现
+  public static UndirectedGraphNode cloneGraph_014(UndirectedGraphNode node) {
+    Map<UndirectedGraphNode, UndirectedGraphNode> relationMap = new HashMap<>();
+
+    return relationMap.get(node);
+  }
+
+  private static UndirectedGraphNode cloneGraph(
+      Map<UndirectedGraphNode, UndirectedGraphNode> relationMap,
+      UndirectedGraphNode node) {
+
+    if (relationMap.containsKey(node)) {
+      return relationMap.get(node);
+    }
+
+    UndirectedGraphNode tempNode = new UndirectedGraphNode(node.label);
+    relationMap.put(node, tempNode);
+    ArrayList<UndirectedGraphNode> lists = new ArrayList<UndirectedGraphNode>();
+    for (UndirectedGraphNode readyToBeCopyNode : node.neighbors) {
+      if (relationMap.containsKey(readyToBeCopyNode)) {
+        lists.add(relationMap.get(readyToBeCopyNode));
+      } else {
+        lists.add(cloneGraph(relationMap, readyToBeCopyNode));
+      }
+    }
+
+    tempNode.neighbors = lists;
+
+    return tempNode;
+  }
+
+  //  Given a 2D board containing'X'and'O', capture all regions surrounded by'X'.
+//  A region is captured by flipping all'O's into'X's in that surrounded region .
+//      For example,
+//  X X X X
+//  X O O X
+//  X X O X
+//  X O X X
+//
+//  After running your function, the board should be:
+//  X X X X
+//  X X X X
+//  X X X X
+//  X O X X
+//  /*
+// * 所有与四条边相连的O都保留，其他O都变为X
+// * 遍历四条边上的O，并深度遍历与其相连的O，将这些O都转为*
+// * 将剩余的O变为X
+// * 将剩余的*变为O
+///
+  public static void solve_015(char[][] board) {
+
+  }
+
+
+  //  Given a binary tree containing digits from0-9only, each root-to-leaf path could represent a number.
+//  An example is the root-to-leaf path1->2->3which represents the number123.
+//  Find the total sum of all root-to-leaf numbers.
+//  For example,
+//        1
+//      / \
+//      2   3
+//
+//  The root-to-leaf path1->2represents the number12.
+//  The root-to-leaf path1->3represents the number13.
+//  Return the sum = 12 + 13 =25.
+  public static int sumNumbers_016(Node root) {
+    if (root == null) {
+      return -1;
+    }
+    if (root.left == null && root.right == null) {
+      return root.value;
+    }
+
+    LinkedList<Integer> pathList = new LinkedList<>();
+    List<Integer> resultList = new ArrayList<>();
+
+    Stack<Node> stack = new Stack<>();
+    stack.push(root);
+    Node currentNode;
+    Node lastPrin = root;
+    pathList.addFirst(root.value);
+
+    while (!stack.isEmpty()) {
+      currentNode = stack.peek();
+
+      if (currentNode.left != null && lastPrin != currentNode.left
+          && lastPrin != currentNode.right) {
+        stack.push(currentNode.left);
+        pathList.addFirst(currentNode.left.value);
+      } else if (currentNode.right != null && currentNode.right != lastPrin) {
+        stack.push(currentNode.right);
+        pathList.addFirst(currentNode.right.value);
+      } else {
+        currentNode = stack.pop();
+        if (lastPrin != currentNode.left && lastPrin != currentNode.right) {
+          resultList.add(getPathValue(pathList));
+        }
+        lastPrin = currentNode;
+        System.out.println(currentNode.value + " ");
+        pathList.removeFirst();
+      }
+    }
+
+    int result = 0;
+    for (int i = 0; i < resultList.size(); i++) {
+      result += resultList.get(i);
+    }
+
+    return result;
+  }
+
+  public static int getPathValue(LinkedList<Integer> pathList) {
+    int result = 0;
+    for (int i = 0; i < pathList.size(); i++) {
+      result += pathList.get(i) * (Math.round(Math.pow(10, i)));
+    }
+    return result;
+  }
+
+  //先序遍历的思想(根左右)+数字求和(每一层都比上层和*10+当前根节点的值)
+  public static int sumNumbers_017(Node root) {
+    int sum = 0;
+    if (root == null) {
+      return sum;
+    }
+
+    return preorderSumNumbers(root, sum);
+  }
+
+  public static int preorderSumNumbers(Node root, int sum) {
+    if (root == null) {
+      return 0;
+    }
+
+    sum += sum * 10 + root.value;
+    if (root.left == null && root.right == null) {
+      return sum;
+    }
+    return preorderSumNumbers(root.left, sum) + preorderSumNumbers(root.right, sum);
   }
 }

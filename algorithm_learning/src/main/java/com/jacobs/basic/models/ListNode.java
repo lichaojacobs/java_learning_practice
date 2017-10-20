@@ -1,4 +1,4 @@
-package com.jacobs.basic;
+package com.jacobs.basic.models;
 
 import lombok.Data;
 

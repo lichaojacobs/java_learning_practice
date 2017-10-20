@@ -3,7 +3,7 @@ package com.jacobs.basic.algorithm.array;
 import java.util.Arrays;
 
 /**
- * Created by lichao on 2017/2/23.
+ * 实现一个布尔数组, 要求压缩布尔值到bit上 思路比较敏捷, 最后代码实现也比较完整. 代码规范和异常判断做的不错.
  */
 public class BooleanArray {
 
@@ -41,11 +41,11 @@ public class BooleanArray {
   public static void main(String[] args) {
     BooleanArray booleanArray = new BooleanArray(100);
     booleanArray.add(64);
-    System.out.println(booleanArray.getValue(65));
+    System.out.println(booleanArray.getValue(64));
     Arrays.stream(booleanArray.array)
         .forEach(System.out::print);
 
-    System.out.println(55>>1);
+    System.out.println(55 >> 1);
   }
 
 }

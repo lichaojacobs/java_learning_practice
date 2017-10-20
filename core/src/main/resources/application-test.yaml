@@ -59,15 +59,20 @@ kafka:
   servers: localhost:9092
   groupID: weixiaobao_group
 
-kylin:
-  weixiaobao:
-    userName: admin
-    password: KYLIN
-    decrypt: true
-    connectionUrl: jdbc:kylin://ali-hz-data-platform-7:7070/weixiaobao
+#kylin:
+#  weixiaobao:
+#    userName: admin
+#    password: KYLIN
+#    decrypt: true
+#    connectionUrl: jdbc:kylin://ali-hz-data-platform-7:7070/weixiaobao
 
 mysql:
   common:
+    userName: root
+    passWord: lichao0903
+    decrypt: false
+    masterUrl: jdbc:mysql://127.0.0.1:3306/kmap?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+  bussiness:
     userName: root
     passWord: lichao0903
     decrypt: false

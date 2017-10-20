@@ -139,6 +139,10 @@
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.mobvoi.data</groupId>
+      <artifactId>common-data-starter-jdbc</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

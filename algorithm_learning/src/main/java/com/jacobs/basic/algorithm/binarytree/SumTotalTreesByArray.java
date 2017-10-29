@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,25 +38,25 @@ public class SumTotalTreesByArray {
   /**
    * 进阶：输入n返回假设可能的二叉树结构有M种，请返回M个二叉树的头节点，每一颗二叉树代表一种可能的结构
    */
-  public static List<Node> generateTrees(int n) {
+  public static List<TreeNode> generateTrees(int n) {
     return generate(1, n);
   }
 
-  public static List<Node> generate(int start, int end) {
-    List<Node> res = new LinkedList<>();
+  public static List<TreeNode> generate(int start, int end) {
+    List<TreeNode> res = new LinkedList<>();
 
     if (start > end) {
       res.add(null);
     }
 
-    Node head = null;
+    TreeNode head = null;
     for (int i = start; i < end + 1; i++) {
-      head = new Node(i);
-      List<Node> lsub = generate(start, i - 1);
-      List<Node> rsub = generate(i + 1, end);
+      head = new TreeNode(i);
+      List<TreeNode> lsub = generate(start, i - 1);
+      List<TreeNode> rsub = generate(i + 1, end);
 
-      for (Node left : lsub) {
-        for (Node right : rsub) {
+      for (TreeNode left : lsub) {
+        for (TreeNode right : rsub) {
           head.left = left;
           head.right = right;
           //这里得深度拷贝一下，不然每一次引用变换都会覆盖之前的结果
@@ -68,12 +68,12 @@ public class SumTotalTreesByArray {
     return res;
   }
 
-  public static Node cloneTree(Node head) {
+  public static TreeNode cloneTree(TreeNode head) {
     if (head == null) {
       return null;
     }
 
-    Node res = new Node(head.value);
+    TreeNode res = new TreeNode(head.value);
     res.left = cloneTree(head.left);
     res.right = cloneTree(head.right);
     return res;

@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 import java.util.Stack;
 
@@ -18,14 +18,14 @@ public class GetTwoErrorNodes {
      * @param head
      * @return
      */
-    public static Node[] getTwoErrorNodes(Node head) {
-        Node[] errors = new Node[2];
+    public static TreeNode[] getTwoErrorNodes(TreeNode head) {
+        TreeNode[] errors = new TreeNode[2];
         if (head == null) {
             return errors;
         }
 
-        Stack<Node> stack = new Stack<>();
-        Node pre = null;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null;
 
         while (!stack.isEmpty() || head != null) {
             if (head != null) {

@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -17,21 +17,21 @@ public class PrintZigZag {
   /**
    * 层打印,同一层的节点必须打印在一行上，并要求输出行号
    */
-  public static void printByLevel(Node head) {
+  public static void printByLevel(TreeNode head) {
     if (head == null) {
       return;
     }
 
-    Queue<Node> queue = new LinkedList<>();
+    Queue<TreeNode> queue = new LinkedList<>();
     queue.offer(head);
 
-    Node levelLast = head;
-    Node nLast = null;
+    TreeNode levelLast = head;
+    TreeNode nLast = null;
     int level = 0;
 
     System.out.println("Level " + (level++) + ": ");
     while (!queue.isEmpty()) {
-      Node temp = queue.poll();
+      TreeNode temp = queue.poll();
       System.out.print(temp.value + " ");
       if (temp.left != null) {
         nLast = temp.left;
@@ -53,16 +53,16 @@ public class PrintZigZag {
   /**
    * zigzag层打印（双端队列或者使用两个栈）
    */
-  public static void printZigZag(Node head) {
+  public static void printZigZag(TreeNode head) {
     if (head == null) {
       return;
     }
 
-    Deque<Node> dq = new LinkedList<>();
+    Deque<TreeNode> dq = new LinkedList<>();
     int level = 1;
     boolean isRight = true;
-    Node last = head;
-    Node nLast = null;
+    TreeNode last = head;
+    TreeNode nLast = null;
 
     dq.offerFirst(head);
     printLevelAndOrientation(level, isRight);

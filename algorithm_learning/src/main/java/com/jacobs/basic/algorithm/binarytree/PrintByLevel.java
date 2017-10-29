@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,11 +20,11 @@ public class PrintByLevel {
      * @param t1
      * @param t2
      */
-    public static boolean contains(Node t1, Node t2) {
+    public static boolean contains(TreeNode t1, TreeNode t2) {
         return check(t1, t2) || check(t1.left, t2) || check(t1.right, t2);
     }
 
-    public static boolean check(Node t1, Node t2) {
+    public static boolean check(TreeNode t1, TreeNode t2) {
         if (t2 == null) {
             return true;
         }
@@ -35,18 +35,18 @@ public class PrintByLevel {
         return check(t1.left, t2.left) && check(t1.right, t2.right);
     }
 
-    public static void printByLevel(Node head) {
+    public static void printByLevel(TreeNode head) {
         if (head == null) {
             return;
         }
 
         //定义俩个栈
-        List<Node> current = new LinkedList<>();
-        List<Node> reverse = new LinkedList<>();
+        List<TreeNode> current = new LinkedList<>();
+        List<TreeNode> reverse = new LinkedList<>();
         current.add(head);
         boolean isEven = true;
         while (current.size() > 0) {
-            Node temp = current.remove(current.size() - 1);
+            TreeNode temp = current.remove(current.size() - 1);
             System.out.println(temp.value + ", ");
             if (isEven) {
                 if (temp.right != null) {
@@ -65,7 +65,7 @@ public class PrintByLevel {
             }
 
             if (current.size() == 0) {
-                List<Node> tempList = current;
+                List<TreeNode> tempList = current;
                 current = reverse;
                 reverse = tempList;
                 isEven = false;

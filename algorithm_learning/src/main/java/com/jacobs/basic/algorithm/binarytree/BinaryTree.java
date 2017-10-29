@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.ArrayList;
@@ -16,14 +16,14 @@ import java.util.Stack;
 public class BinaryTree {
 
   public static void main(String[] args) {
-    Node head = new Node(1);
-    head.right = new Node(2);
+    TreeNode head = new TreeNode(1);
+    head.right = new TreeNode(2);
     //    postorderTraversal(head).stream()
     //        .sorted(Comparator.naturalOrder())
     //        .forEach(System.out::println);
 
     //System.out.println(postorderTraversal(head).size());
-//    Node root = constructTree(Lists.newArrayList(1, 2, 4, 5, 3, 6), 0,
+//    TreeNode root = constructTree(Lists.newArrayList(1, 2, 4, 5, 3, 6), 0,
 //        5, Lists.newArrayList(4, 2, 5, 1, 6, 3), 0, 5);
 //    preOrderRecur2(root);
     int[] arr = new int[]{0, 3, 1, 10, 13, 12, 6};
@@ -33,7 +33,7 @@ public class BinaryTree {
   /**
    * 先序遍历(递归)
    */
-  public static void preOrderRecur1(Node head) {
+  public static void preOrderRecur1(TreeNode head) {
     if (head == null) {
       return;
     }
@@ -46,22 +46,22 @@ public class BinaryTree {
   /**
    * 先序遍历（非递归）
    */
-  public static void preOrderRecur2(Node head) {
+  public static void preOrderRecur2(TreeNode head) {
     if (head == null) {
       return;
     }
 
-    Stack<Node> stack = new Stack<>();
+    Stack<TreeNode> stack = new Stack<>();
     stack.push(head);
-    Node currentNode = null;
+    TreeNode currentTreeNode = null;
     while (!stack.isEmpty()) {
-      currentNode = stack.pop();
-      System.out.println(currentNode.value + " ");
-      if (currentNode.right != null) {
-        stack.push(currentNode.right);
+      currentTreeNode = stack.pop();
+      System.out.println(currentTreeNode.value + " ");
+      if (currentTreeNode.right != null) {
+        stack.push(currentTreeNode.right);
       }
-      if (currentNode.left != null) {
-        stack.push(currentNode.left);
+      if (currentTreeNode.left != null) {
+        stack.push(currentTreeNode.left);
       }
     }
   }
@@ -69,7 +69,7 @@ public class BinaryTree {
   /**
    * 中序遍历(递归)
    */
-  public static void inOrderRecur1(Node head) {
+  public static void inOrderRecur1(TreeNode head) {
     if (head == null) {
       return;
     }
@@ -82,24 +82,24 @@ public class BinaryTree {
   /**
    * 中序遍历（非递归）
    */
-  public static void inOrderRecur2(Node head) {
+  public static void inOrderRecur2(TreeNode head) {
     if (head == null) {
       return;
     }
 
-    Stack<Node> stack = new Stack<>();
+    Stack<TreeNode> stack = new Stack<>();
     stack.push(head);
-    Node currentNode = head;
+    TreeNode currentTreeNode = head;
     while (!stack.isEmpty()) {
-      if (currentNode.left != null) {
-        stack.push(currentNode.left);
-        currentNode = currentNode.left;
+      if (currentTreeNode.left != null) {
+        stack.push(currentTreeNode.left);
+        currentTreeNode = currentTreeNode.left;
       } else {
-        currentNode = stack.pop();
-        System.out.println(currentNode.value + " ");
-        if (currentNode.right != null) {
-          stack.push(currentNode.right);
-          currentNode = currentNode.right;
+        currentTreeNode = stack.pop();
+        System.out.println(currentTreeNode.value + " ");
+        if (currentTreeNode.right != null) {
+          stack.push(currentTreeNode.right);
+          currentTreeNode = currentTreeNode.right;
         }
       }
     }
@@ -108,7 +108,7 @@ public class BinaryTree {
   /**
    * 后序遍历(递归)
    */
-  public static void afterOrderRecur1(Node head) {
+  public static void afterOrderRecur1(TreeNode head) {
     if (head == null) {
       return;
     }
@@ -121,13 +121,13 @@ public class BinaryTree {
   /**
    * 后序遍历（非递归）俩个栈
    */
-  public static void afterOrderRecur2(Node head) {
+  public static void afterOrderRecur2(TreeNode head) {
     if (head == null) {
       return;
     }
 
-    Stack<Node> stack = new Stack<>();
-    Stack<Node> output = new Stack<>();//构造一个中间栈来存储逆后续遍历的结果
+    Stack<TreeNode> stack = new Stack<>();
+    Stack<TreeNode> output = new Stack<>();//构造一个中间栈来存储逆后续遍历的结果
 
     stack.push(head);
     while (!stack.isEmpty()) {
@@ -151,15 +151,15 @@ public class BinaryTree {
   /**
    * 后序遍历（非递归）一个栈 lastPrin 表示最近一次打印的节点，用于防止死循环压入已经弹出的节点
    */
-  public static void afterOrderRecur3(Node head) {
+  public static void afterOrderRecur3(TreeNode head) {
     if (head == null) {
       return;
     }
 
-    Stack<Node> stack = new Stack<>();
+    Stack<TreeNode> stack = new Stack<>();
     stack.push(head);
-    Node current;
-    Node lastPrin = null;
+    TreeNode current;
+    TreeNode lastPrin = null;
 
     while (!stack.isEmpty()) {
       current = stack.peek();
@@ -175,14 +175,14 @@ public class BinaryTree {
     }
   }
 
-  public static ArrayList<Integer> postorderTraversal(Node root) {
+  public static ArrayList<Integer> postorderTraversal(TreeNode root) {
     ArrayList<Integer> list = new ArrayList<>();
     if (root == null) {
       return list;
     }
-    Stack<Node> stack = new Stack<>();
-    Node lastPrint = null;
-    Node curr = null;
+    Stack<TreeNode> stack = new Stack<>();
+    TreeNode lastPrint = null;
+    TreeNode curr = null;
     stack.push(root);
 
     while (!stack.isEmpty()) {
@@ -204,7 +204,7 @@ public class BinaryTree {
   /**
    * 根据先序和中序恢复二叉树
    */
-  public static Node constructTree(List<Integer> preOrderList, int startPre, int endPre,
+  public static TreeNode constructTree(List<Integer> preOrderList, int startPre, int endPre,
       List<Integer> inOrderList,
       int startIn, int endIn) {
     if ((endPre - startPre) != (endIn - startIn)) {
@@ -216,7 +216,7 @@ public class BinaryTree {
     }
 
     Integer rootValue = preOrderList.get(startPre);
-    Node root = new Node(rootValue);
+    TreeNode root = new TreeNode(rootValue);
     root.left = null;
     root.right = null;
 
@@ -250,11 +250,11 @@ public class BinaryTree {
   /**
    * 层次遍历(队列)
    */
-  public void layerorder(Node root) {
+  public void layerorder(TreeNode root) {
     System.out.print("binaryTree层次遍历:");
-    LinkedList<Node> queue = new LinkedList<Node>();
+    LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
     queue.addLast(root);
-    Node current = null;
+    TreeNode current = null;
     while (!queue.isEmpty()) {
       current = queue.removeFirst();
       if (current.left != null) {
@@ -271,13 +271,13 @@ public class BinaryTree {
   /**
    * 深入优先遍历(栈)，找出从跟节点到目标节点路径
    */
-  public static int getDistance(Node head, Node left, Node right) {
+  public static int getDistance(TreeNode head, TreeNode left, TreeNode right) {
     if (head == null || left == null || right == null) {
       return 0;
     }
 
-    List<Node> leftList = getPathList(head, left);
-    List<Node> rightList = getPathList(head, right);
+    List<TreeNode> leftList = getPathList(head, left);
+    List<TreeNode> rightList = getPathList(head, right);
 
     leftList.stream()
         .forEach(System.out::print);
@@ -288,33 +288,33 @@ public class BinaryTree {
     return 0;
   }
 
-  public static List<Node> getPathList(Node head, Node dest) {
-    Stack<Node> nodeStack = new Stack<>();
-    Node lasCurr = null;
-    Node curr = null;
-    nodeStack.push(head);
-    List<Node> nodeList = Lists.newArrayList();
+  public static List<TreeNode> getPathList(TreeNode head, TreeNode dest) {
+    Stack<TreeNode> treeNodeStack = new Stack<>();
+    TreeNode lasCurr = null;
+    TreeNode curr = null;
+    treeNodeStack.push(head);
+    List<TreeNode> treeNodeList = Lists.newArrayList();
 
-    while (!nodeStack.isEmpty()) {
-      curr = nodeStack.peek();
+    while (!treeNodeStack.isEmpty()) {
+      curr = treeNodeStack.peek();
       if (curr == dest) {
         break;
       }
       if (curr.left != null && curr.left != lasCurr && curr.right != lasCurr) {
-        nodeStack.push(curr.left);
+        treeNodeStack.push(curr.left);
       } else if (curr.right != null && curr.right != lasCurr) {
-        nodeStack.push(curr.right);
+        treeNodeStack.push(curr.right);
       } else {
-        nodeStack.pop();
+        treeNodeStack.pop();
         lasCurr = curr;
       }
     }
 
-    while (!nodeStack.isEmpty()) {
-      nodeList.add(nodeStack.pop());
+    while (!treeNodeStack.isEmpty()) {
+      treeNodeList.add(treeNodeStack.pop());
     }
 
-    return nodeList;
+    return treeNodeList;
   }
 
 
@@ -368,22 +368,22 @@ public class BinaryTree {
    *
    */
   //根据后序遍历的结果重新构造搜索二叉树
-  public static Node constructBSTTreeUseAfterOrder(int[] arr) {
+  public static TreeNode constructBSTTreeUseAfterOrder(int[] arr) {
     if (arr == null || arr.length == 0) {
       return null;
     }
 
-    //Node head = new Node(arr[arr.length - 1]);
+    //TreeNode head = new TreeNode(arr[arr.length - 1]);
 
     return constructBST(arr, 0, arr.length - 1);
   }
 
-  public static Node constructBST(int[] arr, int start, int end) {
+  public static TreeNode constructBST(int[] arr, int start, int end) {
     if (start > end) {
       return null;
     }
 
-    Node head = new Node(arr[end]);
+    TreeNode head = new TreeNode(arr[end]);
 
     //找出下一个根节点
     int index = start;
@@ -404,13 +404,13 @@ public class BinaryTree {
   /**
    * 在二叉树中找到两个节点的最近公共祖先（后序遍历）
    */
-  public static Node getNearestParentNode(Node head, Node o1, Node o2) {
+  public static TreeNode getNearestParentNode(TreeNode head, TreeNode o1, TreeNode o2) {
     if (head == null || head == o1 || head == o2) {
       return head;
     }
 
-    Node left = getNearestParentNode(head.left, o1, o2);
-    Node right = getNearestParentNode(head.right, o1, o2);
+    TreeNode left = getNearestParentNode(head.left, o1, o2);
+    TreeNode right = getNearestParentNode(head.right, o1, o2);
 
     if (left != null && right != null) {
       //此时一定是最近的公共祖先
@@ -424,14 +424,14 @@ public class BinaryTree {
   /**
    * 在二叉树中找到两个节点的最近公共祖先（后序遍历） 优化：利用哈希表存储所有的父节点
    */
-  public static Node getNearestParentNode2(Node head, Node o1, Node o2) {
-    HashMap<Node, Node> parentMap = Maps.newHashMap();
+  public static TreeNode getNearestParentNode2(TreeNode head, TreeNode o1, TreeNode o2) {
+    HashMap<TreeNode, TreeNode> parentMap = Maps.newHashMap();
     parentMap.put(head, null);//设置初始值
     constructParentMap(head, parentMap);
     return findNearestParentNode(o2, o2, parentMap);
   }
 
-  public static void constructParentMap(Node head, HashMap<Node, Node> parentMap) {
+  public static void constructParentMap(TreeNode head, HashMap<TreeNode, TreeNode> parentMap) {
     if (head == null) {
       return;
     }
@@ -447,10 +447,10 @@ public class BinaryTree {
     constructParentMap(head.right, parentMap);
   }
 
-  public static Node findNearestParentNode(Node o1, Node o2, HashMap<Node, Node> parentMap) {
-    List<Node> path = Lists.newArrayList();
+  public static TreeNode findNearestParentNode(TreeNode o1, TreeNode o2, HashMap<TreeNode, TreeNode> parentMap) {
+    List<TreeNode> path = Lists.newArrayList();
 
-    Node tempParent = parentMap.get(o1);
+    TreeNode tempParent = parentMap.get(o1);
     if (tempParent != null) {
       path.add(tempParent);
     }
@@ -473,7 +473,7 @@ public class BinaryTree {
   /**
    * 根据中序和后序遍历数组重构二叉树
    */
-  public static Node InAftToTree(int[] in, int[] aft) {
+  public static TreeNode InAftToTree(int[] in, int[] aft) {
     if (aft == null || in == null) {
       return null;
     }
@@ -486,14 +486,14 @@ public class BinaryTree {
     return preIn(in, 0, in.length - 1, aft, 0, aft.length - 1, map);
   }
 
-  public static Node aftIn(int[] n, int nStart, int nEnd, int[] aft, int aftStart, int aftEnd,
+  public static TreeNode aftIn(int[] n, int nStart, int nEnd, int[] aft, int aftStart, int aftEnd,
       HashMap<Integer, Integer> map) {
     if (nStart > nEnd) {
       return null;
     }
 
     int index = map.get(aftEnd);
-    Node head = new Node(n[index]);
+    TreeNode head = new TreeNode(n[index]);
     head.left = aftIn(n, nStart, index - 1, aft, aftStart, aftEnd - index - 1, map);
     head.right = aftIn(n, index + 1, nEnd, aft, aftEnd - index + 1, aftEnd - 1, map);
 
@@ -504,7 +504,7 @@ public class BinaryTree {
   /**
    * 先序与中序结合数组重构二叉树
    */
-  public static Node preInToTree(int[] pre, int[] in) {
+  public static TreeNode preInToTree(int[] pre, int[] in) {
     if (pre == null || in == null) {
       return null;
     }
@@ -517,13 +517,13 @@ public class BinaryTree {
     return preIn(pre, 0, pre.length - 1, in, 0, in.length - 1, map);
   }
 
-  public static Node preIn(int[] p, int pi, int pj, int[] n, int ni, int nj,
+  public static TreeNode preIn(int[] p, int pi, int pj, int[] n, int ni, int nj,
       HashMap<Integer, Integer> map) {
     if (pi > pj) {
       return null;
     }
 
-    Node head = new Node(p[pi]);
+    TreeNode head = new TreeNode(p[pi]);
     int index = map.get(p[pi]);
     head.left = preIn(p, pi + 1, pi + index - ni, n, ni, index - 1, map);
     head.right = preIn(p, pi + index - ni + 1, pj, n, index + 1, nj, map);
@@ -534,7 +534,7 @@ public class BinaryTree {
   /**
    * (难度较高)根据先序和后序数组重构二叉树（一棵树，除叶子节点外，每个节点都有左孩子和右孩子才能重构成二叉树）
    */
-  public static Node preAftToTree(int[] pre, int[] aft) {
+  public static TreeNode preAftToTree(int[] pre, int[] aft) {
     if (pre == null || aft == null) {
       return null;
     }
@@ -547,10 +547,10 @@ public class BinaryTree {
     return preAft(pre, 0, pre.length - 1, aft, 0, aft.length - 1, map);
   }
 
-  public static Node preAft(
+  public static TreeNode preAft(
       int[] p, int pi, int pj, int[] aft, int aftStart, int aftEnd,
       Map<Integer, Integer> map) {
-    Node head = new Node(aft[aftEnd]);
+    TreeNode head = new TreeNode(aft[aftEnd]);
     if (pi == pj) {
       return head;
     }

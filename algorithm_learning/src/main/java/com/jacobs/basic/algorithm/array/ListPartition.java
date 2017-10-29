@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.array;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * 将单向链表按某值划分成左边小，中间相等，右边大的形式
@@ -11,48 +11,48 @@ public class ListPartition {
 //
 //  }
 
-  public static Node listPartition1(Node head, int pivot) {
+  public static TreeNode listPartition1(TreeNode head, int pivot) {
     if (head == null) {
       return head;
     }
-    Node curr = head;
+    TreeNode curr = head;
     int i = 0;
     while (curr != null) {
       i++;
       curr = curr.next;
     }
-    Node[] nodeArray = new Node[i];
+    TreeNode[] treeNodeArray = new TreeNode[i];
     curr = head;
-    for (i = 0; i != nodeArray.length; i++) {
-      nodeArray[i] = curr;
+    for (i = 0; i != treeNodeArray.length; i++) {
+      treeNodeArray[i] = curr;
       curr = curr.next;
     }
-    arrPartition(nodeArray, pivot);
-    for (i = 1; i != nodeArray.length; i++) {
-      nodeArray[i - 1].next = nodeArray[i];
+    arrPartition(treeNodeArray, pivot);
+    for (i = 1; i != treeNodeArray.length; i++) {
+      treeNodeArray[i - 1].next = treeNodeArray[i];
     }
-    nodeArray[i - 1].next = null;
-    return nodeArray[0];
+    treeNodeArray[i - 1].next = null;
+    return treeNodeArray[0];
   }
 
-  public static void arrPartition(Node[] nodeArray, int pivot) {
+  public static void arrPartition(TreeNode[] treeNodeArray, int pivot) {
     int small = -1;
-    int big = nodeArray.length;
+    int big = treeNodeArray.length;
     int index = 0;
     while (index != big) {
-      if (nodeArray[index].value < pivot) {
-        swap(nodeArray, ++small, index++);
-      } else if (nodeArray[index].value == pivot) {
+      if (treeNodeArray[index].value < pivot) {
+        swap(treeNodeArray, ++small, index++);
+      } else if (treeNodeArray[index].value == pivot) {
         index++;
       } else {
-        swap(nodeArray, --big, index);
+        swap(treeNodeArray, --big, index);
       }
     }
   }
 
-  public static void swap(Node[] nodeArr, int a, int b) {
-    Node temp = nodeArr[a];
-    nodeArr[a] = nodeArr[b];
-    nodeArr[b] = temp;
+  public static void swap(TreeNode[] treeNodeArr, int a, int b) {
+    TreeNode temp = treeNodeArr[a];
+    treeNodeArr[a] = treeNodeArr[b];
+    treeNodeArr[b] = temp;
   }
 }

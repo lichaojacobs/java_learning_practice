@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * Created by lichao on 2017/2/16.
@@ -23,12 +23,12 @@ public class PrintEdge {
   /**
    * 第一种标准
    */
-  public static void printEdge1(Node head) {
+  public static void printEdge1(TreeNode head) {
     if (head == null) {
       return;
     }
     int height = getHeight(head);
-    Node[][] edgeMap = new Node[height][2];
+    TreeNode[][] edgeMap = new TreeNode[height][2];
     setEdgeMap(head, 0, edgeMap);
     //打印左边界
     for (int i = 0; i != edgeMap.length; i++) {
@@ -49,7 +49,7 @@ public class PrintEdge {
   /**
    * 标准二
    */
-  public static void printEdge2(Node head) {
+  public static void printEdge2(TreeNode head) {
     if (head == null) {
       return;
     }
@@ -63,7 +63,7 @@ public class PrintEdge {
     }
   }
 
-  public static void printLeftEdge(Node h, boolean print) {
+  public static void printLeftEdge(TreeNode h, boolean print) {
     if (h == null) {
       return;
     }
@@ -75,7 +75,7 @@ public class PrintEdge {
     printLeftEdge(h.right, print && h.left == null ? true : false);
   }
 
-  public static void printRightEdge(Node h, boolean print) {
+  public static void printRightEdge(TreeNode h, boolean print) {
     if (h == null) {
       return;
     }
@@ -86,7 +86,7 @@ public class PrintEdge {
     }
   }
 
-  public static int getHeight(Node head) {
+  public static int getHeight(TreeNode head) {
     if (head == null) {
       return 1;
     }
@@ -95,7 +95,7 @@ public class PrintEdge {
   }
 
 
-  public static void printLeafNotInMap(Node head, int level, Node[][] edgeMap) {
+  public static void printLeafNotInMap(TreeNode head, int level, TreeNode[][] edgeMap) {
     if (head == null) {
       return;
     }
@@ -112,7 +112,7 @@ public class PrintEdge {
   /**
    * 设置每一层最左和最右节点。
    */
-  public static void setEdgeMap(Node h, int level, Node[][] edgeMap) {
+  public static void setEdgeMap(TreeNode h, int level, TreeNode[][] edgeMap) {
     if (h == null) {
       return;
     }

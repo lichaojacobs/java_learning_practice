@@ -4,7 +4,7 @@ spring:
   profiles: test
   boot:
     admin:
-      url: http://ali-hz-hbase-name-node:12309
+      url: http://ali-hz-hbase-name-treeNode:12309
       username: mobvoi
       password: mobvoi
   gson:

@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -11,21 +11,21 @@ public class MaxTree {
   public static void main(String[] args) {
   }
 
-  public Node getMaxTree(int[] arr) {
-    Node[] nArr = new Node[arr.length];
+  public TreeNode getMaxTree(int[] arr) {
+    TreeNode[] nArr = new TreeNode[arr.length];
     for (int i = 0; i != arr.length; i++) {
-      nArr[i] = new Node(arr[i]);
+      nArr[i] = new TreeNode(arr[i]);
     }
-    Stack<Node> stack = new Stack<>();
-    HashMap<Node, Node> lBigMap = new HashMap<>();
-    HashMap<Node, Node> rBigMap = new HashMap<>();
+    Stack<TreeNode> stack = new Stack<>();
+    HashMap<TreeNode, TreeNode> lBigMap = new HashMap<>();
+    HashMap<TreeNode, TreeNode> rBigMap = new HashMap<>();
     //右边
     for (int i = 0; i != nArr.length; i++) {
-      Node curNode = nArr[i];
-      while (!stack.isEmpty() && stack.peek().value < curNode.value) {
+      TreeNode curTreeNode = nArr[i];
+      while (!stack.isEmpty() && stack.peek().value < curTreeNode.value) {
         popStackSetMap(stack, lBigMap);
       }
-      stack.push(curNode);
+      stack.push(curTreeNode);
     }
     //最大数
     while (!stack.isEmpty()) {
@@ -33,53 +33,53 @@ public class MaxTree {
     }
     //右边
     for (int i = nArr.length - 1; i != -1; i--) {
-      Node curNode = nArr[i];
-      while (!stack.isEmpty() && stack.peek().value < curNode.value) {
+      TreeNode curTreeNode = nArr[i];
+      while (!stack.isEmpty() && stack.peek().value < curTreeNode.value) {
         popStackSetMap(stack, lBigMap);
       }
-      stack.push(curNode);
+      stack.push(curTreeNode);
     }
     while (!stack.isEmpty()) {
       popStackSetMap(stack, rBigMap);
     }
     //开始构造
-    Node head = null;
+    TreeNode head = null;
     for (int i = 0; i < nArr.length; i++) {
-      Node curNode = nArr[i];
-      Node left = lBigMap.get(curNode);
-      Node right = rBigMap.get(curNode);
+      TreeNode curTreeNode = nArr[i];
+      TreeNode left = lBigMap.get(curTreeNode);
+      TreeNode right = rBigMap.get(curTreeNode);
       if (left == null && right == null) {
-        head = curNode;
+        head = curTreeNode;
       } else if (left == null) {
         if (right.left == null) {
-          right.left = curNode;
+          right.left = curTreeNode;
         } else {
-          right.right = curNode;
+          right.right = curTreeNode;
         }
       } else if (right == null) {
         if (left.left == null) {
-          left.left = curNode;
+          left.left = curTreeNode;
         } else {
-          left.right = curNode;
+          left.right = curTreeNode;
         }
       } else {
-        Node parent = left.value < right.value ? left : right;
+        TreeNode parent = left.value < right.value ? left : right;
         if (parent.left == null) {
-          parent.left = curNode;
+          parent.left = curTreeNode;
         } else {
-          parent.right = curNode;
+          parent.right = curTreeNode;
         }
       }
     }
     return head;
   }
 
-  public void popStackSetMap(Stack<Node> stack, HashMap<Node, Node> map) {
-    Node popNode = stack.pop();
+  public void popStackSetMap(Stack<TreeNode> stack, HashMap<TreeNode, TreeNode> map) {
+    TreeNode popTreeNode = stack.pop();
     if (stack.isEmpty()) {
-      map.put(popNode, null);
+      map.put(popTreeNode, null);
     } else {
-      map.put(popNode, stack.peek());
+      map.put(popTreeNode, stack.peek());
     }
   }
 }

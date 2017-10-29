@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.HashMap;
 
 /**
@@ -16,13 +16,13 @@ public class GetMaxLengthSum {
   }
 
 
-  public int getMaxLengthSum(Node head, int sum) {
+  public int getMaxLengthSum(TreeNode head, int sum) {
     HashMap<Integer, Integer> sumMap = new HashMap<>();
     sumMap.put(0, 0);//重要
     return preOrder(head, sum, 0, 1, 0, sumMap);
   }
 
-  public int preOrder(Node head, int sum, int preSum, int level, int maxLen,
+  public int preOrder(TreeNode head, int sum, int preSum, int level, int maxLen,
       HashMap<Integer, Integer> sumMap) {
     if (head == null) {
       return maxLen;

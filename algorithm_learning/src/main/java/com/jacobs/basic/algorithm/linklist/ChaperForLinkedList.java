@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.linklist;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.Stack;
 
 /**
@@ -8,11 +8,11 @@ import java.util.Stack;
  */
 public class ChaperForLinkedList {
   public static void main(String[] args) {
-    Node head = new Node(1);
-    head.next = new Node(2);
-    head.next.next = new Node(3);
-    head.next.next.next = new Node(2);
-    head.next.next.next.next = new Node(1);
+    TreeNode head = new TreeNode(1);
+    head.next = new TreeNode(2);
+    head.next.next = new TreeNode(3);
+    head.next.next.next = new TreeNode(2);
+    head.next.next.next.next = new TreeNode(1);
 
     System.out.println(isPalindromeLinkedList1(head));
   }
@@ -20,7 +20,7 @@ public class ChaperForLinkedList {
   /**
    * 打印俩个有序链表的公共部分
    */
-  public static void printCommonPart(Node head1, Node head2) {
+  public static void printCommonPart(TreeNode head1, TreeNode head2) {
     System.out.println("Common part: ");
     while (head1 != null && head2 != null) {
       if (head1.value < head2.value) {
@@ -39,12 +39,12 @@ public class ChaperForLinkedList {
   /**
    * 链表和双链表中删除倒数第K个节点
    */
-  public static Node deleteLastKNode(Node head, int lastKth) {
+  public static TreeNode deleteLastKNode(TreeNode head, int lastKth) {
     if (head == null || head.next == null) {
       return head;
     }
-    Node pre = head;
-    Node aft = head;
+    TreeNode pre = head;
+    TreeNode aft = head;
     int index = 1;
     while (pre.next != null) {
       pre = pre.next;
@@ -64,15 +64,15 @@ public class ChaperForLinkedList {
   /**
    * 删除中间代码
    */
-  public static Node removeMiddleNode(Node head) {
+  public static TreeNode removeMiddleNode(TreeNode head) {
     if (head == null || head.next == null) {
       return head;
     }
     if (head.next.next == null) {
       return head.next;
     }
-    Node pre = head;
-    Node aft = head.next.next;
+    TreeNode pre = head;
+    TreeNode aft = head.next.next;
     while (aft.next != null && aft.next.next != null) {
       pre = pre.next;
       aft = aft.next.next;
@@ -84,12 +84,12 @@ public class ChaperForLinkedList {
   /**
    * 删除a/b处的节点。
    */
-  public static Node removeByRatio(Node head, int a, int b) {
+  public static TreeNode removeByRatio(TreeNode head, int a, int b) {
     if (a < 1 || a > b) {
       return head;
     }
     int n = 0;
-    Node cur = head;
+    TreeNode cur = head;
     while (cur != null) {
       n++;
       cur = cur.next;
@@ -110,10 +110,10 @@ public class ChaperForLinkedList {
   }
 
 
-  public static boolean isPalindromeLinkedList1(Node head) {
-    Node pre = head;
-    Node aft = head;
-    Stack<Node> stackData = new Stack<>();
+  public static boolean isPalindromeLinkedList1(TreeNode head) {
+    TreeNode pre = head;
+    TreeNode aft = head;
+    Stack<TreeNode> stackData = new Stack<>();
     //stackData.push(head);
 
     while (pre != null && aft != null && aft.next != null && aft.next.next != null) {
@@ -130,8 +130,8 @@ public class ChaperForLinkedList {
 
     //从中间节点开始走，stack依次弹出。
     while (!stackData.isEmpty() && pre != null) {
-      Node tempNode = stackData.pop();
-      if (tempNode.value != pre.value) {
+      TreeNode tempTreeNode = stackData.pop();
+      if (tempTreeNode.value != pre.value) {
         return false;
       }
       pre = pre.next;
@@ -149,12 +149,12 @@ public class ChaperForLinkedList {
    * Given{1,2,3,4}, reorder it to{1,4,2,3}.
    * 解题思路：快慢指针寻找到中间节点（使得前半段大于等于后半段，然后后半段逆序，再合并）
    */
-  public void reorderList(Node head) {
+  public void reorderList(TreeNode head) {
     if (head == null || head.next == null) {
       return;
     }
-    Node slow = head;
-    Node fast = head;
+    TreeNode slow = head;
+    TreeNode fast = head;
     while (fast.next != null && fast.next.next != null) {
       fast = fast.next.next;
       slow = slow.next;
@@ -164,12 +164,12 @@ public class ChaperForLinkedList {
     merge(head, slow.next);
   }
 
-  public Node reverse(Node head) {
+  public TreeNode reverse(TreeNode head) {
     if (head == null || head.next == null) {
       return head;
     }
-    Node pre = null;
-    Node next = null;
+    TreeNode pre = null;
+    TreeNode next = null;
     while (head != null) {
       next = head.next;
       head.next = pre;
@@ -180,9 +180,9 @@ public class ChaperForLinkedList {
     return pre;
   }
 
-  public void merge(Node head, Node aft) {
-    Node p = head;
-    Node q = aft.next;
+  public void merge(TreeNode head, TreeNode aft) {
+    TreeNode p = head;
+    TreeNode q = aft.next;
     while (p != null && q != null) {
       aft.next = q.next;
       q.next = p.next;

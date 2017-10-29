@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * Created by lichao on 2017/9/19. 二叉树节点间的最大距离问题
@@ -15,12 +15,12 @@ public class MaxDistance {
 
   }
 
-  public static int getMaxDistance(Node head) {
+  public static int getMaxDistance(TreeNode head) {
     int[] record = new int[1];
     return posOrder(head, record);
   }
 
-  public static int posOrder(Node head, int[] record) {
+  public static int posOrder(TreeNode head, int[] record) {
     if (head == null) {
       record[0] = 0;
       return 0;

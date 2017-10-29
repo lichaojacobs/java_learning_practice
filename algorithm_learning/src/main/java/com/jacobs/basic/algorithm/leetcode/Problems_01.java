@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.leetcode;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 import com.jacobs.basic.models.RandomListNode;
 import com.jacobs.basic.models.UndirectedGraphNode;
@@ -16,7 +16,7 @@ import java.util.Stack;
 /**
  * Created by lichao on 2017/10/6.
  */
-public class Problems {
+public class Problems_01 {
 
   public static void main(String[] args) {
 //    String[] tokens = new String[]{"0", "3", "/"};
@@ -41,10 +41,10 @@ public class Problems {
 //            48, 23, 10, 55, 19, 51, 38, 96, 92, 99, 68, 75, 14, 18, 63, 35, 19, 68, 28, 49, 36, 53,
 //            61, 64, 91, 2, 43, 68, 34, 46, 57, 82, 22, 67, 89}));
 
-    Node root = new Node(4);
-    root.left = new Node(9);
-    root.left.left = new Node(0);
-    root.right = new Node(1);
+    TreeNode root = new TreeNode(4);
+    root.left = new TreeNode(9);
+    root.left.left = new TreeNode(0);
+    root.right = new TreeNode(1);
     System.out.println(sumNumbers_016(root));
   }
 
@@ -599,7 +599,7 @@ public class Problems {
 //  The root-to-leaf path1->2represents the number12.
 //  The root-to-leaf path1->3represents the number13.
 //  Return the sum = 12 + 13 =25.
-  public static int sumNumbers_016(Node root) {
+  public static int sumNumbers_016(TreeNode root) {
     if (root == null) {
       return -1;
     }
@@ -610,29 +610,29 @@ public class Problems {
     LinkedList<Integer> pathList = new LinkedList<>();
     List<Integer> resultList = new ArrayList<>();
 
-    Stack<Node> stack = new Stack<>();
+    Stack<TreeNode> stack = new Stack<>();
     stack.push(root);
-    Node currentNode;
-    Node lastPrin = root;
+    TreeNode currentTreeNode;
+    TreeNode lastPrin = root;
     pathList.addFirst(root.value);
 
     while (!stack.isEmpty()) {
-      currentNode = stack.peek();
+      currentTreeNode = stack.peek();
 
-      if (currentNode.left != null && lastPrin != currentNode.left
-          && lastPrin != currentNode.right) {
-        stack.push(currentNode.left);
-        pathList.addFirst(currentNode.left.value);
-      } else if (currentNode.right != null && currentNode.right != lastPrin) {
-        stack.push(currentNode.right);
-        pathList.addFirst(currentNode.right.value);
+      if (currentTreeNode.left != null && lastPrin != currentTreeNode.left
+          && lastPrin != currentTreeNode.right) {
+        stack.push(currentTreeNode.left);
+        pathList.addFirst(currentTreeNode.left.value);
+      } else if (currentTreeNode.right != null && currentTreeNode.right != lastPrin) {
+        stack.push(currentTreeNode.right);
+        pathList.addFirst(currentTreeNode.right.value);
       } else {
-        currentNode = stack.pop();
-        if (lastPrin != currentNode.left && lastPrin != currentNode.right) {
+        currentTreeNode = stack.pop();
+        if (lastPrin != currentTreeNode.left && lastPrin != currentTreeNode.right) {
           resultList.add(getPathValue(pathList));
         }
-        lastPrin = currentNode;
-        System.out.println(currentNode.value + " ");
+        lastPrin = currentTreeNode;
+        System.out.println(currentTreeNode.value + " ");
         pathList.removeFirst();
       }
     }
@@ -654,7 +654,7 @@ public class Problems {
   }
 
   //先序遍历的思想(根左右)+数字求和(每一层都比上层和*10+当前根节点的值)
-  public static int sumNumbers_017(Node root) {
+  public static int sumNumbers_017(TreeNode root) {
     int sum = 0;
     if (root == null) {
       return sum;
@@ -663,7 +663,7 @@ public class Problems {
     return preorderSumNumbers(root, sum);
   }
 
-  public static int preorderSumNumbers(Node root, int sum) {
+  public static int preorderSumNumbers(TreeNode root, int sum) {
     if (root == null) {
       return 0;
     }

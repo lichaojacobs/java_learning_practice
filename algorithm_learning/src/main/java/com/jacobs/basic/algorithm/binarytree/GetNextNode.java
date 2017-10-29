@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * Created by lichao on 2017/9/16. (二叉树中找到一个节点的后继节点)
@@ -12,7 +12,7 @@ public class GetNextNode {
   }
 
   //做不下去的解法
-//  public static Node getNextNode(Node node) {
+//  public static TreeNode getNextNode(TreeNode node) {
 //    if (node == null) {
 //      return null;
 //    }
@@ -20,8 +20,8 @@ public class GetNextNode {
 //      return node.parent;
 //    }
 //
-//    Node left = getNextNode(node.left);
-//    Node right = getNextNode(node.right);
+//    TreeNode left = getNextNode(node.left);
+//    TreeNode right = getNextNode(node.right);
 //
 //    if (left != null && left != node) {
 //      return left;
@@ -39,31 +39,31 @@ public class GetNextNode {
   /**
    * * 可以非递归实现(思维定势，其实根据图总结所有情况思路差不多想出来了，但是为什么会坚持用递归去做。。。)
    */
-  public static Node getNextNode2(Node node) {
-    if (node == null) {
-      return node;
+  public static TreeNode getNextNode2(TreeNode treeNode) {
+    if (treeNode == null) {
+      return treeNode;
     }
-    if (node.right != null) {
-      return getLeftMost(node);
+    if (treeNode.right != null) {
+      return getLeftMost(treeNode);
     } else {
-      Node parent = node.parent;
-      while (parent != null && parent.left != node) {
-        node = parent;
-        parent = node.parent;
+      TreeNode parent = treeNode.parent;
+      while (parent != null && parent.left != treeNode) {
+        treeNode = parent;
+        parent = treeNode.parent;
       }
       return parent;
     }
   }
 
-  public static Node getLeftMost(Node node) {
-    if (node == null) {
-      return node;
+  public static TreeNode getLeftMost(TreeNode treeNode) {
+    if (treeNode == null) {
+      return treeNode;
     }
-    while (node.left != null) {
-      node = node.left;
+    while (treeNode.left != null) {
+      treeNode = treeNode.left;
     }
 
-    return node;
+    return treeNode;
   }
 
 }

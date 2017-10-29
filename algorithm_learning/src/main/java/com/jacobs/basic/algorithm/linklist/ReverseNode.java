@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.linklist;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * Created by lichao on 2016/12/4.
@@ -8,27 +8,27 @@ import com.jacobs.basic.algorithm.Node;
 public class ReverseNode {
 
   public static void main(String[] args) {
-    Node node1 = new Node(1);
-    node1.next = new Node(2);
-    node1.next.next = new Node(3);
-    node1.next.next.next = new Node(4);
-    node1.next.next.next.next = new Node(5);
-    //Node head = reversePartNodeList(node1, 2, 4);
-    Node head = reverserNodeList2(node1);
+    TreeNode treeNode1 = new TreeNode(1);
+    treeNode1.next = new TreeNode(2);
+    treeNode1.next.next = new TreeNode(3);
+    treeNode1.next.next.next = new TreeNode(4);
+    treeNode1.next.next.next.next = new TreeNode(5);
+    //TreeNode head = reversePartNodeList(treeNode1, 2, 4);
+    TreeNode head = reverserNodeList2(treeNode1);
     while (head != null) {
       System.out.println(head.value);
       head = head.next;
     }
   }
 
-  public static Node reverseNodeList(Node head) {
+  public static TreeNode reverseNodeList(TreeNode head) {
     if (head == null) {
       return null;
     }
 
-    Node pre = head;
-    Node fir = head;
-    Node aft = head;
+    TreeNode pre = head;
+    TreeNode fir = head;
+    TreeNode aft = head;
 
     while (fir.next != null) {
       aft = fir.next;
@@ -41,15 +41,15 @@ public class ReverseNode {
   }
 
   //假设result是前面已经排好逆序的头节点
-  public static Node reverserNodeList2(Node head) {
+  public static TreeNode reverserNodeList2(TreeNode head) {
     if (head == null) {
       return null;
     }
 
-    Node result = null;
+    TreeNode result = null;
 
     while (head != null) {
-      Node temp = head.next;
+      TreeNode temp = head.next;
       head.next = result;
       result = head;
       head = temp;
@@ -58,16 +58,16 @@ public class ReverseNode {
     return result;
   }
 
-  public static Node reversePartNodeList(Node head, int from, int to) {
+  public static TreeNode reversePartNodeList(TreeNode head, int from, int to) {
     int len = 0;
-    Node phead = head;
-    Node fromNode = null;
-    Node toNode = null;
+    TreeNode phead = head;
+    TreeNode fromTreeNode = null;
+    TreeNode toTreeNode = null;
 
     while (phead != null) {
       len++;
-      fromNode = len == from - 1 ? phead : fromNode;
-      toNode = len == to + 1 ? phead : toNode;
+      fromTreeNode = len == from - 1 ? phead : fromTreeNode;
+      toTreeNode = len == to + 1 ? phead : toTreeNode;
       phead = phead.next;
     }
 
@@ -75,17 +75,17 @@ public class ReverseNode {
       return head;
     }
 
-    phead = fromNode == null ? head : fromNode.next;
-    Node fir = phead;
-    Node aft;
-    while (fir.next != toNode) {
+    phead = fromTreeNode == null ? head : fromTreeNode.next;
+    TreeNode fir = phead;
+    TreeNode aft;
+    while (fir.next != toTreeNode) {
       aft = fir.next;
       fir.next = aft.next;
       aft.next = phead;
       phead = aft;
     }
-    if (fromNode != null) {
-      fromNode.next = phead;
+    if (fromTreeNode != null) {
+      fromTreeNode.next = phead;
       return head;
     }
 

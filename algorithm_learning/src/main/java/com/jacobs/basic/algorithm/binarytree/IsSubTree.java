@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * Created by lichao on 2017/9/11. 判断t1树完全包含t2树的拓扑结构
@@ -11,14 +11,14 @@ public class IsSubTree {
 
   }
 
-  public static boolean isSubTree(Node t1, Node t2) {
+  public static boolean isSubTree(TreeNode t1, TreeNode t2) {
     String t1Str = serialByPre(t1);
     String t2Str = serialByPre(t2);
 
     return getIndexOf(t1Str, t2Str) != -1;
   }
 
-  public static String serialByPre(Node head) {
+  public static String serialByPre(TreeNode head) {
     if (head == null) {
       return "#!";
     }

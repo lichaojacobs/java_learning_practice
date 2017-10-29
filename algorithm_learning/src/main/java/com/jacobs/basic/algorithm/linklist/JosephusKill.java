@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.linklist;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 
 /**
  * Created by lichao on 2017/1/7.
@@ -11,12 +11,12 @@ public class JosephusKill {
 
   }
 
-  public static Node josephusKill1(Node head, int m) {
+  public static TreeNode josephusKill1(TreeNode head, int m) {
     if (head == null || head.next == head || m < 1) {
       return head;
     }
 
-    Node last = head;
+    TreeNode last = head;
     while (last.next != head) {
       last = last.next;
     }
@@ -39,12 +39,12 @@ public class JosephusKill {
    * s=(m-1)%i+1
    * old=(new+m-1)%i+1
    */
-  public static Node josephusKill2(Node head, int m) {
+  public static TreeNode josephusKill2(TreeNode head, int m) {
     if (head == null || head.next == head || m < 1) {
       return head;
     }
 
-    Node cur = head.next;
+    TreeNode cur = head.next;
     int temp = 1;
     while (cur != head) {
       temp++;

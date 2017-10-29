@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -11,19 +11,19 @@ import java.util.Stack;
 public class FindPath {
 
   public static void main(String[] args) {
-    Node testHead = new Node(6);
-    testHead.left = new Node(1);
-    testHead.right = new Node(12);
-    testHead.left.left = new Node(1);
-    testHead.left.right = new Node(3);
-    testHead.right.left = new Node(10);
-    testHead.right.right = new Node(13);
+    TreeNode testHead = new TreeNode(6);
+    testHead.left = new TreeNode(1);
+    testHead.right = new TreeNode(12);
+    testHead.left.left = new TreeNode(1);
+    testHead.left.right = new TreeNode(3);
+    testHead.right.left = new TreeNode(10);
+    testHead.right.right = new TreeNode(13);
 
     findPath(testHead, 8, new Stack<>(), 0);
   }
 
 
-  public static void findPath(Node root, int expectedSum, Stack<Node> currentPath, int currSum) {
+  public static void findPath(TreeNode root, int expectedSum, Stack<TreeNode> currentPath, int currSum) {
     if (root == null) {
       return;
     }
@@ -34,7 +34,7 @@ public class FindPath {
     //如果是叶子节点
     if ((root.left == null && root.right == null) && currSum == expectedSum) {
       //打印路径
-      Iterator<Node> stackIterator = currentPath.iterator();
+      Iterator<TreeNode> stackIterator = currentPath.iterator();
       System.out.println("find path: ");
       while (stackIterator.hasNext()) {
         System.out.print(stackIterator.next().value + " ");

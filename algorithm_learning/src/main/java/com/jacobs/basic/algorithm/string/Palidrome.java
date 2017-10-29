@@ -1,6 +1,6 @@
 package com.jacobs.basic.algorithm.string;
 
-import com.jacobs.basic.algorithm.Node;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.Stack;
 
 /**
@@ -54,7 +54,7 @@ public class Palidrome {
   /**
    * 利用栈实现,考虑到奇偶数的情况,使用俩个指针不同速率
    */
-  public boolean isPalidrome1(Node head) {
+  public boolean isPalidrome1(TreeNode head) {
     if (head == null) {
       return false;
     }
@@ -62,21 +62,21 @@ public class Palidrome {
       return true;
     }
 
-    Stack<Node> nodeStack = new Stack<>();
-    Node rightSide = head.next;
-    Node curr = head;
+    Stack<TreeNode> treeNodeStack = new Stack<>();
+    TreeNode rightSide = head.next;
+    TreeNode curr = head;
     while (curr.next != null && curr.next.next != null) {
       curr = curr.next.next;
       rightSide = rightSide.next;
     }
 
     while (rightSide != null) {
-      nodeStack.push(rightSide);
+      treeNodeStack.push(rightSide);
       rightSide = rightSide.next;
     }
 
-    while (!nodeStack.isEmpty()) {
-      if (head.value != nodeStack.pop().value) {
+    while (!treeNodeStack.isEmpty()) {
+      if (head.value != treeNodeStack.pop().value) {
         return false;
       }
       head = head.next;

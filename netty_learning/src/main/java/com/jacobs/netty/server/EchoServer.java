@@ -40,15 +40,18 @@ public class EchoServer {
             }
           });
 
+      //我们绑定的服务器，等待绑定完成。 （调用 sync() 的原因是当前线程阻塞）
       ChannelFuture f = b.bind()
           .sync();            //8
       System.out.println(
           EchoServer.class.getName() + " started and listen on " + f.channel()
               .localAddress());
+      //（同步）等待服务器 Channel 关闭（因为我们 在 Channel 的 CloseFuture 上调用 sync()）
       f.channel()
           .closeFuture()
           .sync();            //9
     } finally {
+      //我们可以关闭下 EventLoopGroup 并释放所有资源，包括所有创建的线程
       group.shutdownGracefully()
           .sync();            //10
     }

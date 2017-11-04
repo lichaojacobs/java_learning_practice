@@ -1,13 +1,14 @@
 package com.jacobs.basic.algorithm.binarytree;
 
-import com.jacobs.basic.algorithm.TreeNode;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -26,8 +27,13 @@ public class BinaryTree {
 //    TreeNode root = constructTree(Lists.newArrayList(1, 2, 4, 5, 3, 6), 0,
 //        5, Lists.newArrayList(4, 2, 5, 1, 6, 3), 0, 5);
 //    preOrderRecur2(root);
-    int[] arr = new int[]{0, 3, 1, 10, 13, 12, 6};
-    System.out.println(isBSTAfterOrder(arr));
+    //int[] arr = new int[]{0, 3, 1, 10, 13, 12, 6};
+    //System.out.println(isBSTAfterOrder(arr));
+
+    TreeNode root = new TreeNode(0);
+    root.left = new TreeNode(1);
+    root.right = new TreeNode(2);
+    levelOrder(root);
   }
 
   /**
@@ -269,6 +275,43 @@ public class BinaryTree {
   }
 
   /**
+   * 层次遍历，打印行数
+   *
+   * @param root root of tree
+   */
+  public static void levelOrder(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+
+    //只需要last等于nlast即可（last表示当前层的最右，nlast表示下一层的最右边节点）
+    TreeNode last = root;
+    TreeNode nLast = null;
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+    int level = 1;
+    System.out.println(String.format("打印第%d层: ", level));
+    while (!queue.isEmpty()) {
+      TreeNode temp = queue.poll();
+      System.out.print(temp.value + " ");
+      if (temp.left != null) {
+        queue.add(temp.left);
+        nLast = temp.left;
+      }
+      if (temp.right != null) {
+        queue.add(temp.right);
+        nLast = temp.right;
+      }
+
+      if (temp == last) {
+        last = nLast;
+        level++;
+        System.out.println(String.format("打印第%d层: ", level));
+      }
+    }
+  }
+
+  /**
    * 深入优先遍历(栈)，找出从跟节点到目标节点路径
    */
   public static int getDistance(TreeNode head, TreeNode left, TreeNode right) {
@@ -447,7 +490,8 @@ public class BinaryTree {
     constructParentMap(head.right, parentMap);
   }
 
-  public static TreeNode findNearestParentNode(TreeNode o1, TreeNode o2, HashMap<TreeNode, TreeNode> parentMap) {
+  public static TreeNode findNearestParentNode(TreeNode o1, TreeNode o2,
+      HashMap<TreeNode, TreeNode> parentMap) {
     List<TreeNode> path = Lists.newArrayList();
 
     TreeNode tempParent = parentMap.get(o1);
@@ -594,5 +638,75 @@ public class BinaryTree {
         aftIndex, map);
     return generateAft(pre, preStart + 1, preStart + 1 - inStart, in, inStart, index - 1, aft,
         aftIndex, map);
+  }
+
+  //给定一个二叉树的根结点root，请依次返回二叉树的先序，中序和后续遍历(二维数组的形式)。
+  public static int[][] convert_30(TreeNode root) {
+    // write code here
+    List<TreeNode> fisrtOrder = new ArrayList<>();
+    List<TreeNode> midOrder = new ArrayList<>();
+    List<TreeNode> aftOrder = new ArrayList<>();
+
+    //first order
+    TreeNode firstRoot = root;
+    Stack<TreeNode> firstStack = new Stack<>();
+    firstStack.push(firstRoot);
+    while (!firstStack.isEmpty()) {
+      TreeNode curr = firstStack.pop();
+      fisrtOrder.add(curr);
+      if (curr.right != null) {
+        firstStack.push(curr.right);
+      }
+      if (curr.left != null) {
+        firstStack.push(curr.left);
+      }
+    }
+
+    //mid order
+    TreeNode midRoot = root;
+    Stack<TreeNode> midStack = new Stack<>();
+    midStack.push(root);
+    TreeNode curr = midRoot;
+    TreeNode last = null;
+    while (!midStack.isEmpty()) {
+      curr = midStack.peek();
+      if (curr.left != null && last != curr.left) {
+        midStack.push(curr.left);
+      } else {
+        curr = midStack.pop();
+        midOrder.add(curr);
+        last = curr;
+        if (curr.right != null) {
+          midStack.push(curr.right);
+        }
+      }
+    }
+
+    //aft order
+    TreeNode aftRoot = root;
+    Stack<TreeNode> aftStack = new Stack<>();
+    TreeNode lasPrint = null;
+    aftStack.push(aftRoot);
+    while (!aftStack.isEmpty()) {
+      curr = aftStack.peek();
+      if (curr.left != null && lasPrint != curr.left && lasPrint != curr.right) {
+        aftStack.push(curr.left);
+      } else if (curr.right != null && lasPrint != curr.right) {
+        aftStack.push(curr.right);
+      } else {
+        curr = aftStack.pop();
+        aftOrder.add(curr);
+        lasPrint = curr;
+      }
+    }
+
+    int[][] results = new int[3][fisrtOrder.size()];
+    for (int i = 0; i < fisrtOrder.size(); i++) {
+      results[0][i] = fisrtOrder.get(i).value;
+      results[1][i] = midOrder.get(i).value;
+      results[2][i] = aftOrder.get(i).value;
+    }
+
+    return results;
   }
 }

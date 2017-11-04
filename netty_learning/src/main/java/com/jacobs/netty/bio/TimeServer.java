@@ -9,6 +9,7 @@ import java.net.Socket;
  * Created by lichao on 2016/11/5.
  */
 public class TimeServer {
+
   public static void main(String[] args) throws IOException {
     int port = 8080;
     if (args != null && args.length > 0) {
@@ -20,6 +21,7 @@ public class TimeServer {
       System.out.println("The time server is start in port : " + port);
       while (true) {
         Socket socket = serverSocket.accept();
+        //考虑到多请求情况,每个请求分配一个thread
         new Thread(new TimeServerHandler(socket)).start();
       }
     } catch (IOException e) {

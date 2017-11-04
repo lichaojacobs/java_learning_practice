@@ -1,7 +1,5 @@
 package com.jacobs.netty.client;
 
-import java.net.InetSocketAddress;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,11 +7,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.net.InetSocketAddress;
 
 /**
  * Created by lichao on 16/9/24.
  */
 public class EchoClient {
+
   private final String host;
   private final int port;
 
@@ -37,11 +37,13 @@ public class EchoClient {
             }
           });
 
+      //6 阻塞直到通道建立连接
       ChannelFuture f = b.connect()
-          .sync();        //6
+          .sync();
+      //7 阻塞直到channel关闭
       f.channel()
           .closeFuture()
-          .sync();            //7
+          .sync();
     } finally {
       group.shutdownGracefully()
           .sync();            //8

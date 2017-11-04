@@ -1,5 +1,6 @@
 package com.jacobs.basic.algorithm.leetcode;
 
+import com.alibaba.fastjson.JSON;
 import com.jacobs.basic.algorithm.TreeNode;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,7 +16,13 @@ public class Problems_02 {
   public static void main(String[] args) {
 //    HashSet<String> dic = Sets.newHashSet("hot", "dot", "dog", "lot", "log");
 //    System.out.println(ladderLength_021("hit", "cog", dic))
-    System.out.println(maxProfit_026(new int[]{2, 1, 2, 0, 1}));
+    //System.out.println(maxProfit_026(new int[]{2, 1, 2, 0, 1}));
+
+    for (ArrayList<Integer> integers : generate_028(5)) {
+      System.out.println(JSON.toJSONString(integers));
+    }
+
+    //getRow_027(0).forEach(System.out::print);
   }
 
 
@@ -323,5 +330,86 @@ public class Problems_02 {
     }
 
     return maxProfit;
+  }
+
+
+  //  Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+//  For example, given the following triangle
+//  [
+//      [2],
+//      [3,4],
+//      [6,5,7],
+//      [4,1,8,3]
+//  ]
+//
+//  The minimum path sum from top to bottom is11(i.e., 2 + 3 + 5 + 1 = 11).
+//  Note:
+//  Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle
+  public static int minimumTotal_026(ArrayList<ArrayList<Integer>> triangle) {
+    if (triangle == null || triangle.size() == 0) {
+      return 0;
+    }
+
+    //从下往上找
+    for (int i = triangle.size() - 2; i >= 0; i--) {
+      for (int j = 0; j < triangle.get(i).size(); j++) {
+        triangle.get(i).set(j, triangle.get(i).get(j) + Math
+            .min(triangle.get(i + 1).get(j), triangle.get(i + 1).get(j + 1)));
+      }
+    }
+
+    return triangle.get(0).get(0);
+  }
+
+  //  Given an index k, return the k th row of the Pascal's triangle.
+//  For example, given k = 3,
+//  Return[1,3,3,1].
+  public static ArrayList<Integer> getRow_027(int rowIndex) {
+    ArrayList<Integer> triangle = new ArrayList<>();
+
+    rowIndex++;
+    if (rowIndex == 0) {
+      return triangle;
+    }
+
+    triangle.add(1);
+    for (int i = 1; i < rowIndex; i++) {
+      for (int j = i - 1; j > 0; j--) {
+        triangle.set(j, triangle.get(j - 1) + triangle.get(j));
+      }
+      triangle.add(1);
+    }
+
+    return triangle;
+  }
+
+  //  Given numRows, generate the first numRows of Pascal's triangle.
+//  For example, given numRows = 5,
+//  Return
+//  [
+//      [1],
+//      [1,1],
+//      [1,2,1],
+//      [1,3,3,1],
+//      [1,4,6,4,1]
+//      ]
+  public static ArrayList<ArrayList<Integer>> generate_028(int numRows) {
+    ArrayList<ArrayList<Integer>> resultList = new ArrayList<>();
+
+    ArrayList<Integer> first = new ArrayList<Integer>();
+    first.add(1);
+    resultList.add(first);
+
+    for (int i = 1; i < numRows; i++) {
+      ArrayList<Integer> result = new ArrayList<>();
+      result.add(1);
+      for (int j = 1; j <= i - 1; j++) {
+        result.add(resultList.get(i - 1).get(j - 1) + resultList.get(i - 1).get(j));
+      }
+      result.add(1);
+      resultList.add(result);
+    }
+
+    return resultList;
   }
 }

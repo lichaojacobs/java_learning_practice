@@ -32,7 +32,7 @@ public class PrintEdge {
     setEdgeMap(head, 0, edgeMap);
     //打印左边界
     for (int i = 0; i != edgeMap.length; i++) {
-      System.out.println(edgeMap[i][0].value + " ");
+      System.out.println(edgeMap[i][0].val + " ");
     }
 
     //打印叶子节点，且不是最左或者最右
@@ -41,7 +41,7 @@ public class PrintEdge {
     //打印右边界
     for (int i = edgeMap.length - 1; i != -1; i--) {
       if (edgeMap[i][0] != edgeMap[i][1]) {
-        System.out.println(edgeMap[i][1].value + " ");
+        System.out.println(edgeMap[i][1].val + " ");
       }
     }
   }
@@ -53,7 +53,7 @@ public class PrintEdge {
     if (head == null) {
       return;
     }
-    System.out.println(head.value + " ");
+    System.out.println(head.val + " ");
 
     if (head.left != null && head.right != null) {//开始条件
       printLeftEdge(head, true);
@@ -68,7 +68,7 @@ public class PrintEdge {
       return;
     }
     if (print || (h.left == null && h.left == null)) {
-      System.out.println(h.value + " ");
+      System.out.println(h.val + " ");
     }
 
     printLeftEdge(h.left, print);//紧左打，后面退栈
@@ -82,7 +82,7 @@ public class PrintEdge {
     printRightEdge(h.left, print && h.right == null ? true : false);
     printRightEdge(h.right, print);
     if (print || (h.left == null && h.right == null)) {
-      System.out.println(h.value + " ");
+      System.out.println(h.val + " ");
     }
   }
 
@@ -102,7 +102,7 @@ public class PrintEdge {
 
     if (head.left == null && head.right == null && head != edgeMap[level][0] &&
         head != edgeMap[level][1]) {
-      System.out.println(head.value + " ");
+      System.out.println(head.val + " ");
     }
 
     printLeafNotInMap(head.left, level + 1, edgeMap);

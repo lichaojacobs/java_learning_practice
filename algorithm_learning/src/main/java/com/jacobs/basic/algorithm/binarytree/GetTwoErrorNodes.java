@@ -33,7 +33,7 @@ public class GetTwoErrorNodes {
                 head = head.left;
             } else {
                 head = stack.pop();
-                if (head != null && pre != null && head.value < pre.value) {
+                if (head != null && pre != null && head.val < pre.val) {
                     errors[0] = errors[0] == null ? pre : errors[0];
                     errors[1] = head;
                 }

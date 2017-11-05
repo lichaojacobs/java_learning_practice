@@ -32,7 +32,7 @@ public class PrintZigZag {
     System.out.println("Level " + (level++) + ": ");
     while (!queue.isEmpty()) {
       TreeNode temp = queue.poll();
-      System.out.print(temp.value + " ");
+      System.out.print(temp.val + " ");
       if (temp.left != null) {
         nLast = temp.left;
         queue.offer(temp.left);
@@ -91,7 +91,7 @@ public class PrintZigZag {
         }
       }
 
-      System.out.print(head.value + " ");
+      System.out.print(head.val + " ");
       if (head == last && !dq.isEmpty()) {
         isRight = !isRight;
         last = nLast;

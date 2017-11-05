@@ -76,7 +76,7 @@ public class Palidrome {
     }
 
     while (!treeNodeStack.isEmpty()) {
-      if (head.value != treeNodeStack.pop().value) {
+      if (head.val != treeNodeStack.pop().val) {
         return false;
       }
       head = head.next;

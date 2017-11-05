@@ -23,12 +23,12 @@ public class ChaperForLinkedList {
   public static void printCommonPart(TreeNode head1, TreeNode head2) {
     System.out.println("Common part: ");
     while (head1 != null && head2 != null) {
-      if (head1.value < head2.value) {
+      if (head1.val < head2.val) {
         head1 = head1.next;
-      } else if (head1.value > head2.value) {
+      } else if (head1.val > head2.val) {
         head2 = head2.next;
       } else {
-        System.out.println(head1.value + " ");
+        System.out.println(head1.val + " ");
         head1 = head1.next;
         head2 = head2.next;
       }
@@ -131,7 +131,7 @@ public class ChaperForLinkedList {
     //从中间节点开始走，stack依次弹出。
     while (!stackData.isEmpty() && pre != null) {
       TreeNode tempTreeNode = stackData.pop();
-      if (tempTreeNode.value != pre.value) {
+      if (tempTreeNode.val != pre.val) {
         return false;
       }
       pre = pre.next;

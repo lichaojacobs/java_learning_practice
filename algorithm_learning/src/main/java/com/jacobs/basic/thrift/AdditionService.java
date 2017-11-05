@@ -391,7 +391,7 @@ public class AdditionService {
       __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __N1_ISSET_ID);
     }
 
-    /** Returns true if field n1 is set (has been assigned a value) and false otherwise */
+    /** Returns true if field n1 is set (has been assigned a val) and false otherwise */
     public boolean isSetN1() {
       return EncodingUtils.testBit(__isset_bitfield, __N1_ISSET_ID);
     }
@@ -414,7 +414,7 @@ public class AdditionService {
       __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __N2_ISSET_ID);
     }
 
-    /** Returns true if field n2 is set (has been assigned a value) and false otherwise */
+    /** Returns true if field n2 is set (has been assigned a val) and false otherwise */
     public boolean isSetN2() {
       return EncodingUtils.testBit(__isset_bitfield, __N2_ISSET_ID);
     }
@@ -456,7 +456,7 @@ public class AdditionService {
       throw new IllegalStateException();
     }
 
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    /** Returns true if field corresponding to fieldID is set (has been assigned a val) and false otherwise */
     public boolean isSet(_Fields field) {
       if (field == null) {
         throw new IllegalArgumentException();
@@ -835,7 +835,7 @@ public class AdditionService {
       __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SUCCESS_ISSET_ID);
     }
 
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    /** Returns true if field success is set (has been assigned a val) and false otherwise */
     public boolean isSetSuccess() {
       return EncodingUtils.testBit(__isset_bitfield, __SUCCESS_ISSET_ID);
     }
@@ -866,7 +866,7 @@ public class AdditionService {
       throw new IllegalStateException();
     }
 
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    /** Returns true if field corresponding to fieldID is set (has been assigned a val) and false otherwise */
     public boolean isSet(_Fields field) {
       if (field == null) {
         throw new IllegalArgumentException();

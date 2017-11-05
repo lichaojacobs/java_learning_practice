@@ -1,7 +1,9 @@
 package com.jacobs.basic.algorithm.leetcode;
 
 import com.jacobs.basic.algorithm.TreeNode;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -11,15 +13,18 @@ import java.util.Queue;
 public class Problems_03 {
 
   public static void main(String[] args) {
-//    TreeNode root = new TreeNode(0);
-//    root.left = new TreeNode(1);
-//    root.right = new TreeNode(2);
-//    root.left.left = new TreeNode(3);
-//    root.left.right = new TreeNode(4);
-//    root.right.left = new TreeNode(5);
-//    root.right.right = new TreeNode(6);
-//    connect_029(root);
-    numDistinct_030("b", "b");
+    TreeNode root = new TreeNode(5);
+    root.left = new TreeNode(4);
+    root.right = new TreeNode(8);
+    root.left.left = new TreeNode(11);
+    root.left.left.left = new TreeNode(7);
+    root.left.left.right = new TreeNode(2);
+    root.right.left = new TreeNode(13);
+    root.right.right = new TreeNode(4);
+    root.right.right.left = new TreeNode(5);
+    root.right.right.right = new TreeNode(1);
+
+    System.out.println(pathSum_033(root, 22));
   }
 
   //  Given a binary tree
@@ -137,5 +142,67 @@ public class Problems_03 {
   //空间压缩法
   public static int numDistinct_031(String S, String T) {
     return 0;
+  }
+
+
+  //  Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+//  For example:
+//  Given the below binary tree andsum = 22,
+//       5
+//      / \
+//      4   8
+//      /   / \
+//      11  13  4
+//      /  \      \
+//      7    2      1
+//      return true, as there exist a root-to-leaf path5->4->11->2which sum is 22.
+  public static boolean hasPathSum_032(TreeNode root, int sum) {
+    if (root == null) {
+      return false;
+    }
+
+    if (sum == root.val && root.left == null && root.right == null) {
+      return true;
+    }
+
+    return hasPathSum_032(root.left, sum - root.val) ||
+        hasPathSum_032(root.right, sum - root.val);
+  }
+
+  //  return
+//      [
+//      [5,4,11,2],
+//      [5,8,4,5]
+//      ]
+  public static ArrayList<ArrayList<Integer>> pathSum_033(TreeNode root, int sum) {
+    ArrayList<ArrayList<Integer>> resultList = new ArrayList<>();
+    getPathSumResult(resultList, root, sum, new ArrayList<>());
+    return resultList;
+  }
+
+  //先序遍历
+  public static void getPathSumResult(ArrayList<ArrayList<Integer>> resultList, TreeNode root,
+      int sum, List<TreeNode> onePathResult) {
+    if (root == null) {
+      return;
+    }
+
+    if (sum == root.val && root.left == null && root.right == null) {
+      onePathResult.add(root);
+      ArrayList<Integer> result = new ArrayList<>();
+      for (TreeNode node : onePathResult) {
+        result.add(node.val);
+      }
+      //还原
+      resultList.add(result);
+      onePathResult.remove(root);
+      return;
+    }
+
+    onePathResult.add(root);
+    getPathSumResult(resultList, root.left, sum - root.val, onePathResult);
+    getPathSumResult(resultList, root.right, sum - root.val, onePathResult);
+    //还原
+    onePathResult.remove(root);
   }
 }

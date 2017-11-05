@@ -44,7 +44,7 @@ public class BinaryTree {
       return;
     }
 
-    System.out.println(head.value + " ");
+    System.out.println(head.val + " ");
     preOrderRecur1(head.left);
     preOrderRecur1(head.right);
   }
@@ -62,7 +62,7 @@ public class BinaryTree {
     TreeNode currentTreeNode = null;
     while (!stack.isEmpty()) {
       currentTreeNode = stack.pop();
-      System.out.println(currentTreeNode.value + " ");
+      System.out.println(currentTreeNode.val + " ");
       if (currentTreeNode.right != null) {
         stack.push(currentTreeNode.right);
       }
@@ -81,7 +81,7 @@ public class BinaryTree {
     }
 
     preOrderRecur1(head.left);
-    System.out.println(head.value + " ");
+    System.out.println(head.val + " ");
     preOrderRecur1(head.right);
   }
 
@@ -102,7 +102,7 @@ public class BinaryTree {
         currentTreeNode = currentTreeNode.left;
       } else {
         currentTreeNode = stack.pop();
-        System.out.println(currentTreeNode.value + " ");
+        System.out.println(currentTreeNode.val + " ");
         if (currentTreeNode.right != null) {
           stack.push(currentTreeNode.right);
           currentTreeNode = currentTreeNode.right;
@@ -121,7 +121,7 @@ public class BinaryTree {
 
     preOrderRecur1(head.left);
     preOrderRecur1(head.right);
-    System.out.println(head.value + " ");
+    System.out.println(head.val + " ");
   }
 
   /**
@@ -150,7 +150,7 @@ public class BinaryTree {
     }
 
     while (!output.isEmpty()) {
-      System.out.println(output.pop().value + " ");
+      System.out.println(output.pop().val + " ");
     }
   }
 
@@ -175,7 +175,7 @@ public class BinaryTree {
       } else if (current.right != null && lastPrin != current.right) {
         stack.push(current.right);
       } else {
-        System.out.println(stack.pop().value + " ");
+        System.out.println(stack.pop().val + " ");
         lastPrin = current;
       }
     }
@@ -198,7 +198,7 @@ public class BinaryTree {
       } else if (curr.right != null && curr.right != lastPrint) {
         stack.push(curr.right);
       } else {
-        list.add(stack.pop().value);
+        list.add(stack.pop().val);
         lastPrint = curr;
       }
     }
@@ -269,7 +269,7 @@ public class BinaryTree {
       if (current.right != null) {
         queue.addLast(current.right);
       }
-      System.out.print(current.value);
+      System.out.print(current.val);
     }
     System.out.println();
   }
@@ -293,7 +293,7 @@ public class BinaryTree {
     System.out.println(String.format("打印第%d层: ", level));
     while (!queue.isEmpty()) {
       TreeNode temp = queue.poll();
-      System.out.print(temp.value + " ");
+      System.out.print(temp.val + " ");
       if (temp.left != null) {
         queue.add(temp.left);
         nLast = temp.left;
@@ -702,9 +702,9 @@ public class BinaryTree {
 
     int[][] results = new int[3][fisrtOrder.size()];
     for (int i = 0; i < fisrtOrder.size(); i++) {
-      results[0][i] = fisrtOrder.get(i).value;
-      results[1][i] = midOrder.get(i).value;
-      results[2][i] = aftOrder.get(i).value;
+      results[0][i] = fisrtOrder.get(i).val;
+      results[1][i] = midOrder.get(i).val;
+      results[2][i] = aftOrder.get(i).val;
     }
 
     return results;

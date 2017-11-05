@@ -5,13 +5,13 @@ package com.jacobs.basic.algorithm;
  */
 public class TreeNode {
 
-  public int value;
+  public int val;
   public TreeNode next;
   public TreeNode left;
   public TreeNode right;
   public TreeNode parent;
 
   public TreeNode(int data) {
-    this.value = data;
+    this.val = data;
   }
 }

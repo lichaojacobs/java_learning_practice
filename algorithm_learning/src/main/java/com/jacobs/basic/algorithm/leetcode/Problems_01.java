@@ -49,7 +49,7 @@ public class Problems_01 {
   }
 
 
-  //  Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+  //  Evaluate the val of an arithmetic expression in Reverse Polish Notation.
 //
 //  Valid operators are +, -, *, /. Each operand may be an integer or another expression.
 //
@@ -380,7 +380,7 @@ public class Problems_01 {
   }
 
   // DP Program
-  //  There are N children standing in a line. Each child is assigned a rating value.
+  //  There are N children standing in a line. Each child is assigned a rating val.
 //  You are giving candies to these children subjected to the following requirements:
 //  Each child must have at least one candy.
 //  Children with a higher rating get more candies than their neighbors.
@@ -604,7 +604,7 @@ public class Problems_01 {
       return -1;
     }
     if (root.left == null && root.right == null) {
-      return root.value;
+      return root.val;
     }
 
     LinkedList<Integer> pathList = new LinkedList<>();
@@ -614,7 +614,7 @@ public class Problems_01 {
     stack.push(root);
     TreeNode currentTreeNode;
     TreeNode lastPrin = root;
-    pathList.addFirst(root.value);
+    pathList.addFirst(root.val);
 
     while (!stack.isEmpty()) {
       currentTreeNode = stack.peek();
@@ -622,17 +622,17 @@ public class Problems_01 {
       if (currentTreeNode.left != null && lastPrin != currentTreeNode.left
           && lastPrin != currentTreeNode.right) {
         stack.push(currentTreeNode.left);
-        pathList.addFirst(currentTreeNode.left.value);
+        pathList.addFirst(currentTreeNode.left.val);
       } else if (currentTreeNode.right != null && currentTreeNode.right != lastPrin) {
         stack.push(currentTreeNode.right);
-        pathList.addFirst(currentTreeNode.right.value);
+        pathList.addFirst(currentTreeNode.right.val);
       } else {
         currentTreeNode = stack.pop();
         if (lastPrin != currentTreeNode.left && lastPrin != currentTreeNode.right) {
           resultList.add(getPathValue(pathList));
         }
         lastPrin = currentTreeNode;
-        System.out.println(currentTreeNode.value + " ");
+        System.out.println(currentTreeNode.val + " ");
         pathList.removeFirst();
       }
     }
@@ -668,7 +668,7 @@ public class Problems_01 {
       return 0;
     }
 
-    sum += sum * 10 + root.value;
+    sum += sum * 10 + root.val;
     if (root.left == null && root.right == null) {
       return sum;
     }

@@ -23,7 +23,7 @@ public class IsSubTree {
       return "#!";
     }
 
-    String res = head.value + "!";
+    String res = head.val + "!";
     res += serialByPre(head.left);
     res += serialByPre(head.right);
 

@@ -56,7 +56,7 @@ public class LRUCache {
   }
 
   // @param key, an integer
-  // @param value, an integer
+  // @param val, an integer
   // @return nothing
   public void set(int key, int value) {
     // write your code here

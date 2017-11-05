@@ -22,7 +22,7 @@ public class GetDistanceOfTwoNodes {
 //    getPathDistances(testHead, 0, pathDistances);
 //
 //    pathDistances.forEach((node, integer) -> System.out
-//        .println(String.format("node: %d, distance is : %d", node.value, integer)));
+//        .println(String.format("node: %d, distance is : %d", node.val, integer)));
     System.out.println(getDistanceOfTwoNodes2(testHead, testHead.left.right, testHead.right.right));
   }
 

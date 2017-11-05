@@ -28,7 +28,7 @@ public class PrintByLevel {
         if (t2 == null) {
             return true;
         }
-        if (t1 == null || t1.value != t2.value) {
+        if (t1 == null || t1.val != t2.val) {
             return false;
         }
 
@@ -47,7 +47,7 @@ public class PrintByLevel {
         boolean isEven = true;
         while (current.size() > 0) {
             TreeNode temp = current.remove(current.size() - 1);
-            System.out.println(temp.value + ", ");
+            System.out.println(temp.val + ", ");
             if (isEven) {
                 if (temp.right != null) {
                     reverse.add(temp.right);

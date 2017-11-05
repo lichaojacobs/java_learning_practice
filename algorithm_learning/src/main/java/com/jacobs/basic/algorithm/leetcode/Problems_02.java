@@ -239,10 +239,10 @@ public class Problems_02 {
     int right = Math.max(0, getMaxSum(root.right));
 
     //全局的最大值
-    maxValue = Math.max(maxValue, left + right + root.value);
+    maxValue = Math.max(maxValue, left + right + root.val);
 
     //对于每一层来说下一层对应的最长路径
-    return Math.max(left, right) + root.value;
+    return Math.max(left, right) + root.val;
   }
 
 

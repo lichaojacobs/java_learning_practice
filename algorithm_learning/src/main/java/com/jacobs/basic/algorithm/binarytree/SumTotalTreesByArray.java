@@ -73,7 +73,7 @@ public class SumTotalTreesByArray {
       return null;
     }
 
-    TreeNode res = new TreeNode(head.value);
+    TreeNode res = new TreeNode(head.val);
     res.left = cloneTree(head.left);
     res.right = cloneTree(head.right);
     return res;

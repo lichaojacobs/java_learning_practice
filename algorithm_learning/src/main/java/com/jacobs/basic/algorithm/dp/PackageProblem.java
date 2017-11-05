@@ -55,12 +55,12 @@ public class PackageProblem {
       } else if (i == 0) {
         if (currentSize >= item.getWeight()) {
           result.add(item);
-          System.out.println("weight: " + item.getWeight() + " , value: " + item.getValue());
+          System.out.println("weight: " + item.getWeight() + " , val: " + item.getValue());
         }
       } else if (valueMatrix[i][currentSize] - valueMatrix[i - 1][currentSize - item.getWeight()] ==
           item.value) {
         result.add(item);
-        System.out.println("weight: " + item.getWeight() + " , value: " + item.getValue());
+        System.out.println("weight: " + item.getWeight() + " , val: " + item.getValue());
         currentSize = currentSize - item.getWeight();
       }
     }

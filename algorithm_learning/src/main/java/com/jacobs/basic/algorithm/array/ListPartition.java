@@ -40,9 +40,9 @@ public class ListPartition {
     int big = treeNodeArray.length;
     int index = 0;
     while (index != big) {
-      if (treeNodeArray[index].value < pivot) {
+      if (treeNodeArray[index].val < pivot) {
         swap(treeNodeArray, ++small, index++);
-      } else if (treeNodeArray[index].value == pivot) {
+      } else if (treeNodeArray[index].val == pivot) {
         index++;
       } else {
         swap(treeNodeArray, --big, index);

@@ -22,7 +22,7 @@ public class LFUCache {
   }
 
   // @param key, an integer
-  // @param value, an integer
+  // @param val, an integer
   // @return nothing
   public void set(int key, int value) {
     Integer v = KV.get(key);

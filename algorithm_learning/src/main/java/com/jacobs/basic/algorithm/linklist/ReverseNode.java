@@ -16,7 +16,7 @@ public class ReverseNode {
     //TreeNode head = reversePartNodeList(treeNode1, 2, 4);
     TreeNode head = reverserNodeList2(treeNode1);
     while (head != null) {
-      System.out.println(head.value);
+      System.out.println(head.val);
       head = head.next;
     }
   }

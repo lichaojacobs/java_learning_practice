@@ -22,7 +22,7 @@ public class MaxTree {
     //右边
     for (int i = 0; i != nArr.length; i++) {
       TreeNode curTreeNode = nArr[i];
-      while (!stack.isEmpty() && stack.peek().value < curTreeNode.value) {
+      while (!stack.isEmpty() && stack.peek().val < curTreeNode.val) {
         popStackSetMap(stack, lBigMap);
       }
       stack.push(curTreeNode);
@@ -34,7 +34,7 @@ public class MaxTree {
     //右边
     for (int i = nArr.length - 1; i != -1; i--) {
       TreeNode curTreeNode = nArr[i];
-      while (!stack.isEmpty() && stack.peek().value < curTreeNode.value) {
+      while (!stack.isEmpty() && stack.peek().val < curTreeNode.val) {
         popStackSetMap(stack, lBigMap);
       }
       stack.push(curTreeNode);
@@ -63,7 +63,7 @@ public class MaxTree {
           left.right = curTreeNode;
         }
       } else {
-        TreeNode parent = left.value < right.value ? left : right;
+        TreeNode parent = left.val < right.val ? left : right;
         if (parent.left == null) {
           parent.left = curTreeNode;
         } else {

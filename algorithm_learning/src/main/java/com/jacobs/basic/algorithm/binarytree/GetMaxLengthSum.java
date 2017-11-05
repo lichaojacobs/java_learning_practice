@@ -28,7 +28,7 @@ public class GetMaxLengthSum {
       return maxLen;
     }
 
-    int curSum = preSum + head.value;
+    int curSum = preSum + head.val;
     if (!sumMap.containsKey(curSum)) {
       sumMap.put(curSum, level);
     }

@@ -28,7 +28,7 @@ public class FindPath {
       return;
     }
 
-    currSum += root.value;
+    currSum += root.val;
     currentPath.push(root);
 
     //如果是叶子节点
@@ -37,7 +37,7 @@ public class FindPath {
       Iterator<TreeNode> stackIterator = currentPath.iterator();
       System.out.println("find path: ");
       while (stackIterator.hasNext()) {
-        System.out.print(stackIterator.next().value + " ");
+        System.out.print(stackIterator.next().val + " ");
       }
     }
 

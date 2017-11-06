@@ -205,4 +205,32 @@ public class Problems_03 {
     //还原
     onePathResult.remove(root);
   }
+
+  //  Given a binary tree, determine if it is height-balanced.
+//      For this problem, a height-balanced binary tree is defined as a binary tree
+//  in which the depth of the two subtrees of every node never differ by more than 1.
+  //分别计算左右子树的高度
+  public static boolean isBalanced_034(TreeNode root) {
+    if (root == null) {
+      return true;
+    }
+
+    int left = getHeight(root.left);
+    int right = getHeight(root.right);
+    if (Math.abs(left - right) > 1) {
+      return false;
+    }
+
+    return isBalanced_034(root.left) && isBalanced_034(root.right);
+  }
+
+  public static int getHeight(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+
+    int left = getHeight(root.left) + 1;
+    int right = getHeight(root.right) + 1;
+    return left > right ? left : right;
+  }
 }

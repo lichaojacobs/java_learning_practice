@@ -19,6 +19,10 @@ import org.slf4j.LoggerFactory;
 public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
   private static final Logger logger = LoggerFactory.getLogger(WebSocketFrameHandler.class);
+  /**
+   * A thread-safe Set  Using ChannelGroup, you can categorize Channels into a meaningful group. A
+   * closed Channel is automatically removed from the collection,
+   */
   public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -32,15 +36,14 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
         if (channel != incoming) {
           channel.writeAndFlush(
-              new TextWebSocketFrame("[" + incoming.remoteAddress() + "]" + request));
+              new TextWebSocketFrame(
+                  simpleDateFormat.format(new java.util.Date()) + ": [" + incoming.remoteAddress()
+                      + "]: " + request.toLowerCase(Locale.US)));
         } else {
           channel.writeAndFlush(new TextWebSocketFrame(
-              simpleDateFormat.format(new java.util.Date()) + ": me: " + request
+              simpleDateFormat.format(new java.util.Date()) + ": [me]: " + request
                   .toLowerCase(Locale.US)));
         }
-
-        channel.writeAndFlush(new TextWebSocketFrame(
-            simpleDateFormat.format(new java.util.Date()) + ": " + request.toLowerCase(Locale.US)));
       } else {
         String message = "unsupported frame type: " + frame.getClass().getName();
         throw new UnsupportedOperationException(message);

@@ -49,7 +49,7 @@ import okhttp3.Response;
  */
 @Data
 @Slf4j
-public class DataHttpUtil {
+public class CommonHttpUtil {
 
   private static final int DEFAULT_MAX_IDLE_CONNECTION = 100;
   private static final int DEFAULT_KEEPALIVE_DURATION = 100;
@@ -82,7 +82,8 @@ public class DataHttpUtil {
 
 
   @Builder()
-  private DataHttpUtil(Integer maxIdleConnection, Integer keepaliveDuration, Integer connectTimeout,
+  private CommonHttpUtil(Integer maxIdleConnection, Integer keepaliveDuration,
+      Integer connectTimeout,
       Integer readTimeout, Integer writeTimeout, ExecutorService executorService) {
     final ConnectionPool connectionPool = new ConnectionPool(
         Optional.ofNullable(maxIdleConnection).orElse(DEFAULT_MAX_IDLE_CONNECTION),

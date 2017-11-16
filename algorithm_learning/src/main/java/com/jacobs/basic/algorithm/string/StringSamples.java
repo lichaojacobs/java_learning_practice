@@ -1,5 +1,7 @@
 package com.jacobs.basic.algorithm.string;
 
+import java.util.HashMap;
+
 /**
  * Created by lichao on 2017/10/1.
  */
@@ -10,7 +12,8 @@ public class StringSamples {
     //System.out.println(getNumSumInStr("A-1B--2C--D6E"));
     //System.out.println((char) 0);
     //System.out.println(getStrIndex(new String[]{null, "a", null, "a", "b", null, "c"}, "a"));
-    getAllStr(new char[]{'a', 'b', 'c'}, 0);
+    //getAllStr(new char[]{'a', 'b', 'c'}, 0);
+    System.out.println(getUnduplicatedSubStr("aabcb"));
   }
 
   //列出字符串所有顺序的可能情况:如 "abc" -> abc, acb, bac, bca, cab,cba,
@@ -280,5 +283,36 @@ public class StringSamples {
     }
 
     return res;
+  }
+
+  /**
+   * 给一个字符串返回最长的不重复的字串长度
+   *
+   * @param str 字符串
+   * @return 最长的不重复的字串长度
+   */
+  public static int getUnduplicatedSubStr(String str) {
+    if (str == null || str.length() == 0) {
+      return 0;
+    }
+
+    HashMap<Character, Integer> characterIntegerHashMap = new HashMap<>();
+    char[] chars = str.toCharArray();
+    int pre = 0;
+    int aft = 0;
+    int maxLength = 0;
+    while (aft != chars.length) {
+      if (!characterIntegerHashMap.containsKey(chars[aft])) {
+        maxLength = Math.max(aft - pre + 1, maxLength);
+      } else {
+        pre = characterIntegerHashMap.get(chars[aft]);
+        maxLength = Math.max(aft - pre + 1, maxLength);
+      }
+
+      characterIntegerHashMap.put(chars[aft], aft);
+      aft++;
+    }
+
+    return maxLength;
   }
 }

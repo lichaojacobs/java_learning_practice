@@ -1,7 +1,9 @@
 package com.jacobs;
 
+import com.google.common.collect.Lists;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -35,6 +37,8 @@ public class CommonTest {
 //    Object testInt = 1;
 //    Integer reult = testInt;
 //    System.out.println(testInt);
+    List<String> words = Lists.newArrayList("您好", "这里是", "出门", "问问");
+    System.out.println(words.stream().reduce((s, s2) -> s + s2).get());
 
   }
 

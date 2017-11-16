@@ -22,8 +22,16 @@ public class FindPath {
     findPath(testHead, 8, new Stack<>(), 0);
   }
 
-
-  public static void findPath(TreeNode root, int expectedSum, Stack<TreeNode> currentPath, int currSum) {
+  /**
+   * 先序遍历
+   *
+   * @param root 跟节点
+   * @param expectedSum 期望的累加和
+   * @param currentPath 目前的路径
+   * @param currSum 目前路径的累加和
+   */
+  public static void findPath(TreeNode root, int expectedSum, Stack<TreeNode> currentPath,
+      int currSum) {
     if (root == null) {
       return;
     }

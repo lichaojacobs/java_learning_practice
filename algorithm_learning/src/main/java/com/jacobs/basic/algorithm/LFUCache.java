@@ -71,6 +71,7 @@ public class LFUCache {
       this.lastTime = lastTime;
     }
 
+    @Override
     public int compareTo(HitRate o) {
       int hr = hitCount.compareTo(o.hitCount);
       return hr != 0 ? hr : lastTime.compareTo(o.lastTime);

@@ -1,7 +1,7 @@
 package com.jacobs.basic.java8pratice;
 
-import com.google.common.collect.Lists;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;

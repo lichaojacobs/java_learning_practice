@@ -1,6 +1,5 @@
-package com.jacobs;
+package com.jacobs.webflux.model;
 
-import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +18,15 @@ public class User implements Serializable {
   Integer id;
   String name;
   String email;
-  @SerializedName("passwd")
   String password;
   String eid;
   String epasswd;
   Integer major;
   Integer isRegistered;
+
+  public User(int id, String name, String email) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
 }

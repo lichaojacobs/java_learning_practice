@@ -1,9 +1,12 @@
 package com.jacobs.basic.algorithm.leetcode;
 
 import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.models.ListNode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -24,7 +27,18 @@ public class Problems_03 {
     root.right.right.left = new TreeNode(5);
     root.right.right.right = new TreeNode(1);
 
-    System.out.println(pathSum_033(root, 22));
+    //System.out.println(pathSum_033(root, 22));
+    System.out.println(maxDepth(root));
+
+//    LinkedList<Integer> rawList = new LinkedList<>();
+//    rawList.add(1);
+//    rawList.add(2);
+//    rawList.add(3);
+//
+//    printAll_036(rawList, new ArrayList<>(), 2);
+
+    //System.out.println(getMaxLengthSubListForFixedSum_038(new int[]{1, 2, 1, 1, 1}, 3));
+    System.out.println(sortedArrayToBST_041(new int[]{0}));
   }
 
   //  Given a binary tree
@@ -232,5 +246,312 @@ public class Problems_03 {
     int left = getHeight(root.left) + 1;
     int right = getHeight(root.right) + 1;
     return left > right ? left : right;
+  }
+
+  //从1到n输出数字全排序
+  //解决小问题，将1，2-n看作是两个数，以此类推
+  public static void printAll_035(int[] arr, int n, int i) {
+    if (i == n - 1) {
+      for (int temp : arr) {
+        System.out.print(temp + " ");
+      }
+      System.out.println();
+      return;
+    }
+
+    for (int j = i; j < n; j++) {
+      swap(arr, i, j);
+      printAll_035(arr, n, i + 1);
+      //记得还原
+      swap(arr, j, i);
+    }
+  }
+
+  private static void swap(int[] arr, int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+
+  //m个数据集合中选出n个数据，对n个数据进行全排列，打印全排列结果
+  public static void printAll_036(LinkedList<Integer> tempList, List<Integer> result,
+      int n) {
+    for (int i = 0; i < tempList.size(); i++) {
+      LinkedList<Integer> list = new LinkedList<>(tempList);
+      result.add(tempList.get(i));
+      list.remove(tempList.get(i));
+      if (n == 1) {
+        for (int temp : result) {
+          System.out.print(temp + " ");
+        }
+        System.out.println();
+        return;
+      } else {
+        printAll_036(list, result, n - 1);
+      }
+      result.remove(tempList.get(i));
+    }
+  }
+
+  //未排序正数数组中累加和为定值的最长子数组长度
+  public static int getMaxLengthSubListForFixedSum_037(int[] arr, int sum) {
+    if (arr == null || arr.length == 0) {
+      return 0;
+    }
+
+    //滑动窗口问题
+    int tempSum = 0;
+    int pre = 0;
+    int aft = 0;
+    int maxLength = 0;
+
+    while (aft < arr.length) {
+      tempSum += arr[aft];
+      while (tempSum >= sum) {
+        if (tempSum == sum) {
+          maxLength = Math.max(maxLength, aft - pre + 1);
+        }
+        tempSum -= arr[pre];
+        pre++;
+      }
+      aft++;
+    }
+
+    return maxLength;
+  }
+
+  //未排序数组中（元素可正可负可0）累加和为给定值的最长子数组系列问题
+  //s(j..i)=s(i)-s(j-1) 定义一个map 只记录每一个累加和最早出现的位置
+  public static int getMaxLengthSubListForFixedSum_038(int[] arr, int sum) {
+    if (arr == null || arr.length == 0) {
+      return 0;
+    }
+
+    Map<Integer, Integer> sumIndxMap = new HashMap<>();
+    int maxLength = 0;
+    int tempSum = 0;
+
+    for (int i = 0; i < arr.length; i++) {
+      tempSum += arr[i];
+      if (sumIndxMap.containsKey(tempSum - sum)) {
+        maxLength = Math.max(i - sumIndxMap.get(tempSum - sum), maxLength);
+      }
+      if (!sumIndxMap.containsKey(tempSum)) {
+        sumIndxMap.put(tempSum, i);
+      }
+    }
+
+    return maxLength;
+  }
+
+  /**
+   * 子矩阵的最大累加和问题（深度利用了上一题的思想） 如何求必须含有两行元素的子矩阵的最大累加和？可以把两行的元素累加，得到累加数组，对累加数组求最大子数组累加和。
+   *
+   * @param m 矩阵
+   * @return 最大子矩阵的和
+   */
+  public static int getMaxSubMatrixSum_039(int[][] m) {
+    if (m == null || m.length == 0 || m[0].length == 0) {
+      return 0;
+    }
+
+    int max = Integer.MIN_VALUE;
+    int cur = 0;
+    int[] s = null;//累加数组
+
+    for (int i = 0; i != m.length; i++) {
+      s = new int[m[0].length];
+      for (int j = i; j != m.length; j++) {
+        cur = 0;
+        for (int k = 0; k != s.length; k++) {
+          //与上题一致
+          s[k] += m[j][k];
+          cur += s[k];
+          max = Math.max(max, cur);
+          cur = cur < 0 ? 0 : cur;
+        }
+      }
+    }
+
+    return max;
+  }
+
+  //Given a singly linked list where elements are sorted in ascending order,
+  // convert it to a height balanced BST.
+  // 目的其实就是要找到链表的中间节点，这个可以通过快慢指针搞定
+  public static TreeNode sortedListToBST_040(ListNode head) {
+    if (head == null) {
+      return null;
+    }
+
+    if (head.next == null) {
+      return new TreeNode(head.val);
+    }
+
+    //快慢指针
+    ListNode mid = head;
+    ListNode end = head;
+    ListNode preMid = null;
+
+    while (end != null && end.next != null) {
+      preMid = mid;
+      mid = mid.next;
+      end = end.next.next;
+    }
+
+    TreeNode root = new TreeNode(mid.val);
+    preMid.next = null;
+    root.left = sortedListToBST_040(head);
+    root.right = sortedListToBST_040(mid.next);
+
+    return root;
+  }
+
+  //Given an array where elements are sorted in ascending order,
+  // convert it to a height balanced BST.
+  public static TreeNode sortedArrayToBST_041(int[] num) {
+    if (num == null || num.length == 0) {
+      return null;
+    }
+    return constructTreeNode(num, 0, num.length - 1);
+  }
+
+  public static TreeNode constructTreeNode(int[] num, int low, int high) {
+    if (low > high) {
+      return null;
+    }
+    if (low == high) {
+      return new TreeNode(num[low]);
+    }
+
+    int mid = (low + high + 1) / 2;
+    TreeNode root = new TreeNode(num[mid]);
+    root.left = constructTreeNode(num, low, mid - 1);
+    root.right = constructTreeNode(num, mid + 1, high);
+    return root;
+  }
+
+  //  Given a binary tree, return the bottom-up level order traversal of its nodes' values.
+  // (ie, from left to right, level by level from leaf to root).
+//  For example:
+//  Given binary tree{3,9,20,#,#,15,7},
+//      3
+//      / \
+//      9  20
+//      /  \
+//      15   7
+//
+//      return its bottom-up level order traversal as:
+//      [
+//      [15,7]
+//      [9,20],
+//      [3],
+//      ]
+  public static ArrayList<ArrayList<Integer>> levelOrderBottom_042(TreeNode root) {
+    ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+
+    while (!queue.isEmpty()) {
+      ArrayList<Integer> tempRes = new ArrayList<>();
+      int size = queue.size();
+      for (int i = 0; i < size; i++) {
+        TreeNode temp = queue.poll();
+        tempRes.add(temp.val);
+        if (temp.left != null) {
+          queue.add(temp.left);
+        }
+        if (temp.right != null) {
+          queue.add(temp.right);
+        }
+      }
+      res.add(0, tempRes);
+    }
+
+    return res;
+  }
+
+  //  Given inorder and postorder traversal of a tree, construct the binary tree.
+  //You may assume that duplicates do not exist in the tree.
+  public static TreeNode buildTree_043(int[] inorder, int[] postorder) {
+    if (inorder == null || postorder == null || inorder.length != postorder.length) {
+      return null;
+    }
+
+    return constructTree(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1);
+  }
+
+  public static TreeNode constructTree(int[] inorder, int[] postorder, int inStart, int inEnd,
+      int postStart, int postEnd) {
+
+    if (inStart > inEnd) {
+      return null;
+    }
+
+    int midRoot = 0;
+    for (int i = inStart; i <= inEnd; i++) {
+      if (inorder[i] == postorder[postEnd]) {
+        midRoot = i;
+      }
+    }
+
+    int leftLen = midRoot - inStart;
+    TreeNode root = new TreeNode(inorder[midRoot]);
+    root.left = constructTree(inorder, postorder, inStart, midRoot - 1, postStart,
+        postStart + leftLen - 1);
+    root.right = constructTree(inorder, postorder, midRoot + 1, inEnd, postStart + leftLen,
+        postEnd - 1);
+
+    return root;
+  }
+
+  public static TreeNode buildTree_044(int[] preorder, int[] inorder) {
+    if (inorder == null || preorder == null || inorder.length != preorder.length) {
+      return null;
+    }
+
+    return construceTree_02(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
+  }
+
+  public static TreeNode construceTree_02(int[] preorder, int[] inorder, int preStart, int preEnd,
+      int inStart, int inEnd) {
+
+    if (inStart > inEnd) {
+      return null;
+    }
+
+    int midIndex = 0;
+    for (int i = inStart; i <= inEnd; i++) {
+      if (inorder[i] == preorder[preStart]) {
+        midIndex = i;
+      }
+    }
+
+    int rightLen = midIndex - inStart;
+    TreeNode root = new TreeNode(inorder[midIndex]);
+    root.left = construceTree_02(preorder, inorder, preStart + 1, preStart + rightLen, inStart,
+        midIndex - 1);
+    root.right = construceTree_02(preorder, inorder, preStart + rightLen + 1, preEnd, midIndex + 1,
+        inEnd);
+
+    return root;
+  }
+
+
+  //  Given a binary tree, find its maximum depth.
+//  The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+  public static int maxDepth(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+
+    int lDepth = maxDepth(root.left);
+    int rDepth = maxDepth(root.right);
+
+    return 1 + (lDepth > rDepth ? lDepth : rDepth);
   }
 }

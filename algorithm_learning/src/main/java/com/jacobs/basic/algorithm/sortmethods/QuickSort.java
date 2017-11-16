@@ -20,7 +20,7 @@ public class QuickSort {
     if (low >= high) {
       return;
     }
-    int index = partition4(list, low, high);
+    int index = partition(list, low, high);
     sort(list, low, index - 1);
     sort(list, index + 1, high);
   }

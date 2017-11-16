@@ -1,6 +1,6 @@
 package com.jacobs;
 
-import com.jacobs.DataHttpUtil.HttpResponse;
+import com.jacobs.CommonHttpUtil.HttpResponse;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.Future;
@@ -12,14 +12,14 @@ import org.junit.Test;
  */
 public class UtilTest {
 
-  private DataHttpUtil dataHttpUtil = DataHttpUtil.builder().build();
+  private CommonHttpUtil commonHttpUtil = CommonHttpUtil.builder().build();
   private SimpleDateFormat simpleDateTime = new SimpleDateFormat("yyyy/MM/dd");
 
   @Test
   public void testGetMethod() {
     try {
-      //System.out.println(dataHttpUtil.get("http://visual-be/data").send().tryString());
-      Future<HttpResponse> responseFuture = dataHttpUtil.get("http://visual-be/data")
+      //System.out.println(commonHttpUtil.get("http://visual-be/data").send().tryString());
+      Future<HttpResponse> responseFuture = commonHttpUtil.get("http://visual-be/data")
           .async();
       HttpResponse response = responseFuture.get(1000, TimeUnit.MILLISECONDS);
       response.setJson(true);

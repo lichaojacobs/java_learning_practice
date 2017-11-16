@@ -234,7 +234,7 @@ public class BinaryTree {
     ///分拆子树的左子树和右子树
     int index = 0, length = 0;
     for (index = startIn; index <= endIn; index++) {
-      if (inOrderList.get(index) == preOrderList.get(startPre)) {
+      if (inOrderList.get(index).equals(preOrderList.get(startPre))) {
         break;
       }
     }
@@ -460,6 +460,7 @@ public class BinaryTree {
       return head;
     }
 
+    //说明此分支两个节点并不是同时存在，这时候返回存在的那个节点，供上一层去判断
     return left != null ? left : right;
   }
 
@@ -708,5 +709,32 @@ public class BinaryTree {
     }
 
     return results;
+  }
+
+  /**
+   * 二叉树镜像
+   *
+   * @param root 根节点
+   */
+  public static void mirrorRecursively(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+
+    if (root.left == null && root.right == null) {
+      return;
+    }
+
+    TreeNode tempNode = root.left;
+    root.left = root.right;
+    root.right = tempNode;
+
+    if (root.left != null) {
+      mirrorRecursively(root.left);
+    }
+
+    if (root.right != null) {
+      mirrorRecursively(root.right);
+    }
   }
 }

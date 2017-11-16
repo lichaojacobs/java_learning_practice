@@ -1,5 +1,6 @@
 package com.jacobs;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
@@ -92,6 +93,52 @@ public class ReactorTest {
 
     Flux.firstEmitting(a, b)
         .toIterable()
+        .forEach(System.out::println);
+  }
+
+  @Test
+  public void testmap() {
+    Flux<String> flux = Flux.just("A");
+    //map operator is a new flux which was discarded
+    flux.map(s -> "foo" + s);
+    flux.subscribe(System.out::println);
+  }
+
+  @Test
+  public void testDelay() {
+    System.out.println("start...");
+//    Flux.fromIterable(words)
+//        .delaySubscription(Duration.ofMillis(100))
+////        .doOnNext(serviceA::someObserver)
+////        .map(d -> d * 2)
+//        .take(10)
+//        //.onErrorResumeWith()
+//        //.doAfterTerminate(serviceM::incrementTerminate)
+//        .subscribe(System.out::println);
+
+    Flux.fromIterable(words)
+        .delaySubscription(Duration.ofMillis(100))
+//        .doOnNext(serviceA::someObserver)
+//        .map(d -> d * 2)
+        .take(3)
+        //.onErrorResumeWith()
+        //.doAfterTerminate(serviceM::incrementTerminate)
+        .doOnComplete(() -> System.out.println("task compeleted..."))
+        .toIterable()//block
+        .forEach(System.out::println);
+  }
+
+  public static Flux<String> errorFlux() {
+    return Flux.error(new IllegalStateException());
+  }
+
+  @Test
+  public void testFlatMap() {
+    Mono.justOrEmpty(null);
+    List<String> strArr = Arrays.asList("a b c", "d e f");
+    strArr.stream()
+        .map(s -> s.split(" "))//Stream<List<String>>
+        .flatMap(strings -> Arrays.stream(strings))//Steam<String>
         .forEach(System.out::println);
   }
 }

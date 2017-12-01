@@ -17,23 +17,11 @@ import java.util.Stack;
 public class BinaryTree {
 
   public static void main(String[] args) {
-    TreeNode head = new TreeNode(1);
-    head.right = new TreeNode(2);
-    //    postorderTraversal(head).stream()
-    //        .sorted(Comparator.naturalOrder())
-    //        .forEach(System.out::println);
+    TreeNode root = new TreeNode(2);
+    root.left = new TreeNode(3);
+    root.left.left = new TreeNode(1);
 
-    //System.out.println(postorderTraversal(head).size());
-//    TreeNode root = constructTree(Lists.newArrayList(1, 2, 4, 5, 3, 6), 0,
-//        5, Lists.newArrayList(4, 2, 5, 1, 6, 3), 0, 5);
-//    preOrderRecur2(root);
-    //int[] arr = new int[]{0, 3, 1, 10, 13, 12, 6};
-    //System.out.println(isBSTAfterOrder(arr));
-
-    TreeNode root = new TreeNode(0);
-    root.left = new TreeNode(1);
-    root.right = new TreeNode(2);
-    levelOrder(root);
+    inOrderRecur2(root);
   }
 
   /**
@@ -94,19 +82,14 @@ public class BinaryTree {
     }
 
     Stack<TreeNode> stack = new Stack<>();
-    stack.push(head);
-    TreeNode currentTreeNode = head;
-    while (!stack.isEmpty()) {
-      if (currentTreeNode.left != null) {
-        stack.push(currentTreeNode.left);
-        currentTreeNode = currentTreeNode.left;
+    while (!stack.isEmpty() || head != null) {
+      if (head != null) {
+        stack.push(head);
+        head = head.left;
       } else {
-        currentTreeNode = stack.pop();
-        System.out.println(currentTreeNode.val + " ");
-        if (currentTreeNode.right != null) {
-          stack.push(currentTreeNode.right);
-          currentTreeNode = currentTreeNode.right;
-        }
+        head = stack.pop();
+        System.out.println(head.val + " ");
+        head = head.right;
       }
     }
   }

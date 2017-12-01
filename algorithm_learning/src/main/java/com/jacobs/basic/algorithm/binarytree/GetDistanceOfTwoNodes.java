@@ -13,17 +13,19 @@ public class GetDistanceOfTwoNodes {
     TreeNode testHead = new TreeNode(6);
     testHead.left = new TreeNode(1);
     testHead.right = new TreeNode(12);
-    testHead.left.left = new TreeNode(1);
+    testHead.left.left = new TreeNode(4);
     testHead.left.right = new TreeNode(3);
     testHead.right.left = new TreeNode(10);
     testHead.right.right = new TreeNode(13);
+
+    System.out.println(countDistance(testHead, testHead.left.right));
 
 //    Map<TreeNode, Integer> pathDistances = new HashMap<>();
 //    getPathDistances(testHead, 0, pathDistances);
 //
 //    pathDistances.forEach((node, integer) -> System.out
 //        .println(String.format("node: %d, distance is : %d", node.val, integer)));
-    System.out.println(getDistanceOfTwoNodes2(testHead, testHead.left.right, testHead.right.right));
+    //System.out.println(getDistanceOfTwoNodes2(testHead, testHead.left.right, testHead.right.right));
   }
 
   /**
@@ -43,7 +45,8 @@ public class GetDistanceOfTwoNodes {
   /**
    * 将每一个节点到根节点的距离都保存到map中，采用先序遍历
    */
-  public static void getPathDistances(TreeNode head, int level, Map<TreeNode, Integer> pathDistances) {
+  public static void getPathDistances(TreeNode head, int level,
+      Map<TreeNode, Integer> pathDistances) {
     if (head == null) {
       return;
     }
@@ -77,7 +80,13 @@ public class GetDistanceOfTwoNodes {
     int left = countDistance(head.left, treeNode);
     int right = countDistance(head.right, treeNode);
 
-    return left == -1 ? right + 1 : left + 1;
+    if (left == -1 && right == -1) {
+      return -1;
+    } else if (left > right) {
+      return left + 1;
+    } else {
+      return right + 1;
+    }
   }
 
 }

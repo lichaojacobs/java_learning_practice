@@ -47,6 +47,7 @@ public class SumTotalTreesByArray {
 
     if (start > end) {
       res.add(null);
+      return res;
     }
 
     TreeNode head = null;

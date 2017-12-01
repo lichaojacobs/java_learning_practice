@@ -40,7 +40,8 @@ public class ConsumerAndProducer {
     public void run() {
       while (true) {
         try {
-          System.out.println("消费了" + blockingQueue.take());
+          String product = blockingQueue.take();
+          System.out.println("消费了" + product);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }

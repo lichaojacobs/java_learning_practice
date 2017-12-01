@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class Practice {
 
   public static void main(String[] args) {
-    multiply("12", "123456");
+    //System.out.println(onceNum(new int[]{1, 1, 1, 2, 3, 3, 3}, 3));
   }
 
 
@@ -177,5 +177,46 @@ public class Practice {
     res[0] = Math.max(leftMax, rightMax) + 1;
 
     return Math.max(Math.max(leftMax, rightMax), currNodeMax);
+  }
+
+  /**
+   * 在其他数都出现k次的数组中找到只出现一次的数
+   *
+   * @param arr 整形数组
+   * @param k k 进制
+   * @return 返回只出现一次的数
+   */
+  public static int onceNum(int[] arr, int k) {
+    int[] result = new int[32];
+    for (int i = 0; i < arr.length; i++) {
+      int[] kResult = getKvalue(arr[i], k);
+      for (int j = 0; j < result.length; j++) {
+        result[j] = (result[j] + kResult[j]) % k;
+      }
+    }
+
+    return changeToTenValue(result, k);
+  }
+
+  public static int[] getKvalue(int num, int k) {
+    int[] res = new int[32];
+
+    int index = 0;
+    while (num != 0) {
+      res[index] = num % k;
+      num = num / k;
+      index++;
+    }
+
+    return res;
+  }
+
+  public static int changeToTenValue(int[] result, int k) {
+    int num = 0;
+    for (int i = result.length - 1; i >= 0; i--) {
+      num = num * k + result[i];
+    }
+
+    return num;
   }
 }

@@ -1,6 +1,7 @@
 package com.jacobs.basic.algorithm;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * @author lichao
@@ -9,7 +10,10 @@ import java.util.LinkedList;
 public class Practice {
 
   public static void main(String[] args) {
-    //System.out.println(onceNum(new int[]{1, 1, 1, 2, 3, 3, 3}, 3));
+    TreeNode root = new TreeNode(1);
+    root.left = new TreeNode(-2);
+    root.right = new TreeNode(3);
+    System.out.println(maxPathSum(root));
   }
 
 
@@ -218,5 +222,164 @@ public class Practice {
     }
 
     return num;
+  }
+
+
+  /**
+   * 判断一棵树是否是搜索二叉树
+   *
+   * @param root 根节点
+   * @return 返回是否是搜索二叉树
+   */
+  public static boolean isValidBST(TreeNode root) {
+    if (root == null || (root.left == null && root.right == null)) {
+      return true;
+    }
+
+    Stack<TreeNode> stack = new Stack<>();
+    TreeNode currentNode = root;
+    TreeNode preNode = null;
+
+    while (!stack.isEmpty() || currentNode != null) {
+      if (currentNode != null) {
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      } else {
+        currentNode = stack.pop();
+        if (preNode != null && (preNode.val >= currentNode.val)) {
+          return false;
+        }
+        preNode = currentNode;
+        currentNode = currentNode.right;
+      }
+    }
+
+    return true;
+  }
+
+  //Given preorder and inorder traversal of a tree, construct the binary tree.
+  public TreeNode buildTree(int[] preorder, int[] inorder) {
+    if (preorder == null || inorder == null || preorder.length != inorder.length) {
+      return null;
+    }
+
+    return constructNode(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
+  }
+
+  public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd,
+      int inStart, int inEnd) {
+    if (preStart < preEnd) {
+      return null;
+    }
+
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int index = inStart;
+    for (; index <= inEnd; index++) {
+      if (inorder[index] == preorder[preStart]) {
+        break;
+      }
+    }
+
+    root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart,
+        inStart, index - 1);
+    root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd, index + 1,
+        inEnd);
+
+    return root;
+  }
+
+  // Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+  // Given the sorted array: [-10,-3,0,5,9],
+//
+//  One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
+//
+//      0
+//      / \
+//      -3   9
+//      /   /
+//      -10  5
+  public static TreeNode sortedArrayToBST(int[] nums) {
+    if (nums == null || nums.length == 0) {
+      return null;
+    }
+
+    return constructBST(nums, 0, nums.length - 1);
+  }
+
+  public static TreeNode constructBST(int[] nums, int start, int end) {
+    if (start > end) {
+      return null;
+    }
+
+    int mid = (start + end) / 2;
+    TreeNode head = new TreeNode(mid);
+    head.left = constructBST(nums, start, mid - 1);
+    head.right = constructBST(nums, mid + 1, end);
+    return head;
+  }
+
+  //  Given a binary tree and a sum, determine if the tree has a root-to-leaf
+//  path such that adding up all the values
+//  along the path equals the given sum.
+  public static boolean hasPathSum(TreeNode root, int sum) {
+    if (root == null) {
+      return false;
+    }
+
+    if ((root.left == null && root.right == null)) {
+      if (root.val == sum) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+  }
+
+  //  Given a binary tree, find the maximum path sum.
+//
+//  For this problem, a path is defined as any sequence of nodes from some starting node
+//
+//  to any node in the tree along the parent-child connections. The path must contain at least one node
+//
+//  and does not need to go through the root.
+  //无非来自三个地方，左边，右边，跨节点，或者就是当前节点
+  public static int maxPathSum(TreeNode root) {
+    return help(root, new int[1]);
+  }
+
+  public static int help(TreeNode root, int[] res) {
+    if (root == null) {
+      res[0] = 0;
+      return Integer.MIN_VALUE;
+    }
+
+    int leftMax = help(root.left, res);
+    int maxFromLeft = res[0];
+
+    int rightMax = help(root.right, res);
+    int maxFromRight = res[0];
+
+    int current = maxFromLeft + maxFromRight + root.val;
+    res[0] = Math.max(maxFromLeft, maxFromRight) + root.val;
+
+    return Math.max(Math.max(Math.max(leftMax, rightMax), current), root.val);
+  }
+
+  //杨辉三角
+  public static void printYFTriangle() {
+    int lines = 8;
+    int[] a = new int[lines + 1];
+    int previous = 1;
+    for (int i = 1; i <= lines; i++) {
+      for (int j = 1; j <= i; j++) {
+        int current = a[j];
+        a[j] = previous + current;
+        previous = current;
+        System.out.print(a[j] + " ");
+      }
+      System.out.println();
+    }
   }
 }

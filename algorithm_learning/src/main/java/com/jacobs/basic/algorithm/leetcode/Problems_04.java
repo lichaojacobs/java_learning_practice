@@ -36,7 +36,8 @@ public class Problems_04 {
 //    reverseBetween_062(head, 2, 4);
 
     //subsetsWithDup_070(new int[]{0});
-    System.out.println(numDecodings_072("1224"));
+    //System.out.println(numDecodings_072("1224"));
+    merge_073(new int[]{}, 2, new int[]{1}, 1);
   }
 
 
@@ -587,5 +588,31 @@ public class Problems_04 {
     ArrayList<Integer> resultList = new ArrayList<>();
 
     return resultList;
+  }
+
+  //Given two sorted integer arrays A and B, merge B into A as one sorted array.
+  public static void merge_073(int A[], int m, int B[], int n) {
+    if (m == 0) {
+      for (int k = 0; k < B.length; k++) {
+        A[k] = B[k];
+      }
+    } else {
+      int i = m - 1;
+      int j = n - 1;
+      int s = m + n - 1;
+      while (j >= 0 && i >= 0) {
+        if (A[i] > B[j]) {
+          A[s--] = A[i--];
+        } else {
+          A[s--] = B[j--];
+        }
+      }
+
+      if (i == -1) {
+        for (; j >= 0; j--) {
+          A[s--] = B[j];
+        }
+      }
+    }
   }
 }

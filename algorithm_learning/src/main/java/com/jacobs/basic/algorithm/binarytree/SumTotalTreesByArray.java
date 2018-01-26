@@ -10,7 +10,7 @@ import java.util.List;
 public class SumTotalTreesByArray {
 
   public static void main(String[] args) {
-
+    System.out.println(generateTrees(2));
   }
 
   /**
@@ -39,6 +39,9 @@ public class SumTotalTreesByArray {
    * 进阶：输入n返回假设可能的二叉树结构有M种，请返回M个二叉树的头节点，每一颗二叉树代表一种可能的结构
    */
   public static List<TreeNode> generateTrees(int n) {
+    if (n < 1) {
+      return new LinkedList<>();
+    }
     return generate(1, n);
   }
 

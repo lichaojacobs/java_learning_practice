@@ -3,8 +3,7 @@ package com.jacobs.basic.algorithm.array;
 import com.jacobs.basic.algorithm.TreeNode;
 
 /**
- * 将单向链表按某值划分成左边小，中间相等，右边大的形式
- * Created by lichao on 2017/1/8.
+ * 将单向链表按某值划分成左边小，中间相等，右边大的形式 Created by lichao on 2017/1/8.
  */
 public class ListPartition {
 //  public static void main(String[] args) {

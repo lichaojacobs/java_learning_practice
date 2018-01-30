@@ -13,8 +13,8 @@ public class Problems_06 {
   public static void main(String[] args) {
     //sortColors_082(new int[]{2, 0, 0, 1, 2, 0, 1});
     //System.out.println(addBinary_089("1", "111"));
-    Problems_06 problems_06 = new Problems_06();
-    System.out.println(problems_06.getPermutation_094(3, 5));
+//    Problems_06 problems_06 = new Problems_06();
+//    System.out.println(problems_06.getPermutation_094(3, 5));
   }
 
   //  Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent,
@@ -506,5 +506,130 @@ public class Problems_06 {
       arr[i] = arr[i + 1];
     }
     arr[k] = tmp;
+  }
+
+
+  //  Given an integer n, generate a square matrix filled with elements from 1 to n 2 in spiral order.
+//
+//      For example,
+//  Given n =3,
+//
+//  You should return the following matrix:
+//  [
+//      [ 1, 2, 3 ],
+//      [ 8, 9, 4 ],
+//      [ 7, 6, 5 ]
+//  ]
+  public static int[][] generateMatrix_095(int n) {
+    int[][] arr = new int[n][n];
+    int start = 0;
+    int end = n - 1;
+    int i, j;
+    int index = 1;
+
+    while (end - start >= 0) {
+      i = start;
+      j = start;
+      //向右
+      while (j <= end) {
+        arr[i][j++] = index++;
+      }
+      j--;
+      index--;
+
+      //向下
+      while (i <= end) {
+        arr[i++][j] = index++;
+      }
+      i--;
+      index--;
+
+      //向左
+      while (j >= start) {
+        arr[i][j--] = index++;
+      }
+      j++;
+      index--;
+
+      //向上
+      while (i > start) {
+        arr[i--][j] = index++;
+      }
+
+      start++;
+      end--;
+    }
+
+    return arr;
+  }
+
+  //  Given a string s consists of upper/lower-case alphabets and empty space characters' ', return the length of last word in the string.
+//
+//  If the last word does not exist, return 0.
+//
+//  Note: A word is defined as a character sequence consists of non-space characters only.
+//
+//      For example,
+//  Given s ="Hello World",
+//  return5.
+  public static int lengthOfLastWord_096(String s) {
+    if (s == null || s.equals("")) {
+      return 0;
+    }
+
+    int len = s.length();
+    int end = len - 1;
+    while (s.charAt(end) == ' ' && end > 0) {
+      end--;
+    }
+
+    int start = end;
+    while (start >= 0 && s.charAt(start) != ' ') {
+      start--;
+    }
+
+    return end - start;
+  }
+
+  public static ArrayList<Interval> insert_097(ArrayList<Interval> intervals,
+      Interval newInterval) {
+    ArrayList<Interval> resultIntervals = new ArrayList<>();
+    if (intervals == null || intervals.size() == 0 || newInterval == null) {
+      return intervals;
+    }
+
+    int insertPos = 0;//记录将要插入的位置
+    for (Interval interval : intervals) {
+      //先考虑两种在区间外的情况
+      if (interval.start > newInterval.end) {
+        resultIntervals.add(interval);
+      } else if (interval.end < newInterval.start) {
+        resultIntervals.add(interval);
+        insertPos++;
+      } else {
+        //剩下的两种情况只需要取公共区间就行
+        newInterval.start = Math.min(interval.start, newInterval.start);
+        newInterval.end = Math.max(interval.end, newInterval.end);
+      }
+    }
+
+    resultIntervals.add(insertPos, newInterval);
+    return resultIntervals;
+  }
+
+  class Interval {
+
+    int start;
+    int end;
+
+    Interval() {
+      start = 0;
+      end = 0;
+    }
+
+    Interval(int s, int e) {
+      start = s;
+      end = e;
+    }
   }
 }

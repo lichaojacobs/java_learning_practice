@@ -3,6 +3,8 @@ package com.jacobs.basic.algorithm.leetcode;
 import com.jacobs.basic.models.ListNode;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @author lichao
@@ -631,5 +633,45 @@ public class Problems_06 {
       start = s;
       end = e;
     }
+  }
+
+
+  //  Given a collection of intervals, merge all overlapping intervals.
+//
+//  For example,
+//  Given[1,3],[2,6],[8,10],[15,18],
+//      return[1,6],[8,10],[15,18].
+  public ArrayList<Interval> merge_098(ArrayList<Interval> intervals) {
+    if (intervals == null || intervals.size() == 0) {
+      return intervals;
+    }
+    //排序
+    Collections.sort(intervals, new Comparator<Interval>() {
+      @Override
+      public int compare(Interval o1, Interval o2) {
+        return o1.start - o2.start;
+      }
+    });
+
+    ArrayList<Interval> resultList = new ArrayList<>();
+    int index = 0;
+    while (index < intervals.size()) {
+      int start = index + 1;
+      Interval interval = intervals.get(index);
+      while (start < intervals.size()) {
+        Interval tempInterval = intervals.get(start);
+        if (tempInterval.start > interval.end) {
+          break;
+        } else {
+          interval.start = Math.min(interval.start, tempInterval.start);
+          interval.end = Math.max(interval.end, tempInterval.end);
+        }
+        start++;
+      }
+      resultList.add(interval);
+      index = start;
+    }
+
+    return resultList;
   }
 }

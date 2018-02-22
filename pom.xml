@@ -37,7 +37,6 @@
 
   <name>java_learning_practice</name>
 
-
   <!--依赖管理，并不执行引入，只有在子项目中显示声明-->
   <dependencyManagement>
     <dependencies>

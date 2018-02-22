@@ -17,81 +17,63 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class ModelMapperTest {
 
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class Order {
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Order {
 
-    Customer customer;
-    Address billingAddress;
-  }
+        Customer customer;
+        Address billingAddress;
+    }
 
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class Customer {
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Customer {
 
-    Name name;
-  }
+        Name name;
+    }
 
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class Name {
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Name {
 
-    String firstName;
-    String lastName;
-  }
+        String firstName;
+        String lastName;
+    }
 
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class Address {
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Address {
 
-    String street;
-    String city;
-  }
+        String street;
+        String city;
+    }
 
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class OrderDTO {
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderDTO {
 
-    String customerFirstName;
-    String customerLastName;
-    String billingAddressStreet;
-    String billingAddressCity;
-  }
+        String customerFirstName;
+        String customerLastName;
+        String billingAddressStreet;
+        String billingAddressCity;
+    }
 
-  @Test
-  public void testMapper() {
-    Order order = Order.builder()
-        .customer(
-            Customer.builder()
-                .name(
-                    Name.builder()
-                        .firstName("chao")
-                        .lastName("li")
-                        .build())
-                .build())
-        .billingAddress(
-            Address.builder()
-                .street("海淀")
-                .city("北京")
-                .build())
-        .build();
+    @Test
+    public void testMapper() {
+        Order order = Order.builder().customer(Customer.builder().name(Name.builder().firstName("chao").lastName("li").build()).build())
+                .billingAddress(Address.builder().street("海淀").city("北京").build()).build();
 
-    ModelMapper modelMapper = new ModelMapper();
-    OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
-
-    assertEquals(order.getCustomer().getName().getFirstName(), orderDTO.getCustomerFirstName());
-    assertEquals(order.getCustomer().getName().getLastName(), orderDTO.getCustomerLastName());
-    assertEquals(order.getBillingAddress().getStreet(), orderDTO.getBillingAddressStreet());
-    assertEquals(order.getBillingAddress().getCity(), orderDTO.getBillingAddressCity());
-  }
+        ModelMapper modelMapper = new ModelMapper();
+        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+    }
 }

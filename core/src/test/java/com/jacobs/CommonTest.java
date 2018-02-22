@@ -37,8 +37,8 @@ public class CommonTest {
 //    Object testInt = 1;
 //    Integer reult = testInt;
 //    System.out.println(testInt);
-    List<String> words = Lists.newArrayList("您好", "这里是", "出门", "问问");
-    System.out.println(words.stream().reduce((s, s2) -> s + s2).get());
+//    List<String> words = Lists.newArrayList("您好", "这里是", "出门", "问问");
+//    System.out.println(words.stream().reduce((s, s2) -> s + s2).get());
 
   }
 

@@ -1,6 +1,7 @@
 package com.jacobs.basic.algorithm.leetcode;
 
 import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.models.ListNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +27,15 @@ public class Problems_07 {
         //System.out.println(permute_105(new int[]{1, 2, 3, 4}));
         //System.out.println(multiply("123", "456"));
         //System.out.println(combinationSum2_112(new int[]{1, 1}, 2));
-        System.out.println(convert_116("ABCD", 2));
+        //System.out.println(convert_116("ABCD", 2));
+//        ListNode l1 = new ListNode(9);
+////        l1.next = new ListNode(8);
+////
+////        ListNode l2 = new ListNode(1);
+////        System.out.println(addTwoNumbers(l1, l2));
+
+        //System.out.println(lengthOfLongestSubstring("abcabcbb"));
+        System.out.println(longestPalindrome("baab"));
     }
 
     //  Given an array of non-negative integers, you are initially positioned at the first index of the array.
@@ -828,5 +837,149 @@ public class Problems_07 {
         }
 
         return resultBuilder[0].toString();
+    }
+
+
+    //    Given a list, rotate the list to the right by k places, where k is non-negative.
+//
+//            Example:
+//
+//    Given 1->2->3->4->5->NULL and k = 2,
+//
+//    return 4->5->1->2->3->NULL.
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null) return head;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = dummy, slow = dummy;
+
+        int i;
+        for (i = 0; fast.next != null; i++)//Get the total length
+            fast = fast.next;
+
+        for (int j = i - k % i; j > 0; j--) //Get the i-n%i th node
+            slow = slow.next;
+
+        fast.next = dummy.next; //Do the rotation
+        dummy.next = slow.next;
+        slow.next = null;
+
+        return dummy.next;
+    }
+
+
+    //    You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+//
+//    You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+//
+//            Example
+//
+//    Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+//    Output: 7 -> 0 -> 8
+//    Explanation: 342 + 465 = 807.
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummyHead = new ListNode(0);
+        ListNode p = l1, q = l2, curr = dummyHead;
+        int carry = 0;
+        while (p != null || q != null) {
+            int x = (p != null) ? p.val : 0;
+            int y = (q != null) ? q.val : 0;
+            int sum = carry + x + y;
+            carry = sum / 10;
+            curr.next = new ListNode(sum % 10);
+            curr = curr.next;
+            if (p != null) p = p.next;
+            if (q != null) q = q.next;
+        }
+        if (carry > 0) {
+            curr.next = new ListNode(carry);
+        }
+        return dummyHead.next;
+    }
+
+    //    Given a string, find the length of the longest substring without repeating characters.
+//
+//    Examples:
+//
+//    Given "abcabcbb", the answer is "abc", which the length is 3.
+//
+//    Given "bbbbb", the answer is "b", with the length of 1.
+//
+//    Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+    public static int lengthOfLongestSubstring(String s) {
+        if (s == null || s.equals("")) {
+            return 0;
+        }
+        //记录最近一次出现的位置
+        int[] map = new int[256];
+        for (int i = 0; i < map.length; i++) {
+            map[i] = -1;
+        }
+        int maxLength = 0;
+        //采用双指针的方法
+        int i = 0, j = 0;
+        int tempLength = 0;
+        while (i < s.length() && j < s.length()) {
+            if (map[s.charAt(j)] != -1 && map[s.charAt(j)] >= i) {
+                tempLength = tempLength - map[s.charAt(j)] + i;
+                //将i移动位置
+                i = map[s.charAt(j)] + 1;
+            } else {
+                tempLength++;
+                maxLength = Math.max(maxLength, tempLength);
+            }
+            map[s.charAt(j)] = j;
+            j++;
+        }
+
+        return maxLength;
+    }
+
+
+    //    Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+//
+//    Example:
+//
+//    Input: "babab"
+//
+//    Output: "bab"
+//
+//    Note: "aba" is also a valid answer.
+    public static String longestPalindrome(String s) {
+        if (s == null || s.equals("")) {
+            return null;
+        }
+
+        int startIndex = 0;
+        int endIndex = 0;
+        //从中间向两边扩散的办法
+        int curr = 0;
+        for (; curr < s.length(); curr++) {
+
+            //如果是奇数
+            int i = curr, j = curr;
+            while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
+                if (j - i > endIndex - startIndex) {
+                    startIndex = i;
+                    endIndex = j;
+                }
+                i--;
+                j++;
+            }
+
+            //偶数
+            i = curr;
+            j = curr + 1;
+            while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
+                if (j - i > endIndex - startIndex) {
+                    startIndex = i;
+                    endIndex = j;
+                }
+                i--;
+                j++;
+            }
+        }
+
+        return s.substring(startIndex, endIndex + 1);
     }
 }

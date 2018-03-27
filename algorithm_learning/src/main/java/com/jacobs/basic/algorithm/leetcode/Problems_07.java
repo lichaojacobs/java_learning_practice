@@ -3,10 +3,7 @@ package com.jacobs.basic.algorithm.leetcode;
 import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author lichao
@@ -35,7 +32,8 @@ public class Problems_07 {
 ////        System.out.println(addTwoNumbers(l1, l2));
 
         //System.out.println(lengthOfLongestSubstring("abcabcbb"));
-        System.out.println(longestPalindrome("baab"));
+        // System.out.println(longestPalindrome("baab"));
+        System.out.println(buildTree(new int[]{3, 9, 20, 15, 7}, new int[]{9, 3, 15, 20, 7}));
     }
 
     //  Given an array of non-negative integers, you are initially positioned at the first index of the array.
@@ -981,5 +979,164 @@ public class Problems_07 {
         }
 
         return s.substring(startIndex, endIndex + 1);
+    }
+
+    //    Given n non-negative integers a1, a2, ..., an, where each represents a point at coordinate (i, ai).
+//    n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0).
+//    Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+//
+//            Note: You may not slant the container and n is at least 2.
+    public int maxArea(int[] height) {
+        int maxarea = 0, l = 0, r = height.length - 1;
+        while (l < r) {
+            maxarea = Math.max(maxarea, Math.min(height[l], height[r]) * (r - l));
+            if (height[l] < height[r])
+                l++;
+            else
+                r--;
+        }
+        return maxarea;
+    }
+
+    //根据先序和中序构造二叉树
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0 || inorder == null
+                || inorder.length == 0 || preorder.length != inorder.length) {
+            return null;
+        }
+
+        return buildHelper(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
+    }
+
+    public static TreeNode buildHelper(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd) {
+        if (preStart > preEnd || inStart > inEnd) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[preStart]);
+        int index = inStart;
+        for (; index <= inEnd; index++) {
+            if (inorder[index] == preorder[preStart]) {
+                break;
+            }
+        }
+
+        int len = index - inStart;
+        root.left = buildHelper(preorder, inorder, preStart + 1, preStart + len, inStart, index - 1);
+        root.right = buildHelper(preorder, inorder, preStart + len + 1, preEnd, index + 1, inEnd);
+
+        return root;
+    }
+
+
+    //    Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+//
+//            Note: The solution set must not contain duplicate triplets.
+//
+//    For example, given array S = [-1, 0, 1, 2, -1, -4],
+//
+//    A solution set is:
+//            [
+//            [-1, 0, 1],
+//            [-1, -1, 2]
+//            ]
+    public List<List<Integer>> threeSum(int[] nums) {
+        return null;
+    }
+
+
+    //    Write a program to solve a Sudoku puzzle by filling the empty cells.
+//
+//    Empty cells are indicated by the character'.'.
+//
+//    You may assume that there will be only one unique solution.
+    //回溯法
+    public void solveSudoku(char[][] board) {
+        if (board == null) {
+            return;
+        }
+
+        solve(board);
+    }
+
+    private boolean solve(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == '.') {
+                    // 第一个'.'格一定是1-9中间的数
+                    for (char c = '1'; c <= '9'; c++) {
+                        if (isValid(board, i, j, c)) {
+                            board[i][j] = c;
+                            if (solve(board))
+                                return true;
+                            else
+                                board[i][j] = '.';
+                        }
+                    }
+                    /*
+                     * 如果能够运行到这里，说明这个位置不能确定具体的数字
+                     */
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isValid(char[][] board, int m, int n, char c) {
+
+        int tm = m / 3;
+        int tn = n / 3;
+        int mbegin = tm * 3;
+        int nbegin = tn * 3;
+
+        // 检查小的九宫格
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[mbegin + i][nbegin + j] == c)
+                    return false;
+            }
+        }
+        // 检查行和列
+        for (int i = 0; i < 9; i++) {
+            if (board[m][i] == c || board[i][n] == c)
+                return false;
+        }
+        return true;
+    }
+
+    //    Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules.
+//
+//    The Sudoku board could be partially filled, where empty cells are filled with the character'.'.
+    public boolean isValidSudoku(char[][] board) {
+        if (board == null) {
+            return false;
+        }
+
+        for (int i = 0; i < 9; i++) {
+            Set<Character> col = new HashSet<>();
+            Set<Character> row = new HashSet<>();
+            Set<Character> cube = new HashSet<>();
+
+            for (int j = 0; j < 9; j++) {
+                //检查行
+                if (board[i][j] != '.' && !row.add(board[i][j])) {
+                    return false;
+                }
+                //检查列
+                if (board[j][i] != '.' && !col.add(board[j][i])) {
+                    return false;
+                }
+                //检查九宫格
+                //九宫格的序号：3 * (i / 3) + j / 3
+                //属于第几个九宫格的第几个格子
+                int cubeRow = 3 * (i / 3) + j / 3, cubeCol = 3 * (i % 3) + j % 3;
+                if (board[cubeRow][cubeCol] != '.' && !cube.add(board[cubeRow][cubeCol])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

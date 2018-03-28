@@ -112,4 +112,108 @@ public class Problems_08 {
         }
         return dummy.next;
     }
+
+    // (hard)   For example,
+//    Given this linked list: 1->2->3->4->5
+//
+//    For k = 2, you should return: 2->1->4->3->5
+//
+//    For k = 3, you should return: 3->2->1->4->5
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || head.next == null || k < 2) return head;
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode tail = dummy, prev = dummy, temp;
+        int count;
+        while (true) {
+            count = k;
+            while (count > 0 && tail != null) {
+                count--;
+                tail = tail.next;
+            }
+            if (tail == null) break;//Has reached the end
+
+
+            head = prev.next;//for next cycle
+            // prev-->temp-->...--->....--->tail-->....
+            // Delete @temp and insert to the next position of @tail
+            // prev-->...-->...-->tail-->head-->...
+            // Assign @temp to the next node of @prev
+            // prev-->temp-->...-->tail-->...-->...
+            // Keep doing until @tail is the next node of @prev
+            while (prev.next != tail) {
+                temp = prev.next;//Assign
+                prev.next = temp.next;//Delete
+
+                temp.next = tail.next;
+                tail.next = temp;//Insert
+
+            }
+
+            tail = head;
+            prev = head;
+
+        }
+        return dummy.next;
+    }
+
+    //    Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+    //今日头条一面
+//    Example:
+//    Input: 1->2->4, 1->3->4
+//    Output: 1->1->2->3->4->4
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
+        }
+
+        if (l2 == null) {
+            return l1;
+        }
+
+        ListNode dummy = new ListNode(0);
+        ListNode head = dummy;
+        ListNode head1 = l1;
+        ListNode head2 = l2;
+
+        while (head1 != null && head2 != null) {
+            if (head1.val > head2.val) {
+                head.next = head2;
+                head2 = head2.next;
+                head = head.next;
+            } else {
+                head.next = head1;
+                head1 = head1.next;
+                head = head.next;
+            }
+        }
+
+        while (head1 != null) {
+            head.next = head1;
+            head1 = head1.next;
+            head = head.next;
+        }
+
+        while (head2 != null) {
+            head.next = head2;
+            head2 = head2.next;
+            head = head.next;
+        }
+
+        return dummy.next;
+    }
+
+
+    /**
+     * （今日头条二面原题)
+     * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+     *
+     * @param lists
+     * @return
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        return null;
+    }
 }

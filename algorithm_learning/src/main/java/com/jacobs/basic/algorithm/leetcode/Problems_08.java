@@ -11,9 +11,11 @@ import java.util.*;
 public class Problems_08 {
     public static void main(String[] args) {
         //System.out.println(threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-        for (int i : twoSum(new int[]{2, 7, 11, 15}, 9)) {
-            System.out.println(i);
-        }
+//        for (int i : twoSum(new int[]{2, 7, 11, 15}, 9)) {
+//            System.out.println(i);
+//        }
+        //System.out.println(isUgly(10));
+        System.out.println(1 << 2);
     }
 
     //    1、与题目Two Sum类似，先将数组nums进行排序，然后从左往右依次枚举，在枚举的过程中左右夹逼；
@@ -207,13 +209,190 @@ public class Problems_08 {
 
 
     /**
-     * （今日头条二面原题)
      * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
      *
      * @param lists
      * @return
      */
     public ListNode mergeKLists(ListNode[] lists) {
-        return null;
+        return partition(lists, 0, lists.length - 1);
+    }
+
+    public ListNode partition(ListNode[] lists, int start, int end) {
+        if (start == end) return lists[start];
+        else if (start < end) {
+            int mid = (start + end) / 2;
+            ListNode pre = partition(lists, start, mid - 1);
+            ListNode aft = partition(lists, mid + 1, end);
+            return merge(pre, aft);
+        } else {
+            return null;
+        }
+    }
+
+    public static ListNode merge(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        if (l1.val < l2.val) {
+            l1.next = merge(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = merge(l1, l2.next);
+            return l2;
+        }
+    }
+//
+//    /**
+//     * 合并n条有序的链表，使得新链表与旧链表排序一致（今日头条二面题）
+//     * O(n log(n))
+//     * 使用归并的思想
+//     *
+//     * @param arrList
+//     */
+//    public static void mergeMutiArrayList(List<List<Integer>> arrList) {
+//        if (arrList == null || arrList.size() == 0) {
+//            return;
+//        }
+//
+//
+//    }
+//
+//    public static List<Integer> partHelper(List<List<Integer>> lists, List<Integer> resultList, int start, int end) {
+//        if (start == end) return resultList;
+//        while (start < end) {
+//            int mid = (start + end) / 2;
+//            List<>partHelper(lists, resultList, start, mid);
+//            partHelper(lists, resultList, mid + 1, end);
+//        }
+//    }
+//
+//    public static List<Integer> mergeList(List<Integer> list1, List<Integer> list2, List<Integer> resultList) {
+//        int index1 = 0;
+//        int index2 = 0;
+//
+//        while (index1 != list1.size() && index2 != list2.size()) {
+//            if (list1.get(index1) > list2.get(index2)) {
+//                resultList.add(list2.get(index2++));
+//            } else {
+//                resultList.add(list1.get(index1++));
+//            }
+//        }
+//
+//        while (index1 != list1.size()) {
+//            resultList.add(list1.get(index2++));
+//        }
+//
+//        while (index2 != list2.size()) {
+//            resultList.add(list2.get(index1++));
+//        }
+//
+//        return resultList;
+//    }
+
+
+    //    Write a program to find the n-th ugly number.
+//
+//    Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the first 10 ugly numbers.
+//
+//    Note that 1 is typically treated as an ugly number, and n does not exceed 1690.
+//    The ugly-number sequence is 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, …
+//    because every number can only be divided by 2, 3, 5, one way to look at the sequence is to split the sequence to three groups as below:
+//
+//            (1) 1×2, 2×2, 3×2, 4×2, 5×2, …
+//            (2) 1×3, 2×3, 3×3, 4×3, 5×3, …
+//            (3) 1×5, 2×5, 3×5, 4×5, 5×5, …
+//    We can find that every subsequence is the ugly-sequence itself (1, 2, 3, 4, 5, …) multiply 2, 3, 5.
+//5
+//    Then we use similar merge method as merge sort, to get every ugly number from the three subsequence.
+//
+//    Every step we choose the smallest one, and move one step after,including nums with same value.
+    public int nthUglyNumber(int n) {
+        int[] uglyNums = new int[n];
+        int index2 = 0, index3 = 0, index5 = 0;
+        uglyNums[0] = 1;
+        for (int i = 1; i < n; i++) {
+            uglyNums[i] = Math.min(Math.min(uglyNums[index2] * 2, uglyNums[index3] * 3), uglyNums[index5] * 5);
+            if (uglyNums[i] == uglyNums[index2] * 2) {
+                index2++;
+            }
+            if (uglyNums[i] == uglyNums[index3] * 3) {
+                index3++;
+            }
+            if (uglyNums[i] == uglyNums[index5] * 5) {
+                index5++;
+            }
+        }
+
+        return uglyNums[n - 1];
+    }
+
+    public static boolean isUgly(int num) {
+        if (num <= 0) {
+            return false;
+        }
+        if (num == 1) {
+            return true;
+        }
+
+        int temp = num;
+        while (temp > 1) {
+            int yu = 0;
+            if ((yu = temp % 2) == 0) {
+                temp = temp / 2;
+                continue;
+            }
+            if ((yu = temp % 3) == 0) {
+                temp = temp / 3;
+                continue;
+            }
+            if ((yu = temp % 5) == 0) {
+                temp = temp / 5;
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+    //    Given an array of integers sorted in ascending order, find the starting and ending position of a given target value.
+//
+//    Your algorithm's runtime complexity must be in the order of O(log n).
+//
+//    If the target is not found in the array, return [-1, -1].
+//
+//    For example,
+//    Given [5, 7, 7, 8, 8, 10] and target value 8,
+//            return [3, 4].
+    public static int[] searchRange(int[] nums, int target) {
+        int[] resultArr = new int[]{-1, -1};
+        if (nums == null || nums.length == 0) {
+            return resultArr;
+        }
+        int startIndex = firstGreaterEqual(nums, target);
+        if (startIndex == nums.length || nums[startIndex] != target) {
+            return new int[]{-1, -1};
+        }
+        resultArr[0] = startIndex;
+        resultArr[1] = firstGreaterEqual(nums, target + 1) - 1;
+
+        return resultArr;
+    }
+
+    //找到第一个比目标大的数，总共调用两次函数，一次target，一次target+1
+    private static int firstGreaterEqual(int[] A, int target) {
+        int low = 0, high = A.length;
+        while (low < high) {
+            int mid = (low + high) / 2;
+            if (A[mid] < target) {
+                low = mid + 1;
+            } else {
+                //可能A[mid]=target，但是现在还不确定是否就是第一个出现target的位置
+                high = mid;
+            }
+        }
+        return low;
     }
 }

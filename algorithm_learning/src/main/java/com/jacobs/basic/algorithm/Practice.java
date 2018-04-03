@@ -303,6 +303,7 @@ public class Practice {
         int current = maxFromLeft + maxFromRight + root.val;
         res[0] = Math.max(maxFromLeft, maxFromRight) + root.val;
 
+        //返回最大的情况
         return Math.max(Math.max(Math.max(leftMax, rightMax), current), root.val);
     }
 

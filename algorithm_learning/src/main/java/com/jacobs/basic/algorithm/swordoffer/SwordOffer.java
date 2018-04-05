@@ -16,7 +16,12 @@ public class SwordOffer {
     public static void main(String[] args) {
 //        System.out.println(Find(7,
 //                new int[][]{{1, 2, 8, 9}, {2, 4, 9, 12}, {4, 7, 10, 13}, {6, 8, 11, 15}}));
-        reOrderArray(new int[]{1, 2, 3, 4, 5});
+        //reOrderArray(new int[]{1, 2, 3, 4, 5});
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        //System.out.println(FindKthToTail(head, 3));
+        System.out.println(ReverseList(head));
     }
 
     //    在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
@@ -136,7 +141,86 @@ public class SwordOffer {
                 index++;
             }
         }
+    }
 
-        Arrays.stream(array).forEach(System.out::println);
+    //输入一个链表，输出该链表中倒数第k个结点。
+    public static ListNode FindKthToTail(ListNode head, int k) {
+        if (head == null || k < 0) {
+            return null;
+        }
+
+        ListNode curr = head;
+        ListNode aft = head;
+
+        int index = 1;
+        while (aft.next != null && index < k) {
+            aft = aft.next;
+            index++;
+        }
+
+        if (index < k) {
+            return null;
+        } else {
+            while (aft.next != null) {
+                curr = curr.next;
+                aft = aft.next;
+            }
+        }
+
+        return curr;
+    }
+
+    //输入一个链表，反转链表后，输出链表的所有元素。
+    public static ListNode ReverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode pre = null;
+        ListNode curr = head;
+        ListNode aft;
+
+        while (curr != null) {
+            aft = curr.next;
+            curr.next = pre;
+            pre = curr;
+            curr = aft;
+        }
+
+        return pre;
+    }
+
+    //输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+    public static boolean HasSubtree(TreeNode root1, TreeNode root2) {
+        //当Tree1和Tree2都不为零的时候，才进行比较。否则直接返回false
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+        boolean hasSubTree = false;
+        if (root1.val == root2.val) {
+            hasSubTree = subTreeHelper(root1, root2);
+        }
+        if (!hasSubTree) {
+            hasSubTree = HasSubtree(root1.left, root2);
+            if (!hasSubTree) {
+                hasSubTree = HasSubtree(root1.right, root2);
+            }
+        }
+
+        return hasSubTree;
+    }
+
+    public static boolean subTreeHelper(TreeNode root1, TreeNode root2) {
+        ////如果Tree2已经遍历完了都能对应的上，返回true
+        if (root2 == null) {
+            return true;
+        }
+        // //如果Tree2还没有遍历完，Tree1却遍历完了。返回false
+        if (root1 == null) {
+            return false;
+        }
+
+        return (root1.val == root2.val) && subTreeHelper(root1.left, root2.left)
+                && subTreeHelper(root1.right, root2.right);
     }
 }

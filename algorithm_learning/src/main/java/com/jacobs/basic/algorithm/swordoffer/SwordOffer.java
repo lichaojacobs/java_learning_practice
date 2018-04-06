@@ -21,7 +21,8 @@ public class SwordOffer {
         head.next = new ListNode(2);
         head.next.next = new ListNode(3);
         //System.out.println(FindKthToTail(head, 3));
-        System.out.println(ReverseList(head));
+        //System.out.println(ReverseList(head));
+        System.out.println(IsPopOrder(new int[]{1, 2, 3, 4, 5}, new int[]{4, 3, 5, 1, 2}));
     }
 
     //    在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
@@ -222,5 +223,120 @@ public class SwordOffer {
 
         return (root1.val == root2.val) && subTreeHelper(root1.left, root2.left)
                 && subTreeHelper(root1.right, root2.right);
+    }
+
+    //操作给定的二叉树，将其变换为源二叉树的镜像。
+    //仔细观察，发现用后序遍历比较合适
+    public static void Mirror(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.left == null && root.right == null) {
+            return;
+        }
+
+        Mirror(root.left);
+        Mirror(root.right);
+        //transfer
+        TreeNode tempNode = root.left;
+        root.left = root.right;
+        root.right = tempNode;
+    }
+
+
+    //    输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
+//    例如，如果输入如下矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+//    则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+    public ArrayList<Integer> printMatrix(int[][] matrix) {
+        ArrayList<Integer> resultList = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return resultList;
+        }
+
+        if (matrix.length == 1 && matrix[0].length == 1) {
+            resultList.add(matrix[0][0]);
+            return resultList;
+        }
+
+        int starti = 0;
+        int startj = 0;
+        int endi = matrix.length - 1;
+        int endj = matrix[0].length - 1;
+        while (starti <= endi && startj <= endj) {
+            //当只有一行一列的情况
+            if (starti == endi) {
+                for (int j = startj; j <= endj; j++) {
+                    resultList.add(matrix[starti][j]);
+                }
+                return resultList;
+            } else if (startj == endj) {
+                for (int i = starti; i <= endi; i++) {
+                    resultList.add(matrix[i][startj]);
+                }
+                return resultList;
+            } else {
+                int i = starti;
+                int j = startj;
+                //上边
+                while (j < endj) {
+                    resultList.add(matrix[i][j++]);
+                }
+
+                //右边
+                while (i < endi) {
+                    resultList.add(matrix[i++][j]);
+                }
+
+                //下边
+                while (j > startj) {
+                    resultList.add(matrix[i][j--]);
+                }
+
+                //上边,加一的目的是不需要重复的加，只需要等待下一次循环就好
+                while (i > starti) {
+                    resultList.add(matrix[i--][j]);
+                }
+
+                starti++;
+                startj++;
+                endi--;
+                endj--;
+            }
+        }
+
+        return resultList;
+    }
+
+    //    输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。
+//    假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，
+//    但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+    public static boolean IsPopOrder(int[] pushA, int[] popA) {
+        if (pushA == null || popA == null
+                || pushA.length == 0 || popA.length == 0
+                || pushA.length != popA.length) {
+            return false;
+        }
+
+        //压入栈的所有数字均不相等
+        Stack<Integer> stack = new Stack<>();
+        int popIndex = 0;
+        for (int i = 0; i < pushA.length; i++) {
+            if (!stack.isEmpty() && stack.peek() == popA[popIndex]) {
+                stack.pop();
+                popIndex++;
+            }
+            stack.push(pushA[i]);
+        }
+
+        while (!stack.isEmpty()) {
+            if (stack.peek() != popA[popIndex]) {
+                return false;
+            }
+            stack.pop();
+            popIndex++;
+        }
+
+        return true;
     }
 }

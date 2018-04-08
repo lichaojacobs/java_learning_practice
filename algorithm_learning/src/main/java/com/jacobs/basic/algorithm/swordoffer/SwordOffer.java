@@ -3,9 +3,7 @@ package com.jacobs.basic.algorithm.swordoffer;
 import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author lichao
@@ -17,12 +15,24 @@ public class SwordOffer {
 //        System.out.println(Find(7,
 //                new int[][]{{1, 2, 8, 9}, {2, 4, 9, 12}, {4, 7, 10, 13}, {6, 8, 11, 15}}));
         //reOrderArray(new int[]{1, 2, 3, 4, 5});
-        ListNode head = new ListNode(1);
-        head.next = new ListNode(2);
-        head.next.next = new ListNode(3);
+//        ListNode head = new ListNode(1);
+//        head.next = new ListNode(2);
+//        head.next.next = new ListNode(3);
         //System.out.println(FindKthToTail(head, 3));
         //System.out.println(ReverseList(head));
-        System.out.println(IsPopOrder(new int[]{1, 2, 3, 4, 5}, new int[]{4, 3, 5, 1, 2}));
+        // System.out.println(IsPopOrder(new int[]{1, 2, 3, 4, 5}, new int[]{4, 3, 5, 1, 2}));
+
+
+        //System.out.println(VerifySquenceOfBST(new int[]{4}));
+
+        //find path
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.left = new TreeNode(3);
+        System.out.println(FindPath(root, 7));
     }
 
     //    在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
@@ -338,5 +348,114 @@ public class SwordOffer {
         }
 
         return true;
+    }
+
+    //从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+    public static ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        ArrayList<Integer> results = new ArrayList<>();
+        if (root == null)
+            return results;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode temp = queue.poll();
+            results.add(temp.val);
+
+            if (temp.left != null)
+                queue.add(temp.left);
+
+            if (temp.right != null)
+                queue.add(temp.right);
+        }
+
+        return results;
+    }
+
+    //    输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。
+//    假设输入的数组的任意两个数字都互不相同。
+    public static boolean VerifySquenceOfBST(int[] sequence) {
+        if (sequence == null || sequence.length == 0) {
+            return false;
+        }
+
+        return isBSTHelper(sequence, 0, sequence.length - 1);
+    }
+
+    public static boolean isBSTHelper(int[] sequence, int start, int end) {
+        if (start >= end) {
+            return true;
+        }
+
+        //用来标记是否已经找到第一个大于头节点数的节点，此节点是左右分支的分界点
+        boolean firstLarge = false;
+        int endIndex = start;
+        for (int i = start; i < end; i++) {
+            if (sequence[i] > sequence[end]) {
+                if (!firstLarge) {
+                    firstLarge = true;
+                    //如果为负数说明此时只有右子树
+                    endIndex = i - 1 > 0 ? i - 1 : 0;
+                }
+            } else {
+                //因为题目说明了里面所有的数都不相同，当在分枝上头节点的右边找到了比头节点小的数，此时直接返回false
+                if (firstLarge) {
+                    return false;
+                }
+            }
+        }
+
+        return isBSTHelper(sequence, start, endIndex) && isBSTHelper(sequence, endIndex, end - 1);
+    }
+
+    //    输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+//    路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+    public static ArrayList<ArrayList<Integer>> FindPath(TreeNode root, int target) {
+        ArrayList<ArrayList<Integer>> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+
+        findAllPathsHelper(root, target, resultList, new ArrayList<>());
+        return resultList;
+    }
+
+    public static void findAllPathsHelper(TreeNode root, int target,
+                                          ArrayList<ArrayList<Integer>> resultList,
+                                          ArrayList<Integer> tempResult) {
+        if (root == null) {
+            return;
+        }
+
+        tempResult.add(root.val);
+        //从根节点到当前节点的总和等于target，并且当前节点必须是叶子节点
+        if (root.val == target && root.left == null && root.right == null) {
+            resultList.add(new ArrayList<>(tempResult));
+        }
+        findAllPathsHelper(root.left, target - root.val, resultList, tempResult);
+        findAllPathsHelper(root.right, target - root.val, resultList, tempResult);
+        //返回上一层得移除记录
+        tempResult.remove(tempResult.size() - 1);
+    }
+
+    //给定数组，arr[i]=k,代表可以从位置i向右跳1~k个距离。
+    // 如果从位置0出发，返回最少跳几次能跳到arr最后的位置上
+    public static int jump(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+
+        int jump = 0;//总共需要跳的次数
+        int curr = 0;//当前如果要跳，能达到的最远位置
+        int next = 0;//下一次跳能达到的最大位置
+
+        for (int i = 0; i < arr.length; i++) {
+            if (curr < i) {
+                jump++;
+                curr = next;
+            }
+            next = Math.max(next, i + arr[i]);
+        }
+
+        return jump;
     }
 }

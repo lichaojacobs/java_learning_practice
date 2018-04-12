@@ -4,6 +4,7 @@ import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author lichao
@@ -26,13 +27,15 @@ public class SwordOffer {
         //System.out.println(VerifySquenceOfBST(new int[]{4}));
 
         //find path
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
-        root.right.left = new TreeNode(3);
-        System.out.println(FindPath(root, 7));
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        root.left.left = new TreeNode(4);
+//        root.left.right = new TreeNode(5);
+//        root.right.left = new TreeNode(3);
+//        System.out.println(FindPath(root, 7));
+        System.out.println(Permutation("abcc"));
+
     }
 
     //    在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
@@ -457,5 +460,133 @@ public class SwordOffer {
         }
 
         return jump;
+    }
+
+    //    输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+//    要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+    //方法一：使用容器
+    public static TreeNode Convert1(TreeNode pRootOfTree) {
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        inOrderToQueue(pRootOfTree, nodeQueue);
+        if (nodeQueue.isEmpty()) {
+            return pRootOfTree;
+        }
+
+        pRootOfTree = nodeQueue.poll();
+        TreeNode pre = pRootOfTree;
+        pre.left = null;
+        TreeNode cur = null;
+        while (!nodeQueue.isEmpty()) {
+            cur = nodeQueue.poll();
+            pre.right = cur;
+            cur.left = pre;
+            pre = cur;
+        }
+
+        pre.right = null;
+        return pRootOfTree;
+    }
+
+    //按照中序遍历将节点塞入队列
+    public static void inOrderToQueue(TreeNode head, Queue<TreeNode> queue) {
+        if (head == null) {
+            return;
+        }
+
+        inOrderToQueue(head.left, queue);
+        queue.add(head);
+        inOrderToQueue(head.right, queue);
+    }
+
+    //不用容器，使用递归解决问题
+    public static TreeNode Convert2(TreeNode pRootOfTree) {
+        if (pRootOfTree == null) {
+            return null;
+        }
+
+        TreeNode last = process(pRootOfTree);
+        pRootOfTree = last.right;
+        last.right = null;
+        return pRootOfTree;
+    }
+
+    public static TreeNode process(TreeNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        TreeNode leftE = process(head.left);//左边结束
+        TreeNode rightE = process(head.right);//右边结束
+        TreeNode leftS = leftE != null ? leftE.right : null;//左边开始
+        TreeNode rightS = rightE != null ? rightE.right : null;//右边开始
+        if (leftE != null && rightE != null) {
+            leftE.right = head;
+            head.left = leftE;
+            head.right = rightS;
+            rightS.left = head;
+            rightE.right = leftS;
+            return rightE;
+        } else if (leftE != null) {
+            leftE.right = head;
+            head.left = leftE;
+            head.right = leftS;
+            return head;
+        } else if (rightE != null) {
+            head.right = rightS;
+            rightS.left = head;
+            rightE.right = head;
+            return rightE;
+        } else {
+            head.right = head;
+            return head;
+        }
+    }
+
+
+    /**
+     * 字符串的排列
+     * 输入一个字符串,按字典序打印出该字符串中字符的所有排列。
+     * 例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+     * <p>
+     * 输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+     *
+     * @param str
+     * @return
+     */
+    public static ArrayList<String> Permutation(String str) {
+        ArrayList<String> resultList = new ArrayList<>();
+        if (str == null || str.equals("")) {
+            return resultList;
+        }
+
+        permutationHelper(resultList, str.toCharArray(), 0, str.length() - 1);
+        return resultList;
+    }
+
+    public static void permutationHelper(ArrayList<String> resultList, char[] charArr, int start, int end) {
+        if (start >= end) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (char s : charArr) {
+                stringBuilder.append(s);
+            }
+            resultList.add(stringBuilder.toString());
+            return;
+        }
+
+        for (int i = start; i <= end; i++) {
+            if (i != start && charArr[i] == charArr[start]) {
+                continue;
+            }
+            swap(charArr, start, i);
+            permutationHelper(resultList, charArr, start + 1, end);
+            swap(charArr, start, i);
+        }
+    }
+
+    public static void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }

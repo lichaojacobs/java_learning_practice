@@ -1,11 +1,12 @@
 package com.jacobs.basic.algorithm;
 
 import com.google.common.collect.Lists;
+import com.jacobs.basic.algorithm.array.MaxChildListSum;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author lichao
@@ -18,20 +19,21 @@ public class Practice {
 //////    root.left = new TreeNode(-2);
 //////    root.right = new TreeNode(3);
 //////    System.out.println(maxPathSum(root));
-        double a = new BigDecimal(3.23557)
-                .setScale(3, BigDecimal.ROUND_UP).doubleValue() * 10000;
-        List<List<Long>> lists = new ArrayList<>();
-        double logRatio = (new BigDecimal((double) (209129 - 210482) / 209129)
-                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000);
-
-        double diffRatio = new BigDecimal((double) (330037 - 316478) / 330037)
-                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000;
-
-        lists.add(Lists.newArrayList(1L, 2L));
-        lists.add(Lists.newArrayList(3L, 4L));
-        System.out.println(a);
-        //System.out.println(String.format("list: %s", lists));
-        System.out.println((int) Math.abs(diffRatio));
+//        double a = new BigDecimal(3.23557)
+//                .setScale(3, BigDecimal.ROUND_UP).doubleValue() * 10000;
+//        List<List<Long>> lists = new ArrayList<>();
+//        double logRatio = (new BigDecimal((double) (209129 - 210482) / 209129)
+//                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000);
+//
+//        double diffRatio = new BigDecimal((double) (330037 - 316478) / 330037)
+//                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000;
+//
+//        lists.add(Lists.newArrayList(1L, 2L));
+//        lists.add(Lists.newArrayList(3L, 4L));
+//        System.out.println(a);
+//        //System.out.println(String.format("list: %s", lists));
+//        System.out.println((int) Math.abs(diffRatio));
+        System.out.println(calculateGrowth());
     }
 
     /**
@@ -321,5 +323,53 @@ public class Practice {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * 搜狐大数据开发笔试题（替别人答）
+     */
+    public static int calculateGrowth() {
+        Scanner intput = new Scanner(System.in);
+        int rows = intput.nextInt();
+        if (rows <= 0) {
+            return -1;//非法值
+        }
+
+        int dailyGrowth = 0;
+        int missionGrowth = 0;
+        int[] maxDailyGrowth = new int[256];
+        for (int i = 0; i < maxDailyGrowth.length; i++) {
+            maxDailyGrowth[i] = Integer.MIN_VALUE;
+        }
+
+        while (rows > 0) {
+            String line = intput.next();
+            List<Integer> lineArr = Arrays.stream(line.split(","))
+                                          .map(s -> Integer.valueOf(s))
+                                          .collect(Collectors.toList());
+
+            //每日增长
+            if (lineArr.get(0) == 1) {
+                int start = lineArr.get(1);
+                int end = lineArr.get(2);
+                int value = lineArr.get(3);
+                for (int i = start; i <= end; i++) {
+                    if (maxDailyGrowth[i] > 0) {
+                        if (value > maxDailyGrowth[i]) {
+                            dailyGrowth = dailyGrowth + value - maxDailyGrowth[i];
+                        }
+                    } else {
+                        dailyGrowth = dailyGrowth + value;
+                    }
+                    maxDailyGrowth[i] = Math.max(value, maxDailyGrowth[i]);
+                }
+            } else if (lineArr.get(0) == 2) {
+                //任务增长
+                missionGrowth += lineArr.get(2);
+            }
+            rows--;
+        }
+
+        return dailyGrowth + missionGrowth;
     }
 }

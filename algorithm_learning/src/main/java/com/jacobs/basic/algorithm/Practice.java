@@ -33,7 +33,8 @@ public class Practice {
 //        System.out.println(a);
 //        //System.out.println(String.format("list: %s", lists));
 //        System.out.println((int) Math.abs(diffRatio));
-        System.out.println(calculateGrowth());
+        //System.out.println(calculateGrowth());
+        System.out.println(MoreThanHalfNum_Solution(new int[]{1, 2, 3, 2, 2, 2, 5, 4, 2}));
     }
 
     /**
@@ -371,5 +372,65 @@ public class Practice {
         }
 
         return dailyGrowth + missionGrowth;
+    }
+
+    //    数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+//    例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
+//    由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+    public static int MoreThanHalfNum_Solution(int[] array) {
+        if (array == null || array.length == 0) {
+            return 0;
+        }
+
+        int times = 1;
+        int number = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] == number) {
+                times++;
+            } else if (times > 0) {
+                times--;
+            } else {
+                number = array[number];
+                times = 1;
+            }
+        }
+
+        times = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == number) {
+                times++;
+            }
+        }
+
+        return times > array.length / 2 ? number : 0;
+    }
+
+    //输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+    public ArrayList<Integer> GetLeastNumbers_Solution(int[] input, int k) {
+        ArrayList<Integer> result = new ArrayList<>();
+        int length = input.length;
+        if (k > length || k == 0) {
+            return result;
+        }
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(k, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2.compareTo(o1);
+            }
+        });
+        for (int i = 0; i < length; i++) {
+            if (maxHeap.size() != k) {
+                maxHeap.offer(input[i]);
+            } else if (maxHeap.peek() > input[i]) {
+                Integer temp = maxHeap.poll();
+                temp = null;
+                maxHeap.offer(input[i]);
+            }
+        }
+        for (Integer integer : maxHeap) {
+            result.add(integer);
+        }
+        return result;
     }
 }

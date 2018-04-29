@@ -34,8 +34,9 @@ public class SwordOffer {
 //        root.left.right = new TreeNode(5);
 //        root.right.left = new TreeNode(3);
 //        System.out.println(FindPath(root, 7));
-        System.out.println(Permutation("abcc"));
+        //System.out.println(Permutation("abcc"));
 
+        //System.out.println(FindGreatestSumOfSubArray(new int[]{6, -3, -2, 7, -15, 1, 2, 2}));
     }
 
     //    在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
@@ -588,5 +589,55 @@ public class SwordOffer {
         char temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
+    }
+
+    //    HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。
+//    今天测试组开完会后,他又发话了:
+//    在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。
+//    但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。
+//    你会不会被他忽悠住？(子向量的长度至少是1)
+    public static int FindGreatestSumOfSubArray(int[] array) {
+        if (array.length == 0) {
+            return array[0];
+        }
+        int maxSubArr = Integer.MIN_VALUE;
+        //开始不能从索引0开始，就假设从索引0的左边一个位置开始，开始的值都为0，这样对正负都是没有影响的
+        int minSubArr = 0;
+        int totalSubArr = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            totalSubArr += array[i];
+            maxSubArr = Math.max(totalSubArr - minSubArr, maxSubArr);
+            minSubArr = Math.min(totalSubArr, minSubArr);
+        }
+
+        return maxSubArr;
+    }
+
+    //    求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+//    为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,但是对于后面问题他就没辙了。
+//    ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数
+    //解答：http://www.cnblogs.com/nailperry/p/4752987.html
+    public static int NumberOfXBetween1AndN_Solution(int n, int x) {
+        if (n < 0 || x < 1 || x > 9)
+            return 0;
+        int high, low, curr, tmp, i = 1;
+        high = n;
+        int total = 0;
+        while (high != 0) {
+            high = n / (int) Math.pow(10, i);// 获取第i位的高位
+            tmp = n % (int) Math.pow(10, i);
+            curr = tmp / (int) Math.pow(10, i - 1);// 获取第i位
+            low = tmp % (int) Math.pow(10, i - 1);// 获取第i位的低位
+            if (curr == x) {
+                total += high * (int) Math.pow(10, i - 1) + low + 1;
+            } else if (curr < x) {
+                total += high * (int) Math.pow(10, i - 1);
+            } else {
+                total += (high + 1) * (int) Math.pow(10, i - 1);
+            }
+            i++;
+        }
+        return total;
     }
 }

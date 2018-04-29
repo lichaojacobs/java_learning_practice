@@ -374,6 +374,57 @@ public class Practice {
         return dailyGrowth + missionGrowth;
     }
 
+
+    public static void coins() {
+        Scanner input = new Scanner(System.in);
+        int loop = input.nextInt();
+        while (loop > 0) {
+            String[] defineStrArr = input.next().split(" ");
+            int numberOfCoins = Integer.valueOf(defineStrArr[0]);
+            int target = Integer.valueOf(defineStrArr[1]);
+
+            List<Integer> coninsArr = Arrays.stream(input.next().split(" "))
+                                            .map(Integer::valueOf)
+                                            .collect(Collectors.toList());
+            if (numberOfCoins == coninsArr.size()) {
+                System.out.println(changeCoins(coninsArr, target));
+            }
+            loop--;
+        }
+
+    }
+
+    public static int changeCoins(List<Integer> arr, int aim) {
+        if (arr == null || arr.size() == 0 || aim < 0) {
+            return 0;
+        }
+
+        //dp[i][j] 使用0..i种货币，换j面值的钱的方法数
+        int[][] dp = new int[arr.size()][aim + 1];
+
+        for (int i = 0; i < arr.size(); i++) {
+            //组成金钱0的种数为1
+            dp[i][0] = 1;
+        }
+
+        for (int j = 0; arr.get(0) * j < aim; j++) {
+            dp[0][arr.get(0) * j] = 1;
+        }
+
+        int num;
+        for (int i = 1; i < arr.size(); i++) {
+            for (int j = 1; j <= aim; j++) {
+                num = 0;
+                for (int k = 0; j - arr.get(j) * k >= 0; k++) {
+                    num += dp[i - 1][j - arr.get(j) * k];
+                }
+                dp[i][j] = num;
+            }
+        }
+
+        return dp[arr.size() - 1][aim];
+    }
+
     //    数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
 //    例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
 //    由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。

@@ -6,7 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.mobvoi.data.CommonHttpUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -25,10 +28,10 @@ public class CommonTest {
     private Student student = new Student("张三");
 
     public static void main(String[] args) throws Exception {
-        CommonTest commonTest = new CommonTest();
-        commonTest.studentHashMap.put("1", commonTest.student);
-        commonTest.student.className = "李四";
-        System.out.println(commonTest.studentHashMap.get("1"));
+//        CommonTest commonTest = new CommonTest();
+//        commonTest.studentHashMap.put("1", commonTest.student);
+//        commonTest.student.className = "李四";
+//        System.out.println(commonTest.studentHashMap.get("1"));
         //testQuery("/Users/lichao/Desktop/4008100800_2017082508595400_00_00-00_45_51.mp3", 16000);
 //    System.out.println(LocalDateTime.now().minusHours(48));
 //    System.out.println(LocalDateTime.now());
@@ -49,7 +52,17 @@ public class CommonTest {
 //    System.out.println(testInt);
 //    List<String> words = Lists.newArrayList("您好", "这里是", "出门", "问问");
 //    System.out.println(words.stream().reduce((s, s2) -> s + s2).get());
-
+//        Pattern pattern = Pattern.compile("^.*\\.([^.]*)\\.count.*");
+//        Matcher matcher = pattern.matcher("application_1523784538522_4680.1.jvm.G1-Old-Generation.count");
+//        matcher.group();
+        switch (301) {
+            case 301:
+            case 302:
+            case 303:
+                System.out.println("this is 303");
+            case 307:
+                System.out.println("this is me");
+        }
     }
 
 

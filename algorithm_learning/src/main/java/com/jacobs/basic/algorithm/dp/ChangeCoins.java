@@ -6,7 +6,7 @@ package com.jacobs.basic.algorithm.dp;
 public class ChangeCoins {
 
   public static void main(String[] args) {
-
+    System.out.println(coins3(new int[]{1,2,5},5));
   }
 
   /**
@@ -87,8 +87,8 @@ public class ChangeCoins {
     for (int i = 1; i < arr.length; i++) {
       for (int j = 1; j <= aim; j++) {
         num = 0;
-        for (int k = 0; j - arr[j] * k >= 0; k++) {
-          num += dp[i - 1][j - arr[j] * k];
+        for (int k = 0; j - arr[i] * k >= 0; k++) {
+          num += dp[i - 1][j - arr[i] * k];
         }
         dp[i][j] = num;
       }

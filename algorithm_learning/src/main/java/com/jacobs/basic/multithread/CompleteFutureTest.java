@@ -16,45 +16,56 @@ import java.util.concurrent.TimeoutException;
 public class CompleteFutureTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         combineTest();
-        //acceptBoth();
-        //littleTest();
-        //mutipleTest();
-//        ExecutorService executorService = Executors.newFixedThreadPool(3);
-//        try {
-//            System.out.println(executorService.submit(new CallableTask())
-//                                              .get(3, TimeUnit.SECONDS));
-//        } catch (TimeoutException e) {
-//            e.printStackTrace();
-//        }
+        // acceptBoth();
+        // littleTest();
+        // mutipleTest();
+        // ExecutorService executorService = Executors.newFixedThreadPool(3);
+        // try {
+        // System.out.println(executorService.submit(new CallableTask())
+        // .get(3, TimeUnit.SECONDS));
+        // } catch (TimeoutException e) {
+        // e.printStackTrace();
+        // }
+        CompletableFuture
+                // 委托师傅做蛋糕
+                .supplyAsync(() -> {
+                    try {
+                        System.out.println("师傅准备做蛋糕");
+                        TimeUnit.SECONDS.sleep(1);
+                        System.out.println("师傅做蛋糕做好了");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "cake";
+                })
+                // 做好了告诉我一声
+                .thenAccept(cake -> {
+                    System.out.println("我吃蛋糕:" + cake);
+                });
+        System.out.println("我先去喝杯牛奶");
+        Thread.currentThread().join();
     }
 
     public static class CallableTask implements Callable<Integer> {
 
         @Override
         public Integer call() throws Exception {
-            Thread.currentThread()
-                  .sleep(5000);
+            Thread.currentThread().sleep(5000);
             return 1;
         }
     }
 
     public static void littleTest() {
-        CompletableFuture.supplyAsync(
-                () -> {
-                    System.out.println("run--" + Thread.currentThread()
-                                                       .getName());
-                    return "hello";
-                })
-                         .thenApply(s -> {
-                             System.out.println("second apply");
-                             return s + " hhh";
-                         })
-                         .exceptionally(throwable -> {
-                             System.out.println(throwable.getMessage());
-                             return throwable.getMessage();
-                         })
-                         .thenAccept(s -> System.out.println(s + "lichao"))
-                         .completeExceptionally(new Exception("Error"));
+        CompletableFuture.supplyAsync(() -> {
+            System.out.println("run--" + Thread.currentThread().getName());
+            return "hello";
+        }).thenApply(s -> {
+            System.out.println("second apply");
+            return s + " hhh";
+        }).exceptionally(throwable -> {
+            System.out.println(throwable.getMessage());
+            return throwable.getMessage();
+        }).thenAccept(s -> System.out.println(s + "lichao")).completeExceptionally(new Exception("Error"));
     }
 
     public static void combineTest() throws ExecutionException, InterruptedException {
@@ -62,8 +73,7 @@ public class CompleteFutureTest {
         CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> "zero", executor);
         CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> "hello", executor);
 
-        CompletableFuture<String> resultFuture =
-                f1.thenCombine(f2, (t, u) -> t.concat(u));
+        CompletableFuture<String> resultFuture = f1.thenCombine(f2, (t, u) -> t.concat(u));
 
         resultFuture.whenCompleteAsync((s, throwable) -> {
             System.out.println(s);
@@ -105,7 +115,6 @@ public class CompleteFutureTest {
         }
     }
 
-
     public static void mutipleTest() {
         CompletableFuture<String> responseFuture = CompletableFuture.supplyAsync(() -> {
             try {
@@ -116,12 +125,13 @@ public class CompleteFutureTest {
             System.out.println("over");
             return "hello world!";
         });
-        failAfter(Duration.ofSeconds(2)).acceptEither(responseFuture,
-                (x) -> System.out.println("responseFuture is over successed! the response is " + x))
-                                        .exceptionally(throwable -> { //exceptionally必须在最后
-                                            System.out.println("responseFuture is not over on time!");
-                                            return null;
-                                        });
+        failAfter(Duration.ofSeconds(2))
+                .acceptEither(responseFuture,
+                        (x) -> System.out.println("responseFuture is over successed! the response is " + x))
+                .exceptionally(throwable -> { // exceptionally必须在最后
+                    System.out.println("responseFuture is not over on time!");
+                    return null;
+                });
     }
 
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);

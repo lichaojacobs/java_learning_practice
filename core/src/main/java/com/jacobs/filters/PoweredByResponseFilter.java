@@ -13,8 +13,8 @@ public class PoweredByResponseFilter implements ContainerResponseFilter {
   @Override
   public void filter(ContainerRequestContext requestContext,
       ContainerResponseContext responseContext) throws IOException {
-    responseContext.getHeaders()
-        .add("X-Powered-By", "Jersey :-)");
-    responseContext.setEntity(responseContext.getEntity() + "this is body");
+//    responseContext.getHeaders()
+//        .add("X-Powered-By", "Jersey :-)");
+//    responseContext.setEntity(responseContext.getEntity() + "this is body");
   }
 }

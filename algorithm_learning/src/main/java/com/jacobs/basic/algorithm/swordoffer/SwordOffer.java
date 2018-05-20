@@ -1,6 +1,7 @@
 package com.jacobs.basic.algorithm.swordoffer;
 
 import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.algorithm.dp.ChangeCoins;
 import com.jacobs.basic.models.ListNode;
 
 import java.util.*;
@@ -421,7 +422,7 @@ public class SwordOffer {
     }
 
     public static void findAllPathsHelper(TreeNode root, int target, ArrayList<ArrayList<Integer>> resultList,
-            ArrayList<Integer> tempResult) {
+                                          ArrayList<Integer> tempResult) {
         if (root == null) {
             return;
         }
@@ -682,5 +683,54 @@ public class SwordOffer {
             sumMap.put(sum, sumMap.getOrDefault(sum, 0) + 1);
         }
         return result;
+    }
+
+    // Given an array nums of n integers, are there elements a, b, c in nums such
+    // that a + b + c = 0? Find all unique triplets in the array which gives the sum
+    // of zero.
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> resultList = new ArrayList<>();
+        if (nums == null || nums.length == 0 || nums.length < 3) {
+            return resultList;
+        }
+        // 排序
+        Arrays.sort(nums);
+        int l = 0;
+        int r = 0;
+        int[] tempArr = new int[3];
+        // 从左到右枚举
+        for (int i = 0; i < nums.length && nums[i] <= 0; ++i) {
+            if (i == 0 || nums[i] != nums[i - 1]) {
+                l = i + 1;
+                r = nums.length - 1;
+                while (l < r) {
+                    while (l < r && nums[i] + nums[l] + nums[r] > 0) {
+                        --r;
+                    } // 限制右边界
+                    if (l < r && nums[i] + nums[l] + nums[r] == 0) {
+                        tempArr[0] = nums[i];
+                        tempArr[1] = nums[l];
+                        tempArr[2] = nums[r];
+                        List<Integer> tempList = new ArrayList<>();
+                        for (int j : tempArr) {
+                            tempList.add(j);
+                        }
+                        resultList.add(tempList);
+                        while (l < r && nums[l] == tempArr[1]) {
+                            ++l;
+                        } // 限制左边界
+                    } else {
+                        ++l;
+                    }
+                }
+            }
+        }
+        return resultList;
+    }
+
+    //    把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。
+//    习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+    public int GetUglyNumber_Solution(int index) {
+        return 0;
     }
 }

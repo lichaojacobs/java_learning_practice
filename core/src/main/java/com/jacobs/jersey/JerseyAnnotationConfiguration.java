@@ -17,7 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 //@ConditionalOnBean(
 //    annotation = {EnableJerseyConfiguration.class}
 //)
-@ComponentScan
+//@ComponentScan
 public class JerseyAnnotationConfiguration implements ApplicationContextAware {
 
   private ApplicationContext applicationContext;

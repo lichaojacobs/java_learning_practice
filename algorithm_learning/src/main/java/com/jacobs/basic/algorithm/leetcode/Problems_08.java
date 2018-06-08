@@ -395,4 +395,90 @@ public class Problems_08 {
         }
         return low;
     }
+
+    //    Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+//
+//    For example, given n = 3, a solution set is:
+//
+//            [
+//            "((()))",
+//            "(()())",
+//            "(())()",
+//            "()(())",
+//            "()()()"
+//            ]
+// Instead of adding '(' or ')' every time as in Approach #1, let's only add them when we know it will remain a valid sequence.
+// We can do this by keeping track of the number of opening and closing brackets we have placed so far.
+//We can start an opening bracket if we still have one (of n) left to place.
+// And we can start a closing bracket if it would not exceed the number of opening brackets.
+    public List<String> generateParenthesis(int n) {
+        List<String> results = new ArrayList<>();
+        if (n <= 0) {
+            return results;
+        }
+        backTrack(results, "", 0, 0, n);
+
+        return results;
+    }
+
+    public void backTrack(List<String> ans, String cur, int open, int close, int max) {
+        if (cur.length() == max * 2) {
+            ans.add(cur);
+        }
+
+        //采用空格放置的思路，先放置全部的左括号，通过栈弹出后，塞右括号，只要右括号比左括号少就一直压栈
+        //这样能确保所有的情况
+        if (open < max) {
+            backTrack(ans, cur + '(', open + 1, close, max);
+        }
+        if (open < close) {
+            backTrack(ans, cur + ')', open, close + 1, max);
+        }
+    }
+
+    //    Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
+//
+//    If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
+//
+//    The replacement must be in-place and use only constant extra memory.
+//
+//    Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
+//
+//            1,2,3 → 1,3,2
+//            3,2,1 → 1,2,3
+//            1,1,5 → 1,5,1
+    // 给出一种全排列的情况，求出下一个全排列,要求字典序排序，下一个排列得刚好排在当前的后面
+    public void nextPermutation(int[] nums) {
+        if (nums == null || nums.length <= 1) {
+            return;
+        }
+
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i + 1] <= nums[i]) {
+            i--;
+        }
+
+        if (i >= 0) {
+            int j = nums.length - 1;
+            while (j >= 0 && nums[j] <= nums[i]) {
+                j--;
+            }
+            swap(nums, i, j);
+        }
+
+        //后面因为已经是降序排列了，所以需要整个reverse一下
+        `
+        int j = nums.length - 1;
+        while (i < j) {
+            swap(nums, i, j);
+            i++;
+            j--;
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }

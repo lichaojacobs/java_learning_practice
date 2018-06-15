@@ -15,7 +15,32 @@ public class Problems_08 {
 //            System.out.println(i);
 //        }
         //System.out.println(isUgly(10));
-        System.out.println(1 << 2);
+//        System.out.println(1 << 2);
+        char[][] board = new char[][]{
+                {'X', 'X', 'X', 'O', 'X', 'O', 'X'},
+                {'X', 'O', 'X', 'O', 'X', 'O', 'O'},
+                {'X', 'X', 'X', 'X', 'X', 'X', 'O'},
+                {'X', 'X', 'X', 'X', 'O', 'X', 'O'},
+                {'X', 'X', 'X', 'X', 'X', 'X', 'O'},
+                {'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+                {'O', 'X', 'X', 'O', 'O', 'O', 'X'},
+        };
+
+        //            11110
+//            11010
+//            11000
+//            00000
+
+        char[][] grid = new char[][]{
+                {'1', '1', '1', '1', '0'},
+                {'1', '1', '0', '1', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '0', '0'},
+        };
+
+        //solve(board);
+        System.out.println(numIslands(grid));
+        System.out.println("done");
     }
 
     //    1、与题目Two Sum类似，先将数组nums进行排序，然后从左往右依次枚举，在枚举的过程中左右夹逼；
@@ -467,7 +492,6 @@ public class Problems_08 {
         }
 
         //后面因为已经是降序排列了，所以需要整个reverse一下
-        `
         int j = nums.length - 1;
         while (i < j) {
             swap(nums, i, j);
@@ -480,5 +504,282 @@ public class Problems_08 {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    //    Given an array of integers, find out whether there are two distinct indices i and j in the array such that the absolute difference between nums[i] and nums[j] is at most t and the absolute difference between i and j is at most k.
+//
+//    Example 1: 做错，想法错误
+//
+//    Input: nums = [1,2,3,1], k = 3, t = 0
+//    Output: true
+    public static boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (nums == null || nums.length <= 0 || k <= 0 || t < 0) {
+            return false;
+        }
+
+        LinkedList<Integer> windowMinIndex = new LinkedList<>();
+        int start = 0;
+        int end = 0;
+        while (end <= nums.length - 1) {
+            //超出范围需要从双端队列中淘汰一个
+            if (end - start > k) {
+                windowMinIndex.pollLast();
+                start++;
+            }
+            if (!windowMinIndex.isEmpty()) {
+                int currentMinIndex = windowMinIndex.peekLast();
+                if (Math.abs(nums[currentMinIndex] - nums[end]) <= t) {
+                    //满足条件
+                    return true;
+                }
+            }
+            //如果当前遍历到的数比队列中新加入的数小，则依次弹出
+            if (!windowMinIndex.isEmpty() && nums[windowMinIndex.peekFirst()] > nums[end]) {
+                windowMinIndex.pollFirst();
+            }
+            //将数添加到合适的位置
+            windowMinIndex.addFirst(end);
+            end++;
+        }
+
+        return false;
+    }
+
+    /**
+     * 利用HashMap的分桶原则，buckets的size为t+1，因为如果t=3的话，那么0,1,2都需要分布到相同的桶里面去，
+     * 但题意其实是3也应该到相同的桶里去，这样size 应该为t+1，所以buckets size = t+1
+     * Integer.MIN_VALUE的考量: Another complication is that negative ints are allowed.
+     * A simple num / t just shrinks everything towards 0. Therefore, we can just
+     * reposition every element to start from Integer.MIN_VALUE.
+     *
+     * @param nums
+     * @param k
+     * @param t
+     * @return
+     */
+    public static boolean containsNearbyAlmostDuplicate1(int[] nums, int k, int t) {
+        if (nums == null || nums.length <= 0 || k <= 0 || t < 0) {
+            return false;
+        }
+
+        Map<Long, Long> bucketMap = new HashMap<>();
+        for (int index = 0; index < nums.length; index++) {
+            long remappedNum = (long) nums[index] - Integer.MIN_VALUE;
+            long bucket = remappedNum / ((long) t + 1);
+            if (bucketMap.containsKey(bucket)
+                    || (bucketMap.containsKey(bucket - 1) && remappedNum - bucketMap.get(bucket - 1) <= t)
+                    || (bucketMap.containsKey(bucket + 1) && bucketMap.get(bucket + 1) - remappedNum <= t)) {
+                return true;
+            }
+
+            if (bucketMap.entrySet().size() >= k) {
+                long lastBucket = ((long) nums[index - k] - Integer.MIN_VALUE) / ((long) t + 1);
+                bucketMap.remove(lastBucket);
+            }
+            bucketMap.put(bucket, remappedNum);
+        }
+
+        return false;
+    }
+
+    //    Given a 2D board containing 'X' and 'O' (the letter O), capture all regions surrounded by 'X'.
+//
+//    A region is captured by flipping all 'O's into 'X's in that surrounded region.
+//
+//            Example:
+//
+//    X X X X
+//    X O O X
+//    X X O X
+//    X O X X
+//    After running your function, the board should be:
+//
+//    X X X X
+//    X X X X
+//    X X X X
+//    X O X X
+//    Explanation:
+//
+//    Surrounded regions shouldn’t be on the border, which means that any 'O' on the border of the board are not flipped to 'X'.
+//    Any 'O' that is not on the border and it is not connected to an 'O' on the border will be flipped to 'X'. Two cells are connected if they are adjacent cells connected horizontally or vertically.
+    // 这种方式最后一个测试用例跑不过，显示time limit
+    // 究其原因是iswalked 没有起到实际的用处，每次遍历还是要重新标记，
+    // 没法一次就标记为已经走过，之后就不需要再走的状态
+    public static void solve(char[][] board) {
+        if (board == null || board.length <= 1 || board[0].length <= 1) {
+            return;
+        }
+
+        int row = board.length;
+        int column = board[0].length;
+        boolean[][] isOnBoard = new boolean[row][column];
+        Stack<int[]> stack = new Stack<>();
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (board[i][j] == 'O') {
+                    boolean shouldMarkOnBoard = false;
+                    stack.push(new int[]{i, j});
+                    boolean[][] iswalked = new boolean[row][column];
+                    while (!stack.isEmpty()) {
+                        int[] arr = stack.pop();
+                        int k = arr[0];
+                        int m = arr[1];
+
+                        iswalked[k][m] = true;
+                        if (isOnBoard[k][m]) {
+                            shouldMarkOnBoard = true;
+                            stack.clear();
+                            break;
+                        }
+                        if (k == 0 || m == 0 || k == row - 1 || m == column - 1) {
+                            isOnBoard[i][j] = true;
+                            shouldMarkOnBoard = true;
+                            stack.clear();
+                            break;
+                        }
+
+                        if (k - 1 >= 0) {
+                            //上边
+                            if (!iswalked[k - 1][m] && board[k - 1][m] == 'O') {
+                                stack.push(new int[]{k - 1, m});
+                            }
+                        }
+                        if (k + 1 < row) {
+                            //下边
+                            if (!iswalked[k + 1][m] && board[k + 1][m] == 'O') {
+                                stack.push(new int[]{k + 1, m});
+                            }
+                        }
+                        if (m + 1 < column) {
+                            //右边
+                            if (!iswalked[k][m + 1] && board[k][m + 1] == 'O') {
+                                stack.push(new int[]{k, m + 1});
+                            }
+                        }
+                        if (m - 1 >= 0) {
+                            //左边
+                            if (!iswalked[k][m - 1] && board[k][m - 1] == 'O') {
+                                stack.push(new int[]{k, m - 1});
+                            }
+                        }
+                    }
+
+                    if (shouldMarkOnBoard) {
+                        isOnBoard[i][j] = true;
+                    } else {
+                        board[i][j] = 'X';
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 教科书方法，思路很简单，不需要墨守成规的从左到右，从上到下遍历
+     * 而是从根源找起，一次性标记所有与边缘的O相连的O，不用像我那样没有用到isWalked
+     *
+     * @param board
+     */
+    public void solve2(char[][] board) {
+        if (board == null || board.length == 0) return;
+
+        int row = board.length;
+        int col = board[0].length;
+
+        //check first and last col
+        for (int i = 0; i < row; i++) {
+
+            if (board[i][0] == 'O') getEmAll(board, i, 1);
+            if (board[i][col - 1] == 'O') getEmAll(board, i, col - 2);
+        }
+
+        //check first and last  row
+        for (int i = 0; i < col; i++) {
+
+            if (board[0][i] == 'O') getEmAll(board, 1, i);
+            if (board[row - 1][i] == 'O') getEmAll(board, row - 2, i);
+        }
+
+
+        //Switch all 'O's to 'X's and 'Y's to 'O's
+        for (int i = 1; i < row - 1; i++) {
+            for (int j = 1; j < col - 1; j++)
+                if (board[i][j] == 'Y') board[i][j] = 'O';
+                else if (board[i][j] == 'O') board[i][j] = 'X';
+        }
+    }
+
+    public void getEmAll(char[][] board, int row, int col) {
+
+        if (row >= board.length - 1 || row <= 0 || col >= board[0].length - 1 || col <= 0) return;
+
+        if (board[row][col] == 'X' || board[row][col] == 'Y') return;
+        if (board[row][col] == 'O') board[row][col] = 'Y';
+
+        getEmAll(board, row + 1, col);
+        getEmAll(board, row, col + 1);
+        getEmAll(board, row - 1, col);
+        getEmAll(board, row, col - 1);
+
+    }
+
+    //    Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+//
+//    Example 1:
+//
+//    Input:
+//            11110
+//            11010
+//            11000
+//            00000
+//
+//    Output: 1
+    public static int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int row = grid.length;
+        int column = grid[0].length;
+        //深度遍历
+        Stack<int[]> stack = new Stack<>();
+        //标记是否走过
+        boolean[][] iswalked = new boolean[row][column];
+        int islandNum = 0;
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (iswalked[i][j]) {
+                    continue;
+                }
+                stack.push(new int[]{i, j});
+                if (grid[i][j] == '1') {
+                    while (!stack.isEmpty()) {
+                        int[] item = stack.pop();
+                        int x = item[0];
+                        int y = item[1];
+                        iswalked[x][y] = true;
+                        if (grid[x][y] == '1') {
+                            if (x > 0 && !iswalked[x - 1][y]) {
+                                stack.push(new int[]{x - 1, y});
+                            }
+                            if (x < row - 1 && !iswalked[x + 1][y]) {
+                                stack.push(new int[]{x + 1, y});
+                            }
+                            if (y > 0 && !iswalked[x][y - 1]) {
+                                stack.push(new int[]{x, y - 1});
+                            }
+                            if (y < column - 1 && !iswalked[x][y + 1]) {
+                                stack.push(new int[]{x, y + 1});
+                            }
+                        }
+                    }
+                    islandNum++;
+                }
+            }
+        }
+
+        return islandNum;
     }
 }

@@ -16,31 +16,36 @@ public class Problems_08 {
 //        }
         //System.out.println(isUgly(10));
 //        System.out.println(1 << 2);
-        char[][] board = new char[][]{
-                {'X', 'X', 'X', 'O', 'X', 'O', 'X'},
-                {'X', 'O', 'X', 'O', 'X', 'O', 'O'},
-                {'X', 'X', 'X', 'X', 'X', 'X', 'O'},
-                {'X', 'X', 'X', 'X', 'O', 'X', 'O'},
-                {'X', 'X', 'X', 'X', 'X', 'X', 'O'},
-                {'X', 'X', 'X', 'X', 'X', 'X', 'X'},
-                {'O', 'X', 'X', 'O', 'O', 'O', 'X'},
-        };
+//        char[][] board = new char[][]{
+//                {'X', 'X', 'X', 'O', 'X', 'O', 'X'},
+//                {'X', 'O', 'X', 'O', 'X', 'O', 'O'},
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'O'},
+//                {'X', 'X', 'X', 'X', 'O', 'X', 'O'},
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'O'},
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+//                {'O', 'X', 'X', 'O', 'O', 'O', 'X'},
+//        };
+//
+//        //            11110
+////            11010
+////            11000
+////            00000
+//
+//        char[][] grid = new char[][]{
+//                {'1', '1', '1', '1', '0'},
+//                {'1', '1', '0', '1', '0'},
+//                {'1', '1', '0', '0', '0'},
+//                {'0', '0', '0', '0', '0'},
+//        };
+//
+//        //solve(board);
+//        System.out.println(numIslands(grid));
+//        System.out.println("done");
+//        ladderLength("hit", "cog", Lists.newArrayList("hot", "dot", "dog", "lot", "log", "cog"));
+//        System.out.println(singleNonDuplicate(new int[]{3, 3, 7, 7, 10, 11, 11}));
+        System.out.println(numDecodings("12"));
 
-        //            11110
-//            11010
-//            11000
-//            00000
 
-        char[][] grid = new char[][]{
-                {'1', '1', '1', '1', '0'},
-                {'1', '1', '0', '1', '0'},
-                {'1', '1', '0', '0', '0'},
-                {'0', '0', '0', '0', '0'},
-        };
-
-        //solve(board);
-        System.out.println(numIslands(grid));
-        System.out.println("done");
     }
 
     //    1、与题目Two Sum类似，先将数组nums进行排序，然后从左往右依次枚举，在枚举的过程中左右夹逼；
@@ -734,7 +739,7 @@ public class Problems_08 {
 //            11000
 //            00000
 //
-//    Output: 1
+//    Output: 1 自己做出来的，之前美团面试的时候就想出来了
     public static int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -781,5 +786,182 @@ public class Problems_08 {
         }
 
         return islandNum;
+    }
+
+    //
+//    Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+//    Only one letter can be changed at a time.
+//    Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+//    Note:
+//    Return 0 if there is no such transformation sequence.
+//    All words have the same length.
+//    All words contain only lowercase alphabetic characters.
+//    You may assume no duplicates in the word list.
+//    You may assume beginWord and endWord are non-empty and are not the same.
+//    Input:
+//    beginWord = "hit",
+//    endWord = "cog",
+//    wordList = ["hot","dot","dog","lot","log","cog"]
+//
+//    Output: 5
+//
+    // 明显的广度遍历，图论里面的单源最短路问题。其思路就是先把起点加到队列中, 然后每次将字典中与队首距离为1的字符串加进队列, 直到最后出队列的是终点字符串
+//    Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+//            return its length 5.
+    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        Map<String, Integer> countMap = new HashMap<>();
+        HashSet<String> wordSet = new HashSet<>(wordList);
+        countMap.put(beginWord, 1);
+
+        while (!queue.isEmpty()) {
+            String temp = queue.poll();
+            int len = countMap.get(temp);
+            if (temp.equals(endWord)) {
+                return len;
+            }
+
+            char[] chars = temp.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                for (char j = 'a'; j <= 'z'; j++) {
+                    char oldVal = chars[i];
+                    chars[i] = j;
+                    String newTempStr = String.valueOf(chars);
+                    //重复出现过的字符就不用再继续了，生成的链路肯定比之前的要长
+                    if (!countMap.containsKey(newTempStr) && wordSet.contains(newTempStr)) {
+                        queue.offer(newTempStr);
+                        countMap.put(newTempStr, len + 1);
+                    }
+
+                    //记得换回来，每次只能变更一个字符
+                    chars[i] = oldVal;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    //    Given a sorted array consisting of only integers where every element appears twice except for one element which appears once. Find this single element that appears only once.
+//
+//    Example 1:
+//    Input: [1,1,2,3,3,4,4,8,8]
+//    Output: 2
+//    Example 2:
+//    Input: [3,3,7,7,10,11,11]
+//    Output: 10
+    //Note: Your solution should run in O(log n) time and O(1) space.
+    //二分法
+    public static int singleNonDuplicate(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+
+        int start = 0;
+        int end = nums.length - 1;
+        while (start >= 0 && end <= nums.length - 1 && start < end) {
+            int mid = (start + end) / 2;
+            if (nums[mid - 1] == nums[mid]) {
+                if ((mid - 1) % 2 != 0) {
+                    end = mid - 2;
+                } else {
+                    start = mid + 1;
+                }
+            } else if (nums[mid + 1] == nums[mid]) {
+                if (mid % 2 != 0) {
+                    end = mid - 1;
+                } else {
+                    start = mid + 2;
+                }
+            } else {
+                return nums[mid];
+            }
+        }
+
+        //最后肯定只剩下一个元素
+        return nums[start];
+    }
+
+    //    Note: You may assume there is no extra space or special characters in the input string.
+//
+//            Example 1:
+//    Input: "172.16.254.1"
+//
+//    Output: "IPv4"
+//
+//    Explanation: This is a valid IPv4 address, return "IPv4".
+//    Example 2:
+//    Input: "2001:0db8:85a3:0:0:8A2E:0370:7334"
+//
+//    Output: "IPv6"
+//
+//    Explanation: This is a valid IPv6 address, return "IPv6".
+//    Example 3:
+//    Input: "256.256.256.256"
+//
+//    Output: "Neither"
+//
+//    Explanation: This is neither a IPv4 address nor a IPv6 address.
+    public String validIPAddress(String IP) {
+        if (IP.matches("(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])"))
+            return "IPv4";
+        if (IP.matches("(([0-9a-fA-F]{1,4}):){7}([0-9a-fA-F]{1,4})")) return "IPv6";
+        return "Neither";
+    }
+
+    //    A message containing letters from A-Z is being encoded to numbers using the following mapping:
+//
+//            'A' -> 1
+//            'B' -> 2
+//            ...
+//            'Z' -> 26
+//    Given a non-empty string containing only digits, determine the total number of ways to decode it.
+//
+//            Example 1:
+//
+//    Input: "12"
+//    Output: 2
+//    Explanation: It could be decoded as "AB" (1 2) or "L" (12).
+//    Example 2:
+//
+    // 简单的动态规划，只需要
+//    Input: "226"
+//    Output: 3
+//    Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+    public static int numDecodings(String s) {
+        int n = s.length();
+        if (n == 0) return 0;
+
+        int[] memo = new int[n + 1];
+        memo[n] = 1;
+        memo[n - 1] = s.charAt(n - 1) != '0' ? 1 : 0;
+
+        for (int i = n - 2; i >= 0; i--)
+            if (s.charAt(i) == '0') continue;
+            else memo[i] = (Integer.parseInt(s.substring(i, i + 2)) <= 26) ? memo[i + 1] + memo[i + 2] : memo[i + 1];
+
+        return memo[0];
+    }
+
+    //hard
+//    Beyond that, now the encoded string can also contain the character '*', which can be treated as one of the numbers from 1 to 9.
+//
+//    Given the encoded message containing digits and the character '*', return the total number of ways to decode it.
+//
+//    Also, since the answer may be very large, you should return the output mod 109 + 7.
+//
+//    Example 1:
+//    Input: "*"
+//    Output: 9
+//    Explanation: The encoded message can be decoded to the string: "A", "B", "C", "D", "E", "F", "G", "H", "I".
+//    Example 2:
+//    Input: "1*"
+//    Output: 9 + 9 = 18
+//    Note:
+//    The length of the input string will fit in range [1, 105].
+//    The input string will only contain the character '*' and digits '0' - '9'.
+    public int numDecodings_2(String s) {
+        return 0;
     }
 }

@@ -8,7 +8,7 @@ import java.util.*;
  * @author lichao
  * @date 2018/03/23
  */
-public class Problems_08 {
+public class ProblemsMedium_08 {
     public static void main(String[] args) {
         //System.out.println(threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
 //        for (int i : twoSum(new int[]{2, 7, 11, 15}, 9)) {

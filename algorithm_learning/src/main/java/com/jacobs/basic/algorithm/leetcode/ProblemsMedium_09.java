@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * @author lichao
@@ -18,12 +19,19 @@ import java.util.Set;
 public class ProblemsMedium_09 {
 
     public static void main(String[] args) {
-        System.out.println(compareVersion("0.1", "1.1"));
-        Set<Integer> integerSet = new HashSet<>();
-        integerSet.add(1);
-        integerSet.add(2);
-        List<Integer> integerList = Lists.newArrayList(integerSet);
-        System.out.println(integerList);
+        //        System.out.println(compareVersion("0.1", "1.1"));
+        //        Set<Integer> integerSet = new HashSet<>();
+        //        integerSet.add(1);
+        //        integerSet.add(2);
+        //        List<Integer> integerList = Lists.newArrayList(integerSet);
+        //        System.out.println(integerList);
+        UndirectedGraphNode node = new ProblemsMedium_09().new UndirectedGraphNode(0);
+        node.neighbors = new ArrayList<>();
+        node.neighbors.add(node);
+        node.neighbors.add(node);
+
+        ProblemsMedium_09 problemsMedium_09 = new ProblemsMedium_09();
+        problemsMedium_09.cloneGraph(node);
     }
 
     //    Compare two version numbers version1 and version2.
@@ -268,5 +276,55 @@ public class ProblemsMedium_09 {
         }
 
         return result;
+    }
+
+
+    //Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        Map<UndirectedGraphNode, UndirectedGraphNode> graphMapping = new HashMap();
+        Stack<UndirectedGraphNode> stack = new Stack<>();
+        stack.push(node);
+        while (!stack.isEmpty()) {
+            UndirectedGraphNode preNode = stack.pop();
+            UndirectedGraphNode clonedGraph;
+            if (!graphMapping.containsKey(preNode)) {
+                clonedGraph = new UndirectedGraphNode(preNode.label);
+                graphMapping.put(preNode, clonedGraph);
+            } else {
+                clonedGraph = graphMapping.get(preNode);
+            }
+            //如果克隆的临接结点有neighbors说明上一次已经克隆过了，直接跳过即可
+            if (clonedGraph.neighbors.size() != 0) {
+                continue;
+            }
+            for (int i = 0; i < preNode.neighbors.size(); i++) {
+                UndirectedGraphNode neighborNode = preNode.neighbors.get(i);
+                if (graphMapping.containsKey(neighborNode)) {
+                    clonedGraph.neighbors.add(graphMapping.get(neighborNode));
+                } else {
+                    UndirectedGraphNode clonedNeighborNode = new UndirectedGraphNode(neighborNode.label);
+                    graphMapping.put(neighborNode, clonedNeighborNode);
+                    clonedGraph.neighbors.add(clonedNeighborNode);
+                }
+                stack.push(neighborNode);
+            }
+        }
+
+        return graphMapping.get(node);
+    }
+
+    class UndirectedGraphNode {
+
+        int label;
+        List<UndirectedGraphNode> neighbors;
+
+        UndirectedGraphNode(int x) {
+            label = x;
+            neighbors = new ArrayList<UndirectedGraphNode>();
+        }
     }
 }

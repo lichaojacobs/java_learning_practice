@@ -37,30 +37,6 @@ public class Practice {
         System.out.println(MoreThanHalfNum_Solution(new int[]{1, 2, 3, 2, 2, 2, 5, 4, 2}));
     }
 
-    /**
-     * 二分查找
-     */
-    public static int binarySearch(int[] arr, int key) {
-        if (arr == null || arr.length == 0) {
-            return -1;//非法值
-        }
-
-        int left = 0;
-        int right = arr.length - 1;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (arr[mid] == key) {
-                return mid;
-            } else if (arr[mid] > key) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
-
-        return -1;
-    }
-
     public static void mergeSort(int[] arr, int left, int right) {
         if (arr == null || arr.length == 0 || left >= right) {
             return;

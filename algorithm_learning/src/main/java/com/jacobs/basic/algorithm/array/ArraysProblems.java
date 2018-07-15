@@ -12,9 +12,8 @@ public class ArraysProblems {
     public static void main(String[] args) {
 //    int[][] matrix = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
 //    rotate(matrix);
-        System.out.println(partitalBinarySearch(new int[]{4, 5, 6, 1, 2, 3}, 2));
+        System.out.println(partitalBinarySearch(new int[]{4, 5, 6, 1, 2, 3}, 0));
     }
-
     /**
      * 最大值减去最小值小于或者等于参数num的子数组数量。
      *

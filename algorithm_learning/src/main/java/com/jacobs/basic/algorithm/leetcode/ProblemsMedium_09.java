@@ -1,6 +1,7 @@
 package com.jacobs.basic.algorithm.leetcode;
 
 import com.google.common.collect.Lists;
+import com.jacobs.basic.algorithm.TreeNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -315,6 +316,36 @@ public class ProblemsMedium_09 {
         }
 
         return graphMapping.get(node);
+    }
+
+
+    //Given the root node of a binary search tree (BST) and a value to be inserted into the tree,
+    // insert the value into the BST. Return the root node of the BST after the insertion.
+    // It is guaranteed that the new value does not exist in the original BST.
+    //思路：采用递归的思路，不停的分叉，root.val?val的时候往左，否则往右
+    //终结条件：右孩子为空，且root.val <val 或者 左孩子为空且root.val > val
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+
+        TreeNode preNode = root;
+        insertIntoBSTHelper(root, val);
+        return preNode;
+    }
+
+    public void insertIntoBSTHelper(TreeNode root, int val) {
+        if (root.right == null && root.val < val) {
+            root.right = new TreeNode(val);
+            return;
+        }
+        if (root.left == null && root.val > val) {
+            root.left = new TreeNode(val);
+            return;
+        }
+
+        if (root.val > val) {
+            insertIntoBSTHelper(root.left, val);
+        } else {
+            insertIntoBSTHelper(root.right, val);
+        }
     }
 
     class UndirectedGraphNode {

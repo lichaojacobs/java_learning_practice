@@ -28,41 +28,38 @@ public class CommonTest {
     private Student student = new Student("张三");
 
     public static void main(String[] args) throws Exception {
-//        CommonTest commonTest = new CommonTest();
-//        commonTest.studentHashMap.put("1", commonTest.student);
-//        commonTest.student.className = "李四";
-//        System.out.println(commonTest.studentHashMap.get("1"));
+        //        CommonTest commonTest = new CommonTest();
+        //        commonTest.studentHashMap.put("1", commonTest.student);
+        //        commonTest.student.className = "李四";
+        //        System.out.println(commonTest.studentHashMap.get("1"));
         //testQuery("/Users/lichao/Desktop/4008100800_2017082508595400_00_00-00_45_51.mp3", 16000);
-//    System.out.println(LocalDateTime.now().minusHours(48));
-//    System.out.println(LocalDateTime.now());
-//
-//    LocalDateTime localDateTime = LocalDateTime.now().minusHours(48);
-//    ZoneId zone = ZoneId.systemDefault();
-//    Instant instant = localDateTime.atZone(zone).toInstant();
-//    java.util.Date date = Date.from(instant);
-//    System.out.println(date);
-//    System.out.println(new Date());
-//    long expireTimestamp = System.currentTimeMillis() - 3600000 * 48;
-//    System.out.println(expireTimestamp);
-//    System.out.println("ali-hz-misc-srv-3-docker".replaceAll("-docker", ""));
+        //    System.out.println(LocalDateTime.now().minusHours(48));
+        //    System.out.println(LocalDateTime.now());
+        //
+        //    LocalDateTime localDateTime = LocalDateTime.now().minusHours(48);
+        //    ZoneId zone = ZoneId.systemDefault();
+        //    Instant instant = localDateTime.atZone(zone).toInstant();
+        //    java.util.Date date = Date.from(instant);
+        //    System.out.println(date);
+        //    System.out.println(new Date());
+        //    long expireTimestamp = System.currentTimeMillis() - 3600000 * 48;
+        //    System.out.println(expireTimestamp);
+        //    System.out.println("ali-hz-misc-srv-3-docker".replaceAll("-docker", ""));
 
         //子类必须强转父类
-//    Object testInt = 1;
-//    Integer reult = testInt;
-//    System.out.println(testInt);
-//    List<String> words = Lists.newArrayList("您好", "这里是", "出门", "问问");
-//    System.out.println(words.stream().reduce((s, s2) -> s + s2).get());
-//        Pattern pattern = Pattern.compile("^.*\\.([^.]*)\\.count.*");
-//        Matcher matcher = pattern.matcher("application_1523784538522_4680.1.jvm.G1-Old-Generation.count");
-//        matcher.group();
-        switch (301) {
-            case 301:
-            case 302:
-            case 303:
-                System.out.println("this is 303");
-            case 307:
-                System.out.println("this is me");
-        }
+        //    Object testInt = 1;
+        //    Integer reult = testInt;
+        //    System.out.println(testInt);
+        //    List<String> words = Lists.newArrayList("您好", "这里是", "出门", "问问");
+        //    System.out.println(words.stream().reduce((s, s2) -> s + s2).get());
+        //        Pattern pattern = Pattern.compile("^.*\\.([^.]*)\\.count.*");
+        //        Matcher matcher = pattern.matcher("application_1523784538522_4680.1.jvm.G1-Old-Generation.count");
+        //        matcher.group();
+        List<String> result = Lists.newArrayList("123", "145434");
+        List<String> result2 = Lists.newArrayList(result);
+        result = Lists.newArrayList();
+        result.forEach(System.out::println);
+        result2.forEach(System.out::println);
     }
 
 
@@ -76,7 +73,7 @@ public class CommonTest {
         HttpPost httpPost = new HttpPost("http://streaming.mobvoi.com/speech2text");
         // 文件路径
         httpPost.setEntity(new InputStreamEntity(
-                new FileInputStream(filePath)));
+            new FileInputStream(filePath)));
         // 16000是采样率
         httpPost.setHeader("Content-Type", String.format("audio/x-wav;rate=%d", rate));
         try {
@@ -88,8 +85,8 @@ public class CommonTest {
                 return;
             }
             System.out.println(
-                    "Fail to do speech recognition with status code " + statusCode + ", " + EntityUtils
-                            .toString(response.getEntity()));
+                "Fail to do speech recognition with status code " + statusCode + ", " + EntityUtils
+                    .toString(response.getEntity()));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Fail to do speech recognition.");

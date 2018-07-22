@@ -619,7 +619,7 @@ public class Problems_06 {
     return resultIntervals;
   }
 
-  class Interval {
+  public static class Interval {
 
     int start;
     int end;
@@ -629,7 +629,7 @@ public class Problems_06 {
       end = 0;
     }
 
-    Interval(int s, int e) {
+    public Interval(int s, int e) {
       start = s;
       end = e;
     }

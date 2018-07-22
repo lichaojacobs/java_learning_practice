@@ -2,8 +2,11 @@ package com.jacobs.basic.algorithm.leetcode;
 
 import com.google.common.collect.Lists;
 import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.algorithm.leetcode.Problems_06.Interval;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -345,6 +348,120 @@ public class ProblemsMedium_09 {
             insertIntoBSTHelper(root.left, val);
         } else {
             insertIntoBSTHelper(root.right, val);
+        }
+    }
+
+    //   179. Largest Number Given a list of non negative integers, arrange them such that they form the largest number.
+    //
+    //        Example 1:
+    //
+    //    Input: [10,2]
+    //    Output: "210"
+    // 最简单的做法就是排序
+    public String largestNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return "";
+        }
+
+        // Get input integers as strings.
+        String[] asStrs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            asStrs[i] = String.valueOf(nums[i]);
+        }
+
+        // Sort strings according to custom comparator.
+        Arrays.sort(asStrs, new LargerNumberComparator());
+
+        // If, after being sorted, the largest number is `0`, the entire number
+        // is zero.
+        if (asStrs[0].equals("0")) {
+            return "0";
+        }
+
+        // Build largest number from sorted array.
+        String largestNumberStr = new String();
+        for (String numAsStr : asStrs) {
+            largestNumberStr += numAsStr;
+        }
+
+        return largestNumberStr;
+    }
+
+    private class LargerNumberComparator implements Comparator<String> {
+
+        @Override
+        public int compare(String a, String b) {
+            String order1 = a + b;
+            String order2 = b + a;
+            return order2.compareTo(order1);
+        }
+    }
+
+    //56. Merge Intervals
+    //    Given a collection of intervals, merge all overlapping intervals.
+    //
+    //    Example 1:
+    //
+    //    Input: [[1,3],[2,6],[8,10],[15,18]]
+    //    Output: [[1,6],[8,10],[15,18]]
+    //    Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+    //    Example 2:
+    //
+    //    Input: [[1,4],[4,5]]
+    //    Output: [[1,5]]
+    //    Explanation: Intervals [1,4] and [4,5] are considerred overlapping.
+    public List<Interval> merge(ArrayList<Interval> intervals) {
+        List<Interval> results = new ArrayList<>();
+        if (intervals == null || intervals.size() == 0) {
+            return results;
+        }
+
+        Collections.sort(intervals, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval o1, Interval o2) {
+                return o1.start - o2.start;
+            }
+        });
+
+        int index = 0;
+        while (index < intervals.size()) {
+            Interval interval = intervals.get(index);
+            int start = interval.start;
+            int end = interval.end;
+            for (int j = index; j < intervals.size(); j++) {
+                Interval tempInterval = intervals.get(j);
+                if (tempInterval.start <= end) {
+                    end = tempInterval.end > end ? tempInterval.end : end;
+                    if (j == intervals.size() - 1) {
+                        results.add(new Interval(start, end));
+                        index = j + 1;
+                    }
+                } else {
+                    results.add(new Interval(start, end));
+                    index = j;
+                    if (j == intervals.size() - 1) {
+                        results.add(tempInterval);
+                        index = j + 1;
+                    }
+                    break;
+                }
+            }
+        }
+
+        return results;
+    }
+
+    private class IntervalComparator implements Comparator<Interval> {
+
+        @Override
+        public int compare(Interval a, Interval b) {
+            if (a.start > b.start) {
+                return 1;
+            } else if (a.start == b.start) {
+                return 0;
+            } else {
+                return -1;
+            }
         }
     }
 

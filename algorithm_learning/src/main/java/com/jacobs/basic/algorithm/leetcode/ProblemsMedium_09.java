@@ -451,6 +451,69 @@ public class ProblemsMedium_09 {
         return results;
     }
 
+    // 402. Remove K Digits
+    // Given a non-negative integer num represented as a string, remove k digits from the number so that the new number is the smallest possible.
+    //
+    //        Note:
+    //    The length of num is less than 10002 and will be ≥ k.
+    //    The given num does not contain any leading zero.
+    //        Example 1:
+    //
+    //    Input: num = "1432219", k = 3
+    //    Output: "1219"
+    //    Explanation: Remove the three digits 4, 3, and 2 to form the new number 1219 which is the smallest.
+    public String removeKdigits(String num, int k) {
+        if (num == null || "".equals(num)) {
+            return num;
+        }
+        int digits = num.length() - k;
+        char[] stk = new char[num.length()];
+        int top = 0;
+        // k keeps track of how many characters we can remove
+        // if the previous character in stk is larger than the current one
+        // then removing it will get a smaller number
+        // but we can only do so when k is larger than 0
+        for (int i = 0; i < num.length(); ++i) {
+            char c = num.charAt(i);
+            while (top > 0 && stk[top - 1] > c && k > 0) {
+                top -= 1;
+                k -= 1;
+            }
+            stk[top++] = c;
+        }
+        // find the index of first non-zero digit
+        int idx = 0;
+        while (idx < digits && stk[idx] == '0') {
+            idx++;
+        }
+        return idx == digits ? "0" : new String(stk, idx, digits - idx);
+    }
+
+    // 464. Can I Win
+    // In the "100 game," two players take turns adding, to a running total, any integer from 1..10. The player who first causes the running total to reach or exceed 100 wins.
+    //
+    //        What if we change the game so that players cannot re-use integers?
+    //
+    //    For example, two players might take turns drawing from a common pool of numbers of 1..15 without replacement until they reach a total >= 100.
+    //
+    //    Given an integer maxChoosableInteger and another integer desiredTotal, determine if the first player to move can force a win, assuming both players play optimally.
+    //
+    //    You can always assume that maxChoosableInteger will not be larger than 20 and desiredTotal will not be larger than 300.
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        return false;
+    }
+
+    //36. Valid Sudoku
+    //Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+    //
+    //Each row must contain the digits 1-9 without repetition.
+    //Each column must contain the digits 1-9 without repetition.
+    //Each of the 9 3x3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+    //The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+    public boolean isValidSudoku(char[][] board) {
+
+    }
+
     private class IntervalComparator implements Comparator<Interval> {
 
         @Override

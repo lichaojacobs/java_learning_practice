@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -60,6 +63,12 @@ public class CommonTest {
         result = Lists.newArrayList();
         result.forEach(System.out::println);
         result2.forEach(System.out::println);
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate fromDatDate = LocalDate.parse("20180719", dayFormatter);
+        LocalDate toDatDate = LocalDate.parse("20180723", dayFormatter);
+        System.out.println(Period.between(fromDatDate, toDatDate).getDays());
+        System.out.println(fromDatDate.plusDays(4).format(dayFormatter));
     }
 
 

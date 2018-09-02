@@ -167,4 +167,146 @@ public class ProblemsMedium_10 {
 
         return dp[m - 1][n - 1];
     }
+
+    //    A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+    //
+    //    The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+    //
+    //    Now consider if some obstacles are added to the grids. How many unique paths would there be?
+    //An obstacle and empty space is marked as 1 and 0 respectively in the grid.
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0].length == 0) {
+            return 0;
+        }
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+        dp[0][0] = obstacleGrid[0][0] == 0 ? 1 : 0;
+        for (int i = 1; i < n; i++) {
+            if (dp[0][i - 1] == 0) {
+                dp[0][i] = 0;
+            } else {
+                dp[0][i] = obstacleGrid[0][i] == 0 ? 1 : 0;
+            }
+        }
+        for (int j = 1; j < m; j++) {
+            dp[j][0] = 1;
+            if (dp[j - 1][0] == 0) {
+                dp[j][0] = 0;
+            } else {
+                dp[j][0] = obstacleGrid[j][0] == 0 ? 1 : 0;
+            }
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+    //    15. 3Sum
+    //    Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+    //
+    //        Note:
+    //
+    //    The solution set must not contain duplicate triplets.
+    // 其实就是翻译成towSum的解法
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> list = new ArrayList<List<Integer>>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i > 0 && (nums[i] == nums[i - 1])) {
+                continue; // avoid duplicates
+            }
+            for (int j = i + 1, k = nums.length - 1; j < k; ) {
+                if (nums[i] + nums[j] + nums[k] == 0) {
+                    list.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    j++;
+                    k--;
+                    while ((j < k) && (nums[j] == nums[j - 1])) {
+                        j++;// avoid duplicates
+                    }
+                    while ((j < k) && (nums[k] == nums[k + 1])) {
+                        k--;// avoid duplicates
+                    }
+                } else if (nums[i] + nums[j] + nums[k] > 0) {
+                    k--;
+                } else {
+                    j++;
+                }
+            }
+        }
+        return list;
+    }
+
+    int len = 0;
+
+    //    18. 4Sum
+    //    all ksum problem can be divided into two problems:
+    //
+    //        2sum Problem
+    //    Reduce K sum problem to K – 1 sum Problem
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        len = nums.length;
+        Arrays.sort(nums);
+        return kSum(nums, target, 4, 0);
+    }
+
+    private ArrayList<List<Integer>> kSum(int[] nums, int target, int k, int index) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        if (index >= len) {
+            return res;
+        }
+        if (k == 2) {
+            int i = index, j = len - 1;
+            while (i < j) {
+                //find a pair
+                if (target - nums[i] == nums[j]) {
+                    List<Integer> temp = new ArrayList<>();
+                    temp.add(nums[i]);
+                    temp.add(target - nums[i]);
+                    res.add(temp);
+                    //skip duplication
+                    while (i < j && nums[i] == nums[i + 1]) {
+                        i++;
+                    }
+                    while (i < j && nums[j - 1] == nums[j]) {
+                        j--;
+                    }
+                    i++;
+                    j--;
+                    //move left bound
+                } else if (target - nums[i] > nums[j]) {
+                    i++;
+                    //move right bound
+                } else {
+                    j--;
+                }
+            }
+        } else {
+            for (int i = index; i < len - k + 1; i++) {
+                //use current number to reduce ksum into k-1sum
+                ArrayList<List<Integer>> temp = kSum(nums, target - nums[i], k - 1, i + 1);
+                if (temp != null) {
+                    //add previous results
+                    for (List<Integer> t : temp) {
+                        t.add(0, nums[i]);
+                    }
+                    res.addAll(temp);
+                }
+                while (i < len - 1 && nums[i] == nums[i + 1]) {
+                    //skip duplicated numbers
+                    i++;
+                }
+            }
+        }
+        return res;
+    }
 }

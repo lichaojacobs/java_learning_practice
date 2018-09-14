@@ -11,9 +11,10 @@
   <packaging>pom</packaging>
   <modules>
     <module>core</module>
-    <module>algorithm_learning</module>
-    <module>netty_learning</module>
+    <module>algorithm-learning</module>
+    <module>netty-learning</module>
     <module>utils</module>
+    <module>real-time-jobs</module>
   </modules>
 
   <repositories>

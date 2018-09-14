@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>algorithm_learning</artifactId>
+  <artifactId>algorithm-learning</artifactId>
 
   <dependencies>
     <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor_2.11 -->

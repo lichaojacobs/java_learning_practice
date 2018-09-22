@@ -9,7 +9,7 @@ import java.util.*;
 public class ProblemsMedium_10 {
 
     public static void main(String[] args) {
-
+        System.out.println(-(-Integer.MIN_VALUE));
     }
 
     // 43. Multiply Strings
@@ -384,5 +384,125 @@ public class ProblemsMedium_10 {
             res = "/" + dir + res;
         }
         return res.isEmpty() ? "/" : res;
+    }
+
+    //73. Set Matrix Zeroes
+    //    Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in-place.
+    //
+    //        Example 1:
+    //
+    //    Input:
+    //        [
+    //        [1,1,1],
+    //        [1,0,1],
+    //        [1,1,1]
+    //        ]
+    //    Output:
+    //        [
+    //        [1,0,1],
+    //        [0,0,0],
+    //        [1,0,1]
+    //        ]
+    // fr = first row
+    // fc = first col
+
+    // Use first row and first column as markers.
+    // if matrix[i][j] = 0, mark respected row and col marker = 0; indicating
+    //    that later this respective row and col must be marked 0;
+    // And because you are altering first row and collumn,
+    //    you need to  have two variables to track their own status.
+    // So, for ex, if any one of the first row is 0, fr = 0,
+    //    and at the end set all first row to 0;
+    public void setZeroes(int[][] matrix) {
+        if (matrix == null || (matrix.length == 0 && matrix[0].length == 0)) {
+            return;
+        }
+
+        boolean fr = false;
+        boolean fc = false;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    if (i == 0) {
+                        fr = true;
+                    }
+                    if (j == 0) {
+                        fc = true;
+                    }
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (fr) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+        if (fc) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
+
+    //50. Pow(x, n)
+    //    Implement pow(x, n), which calculates x raised to the power n (xn).
+    //
+    //    Example 1:
+    //
+    //    Input: 2.00000, 10
+    //    Output: 1024.00000
+    //    Example 2:
+    //
+    //    Input: 2.10000, 3
+    //    Output: 9.26100
+    //    Example 3:
+    //
+    //    Input: 2.00000, -2
+    //    Output: 0.25000
+    //    Explanation: 2-2 = 1/22 = 1/4 = 0.25
+    //    Note:
+    //
+    //        -100.0 < x < 100.0
+    //    n is a 32-bit signed integer, within the range [−231, 231 − 1]
+    //超时, 这种线性级别的复杂度通不过，得使用log(n)级别的复杂度
+    public double myPow(double x, int n) {
+        if (x == 0.0) {
+            return 0.0;
+        }
+        if (n == 0) {
+            return 1;
+        }
+
+        int temp = 1;
+        double val = x;
+        while (temp < Math.abs(n)) {
+            val = val * x;
+            temp++;
+        }
+
+        return n > 0 ? val : 1 / val;
+    }
+
+    //优化后的
+    public static double pow(double x, int n) {
+        if (n == 0) {
+            return 1;
+        }
+        if (n < 0) {
+            n = -n;
+            x = 1 / x;
+        }
+        //二分法，始终凑对并行相乘
+        return (n % 2 == 0) ? pow(x * x, n / 2) : x * pow(x * x, n / 2);
     }
 }

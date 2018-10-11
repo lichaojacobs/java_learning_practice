@@ -249,4 +249,68 @@ public class TopInterviewQuestions {
         nums[i] = nums[j];
         nums[j] = tmp;
     }
+
+    // 79. Word Search
+    //    Given a 2D board and a word, find if the word exists in the grid.
+    //
+    //    The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+    //
+    //        Example:
+    //
+    //    board =
+    //        [
+    //        ['A','B','C','E'],
+    //        ['S','F','C','S'],
+    //        ['A','D','E','E']
+    //        ]
+    //
+    //    Given word = "ABCCED", return true.
+    //    Given word = "SEE", return true.
+    //    Given word = "ABCB", return false.
+    public boolean exist(char[][] board, String word) {
+        if (board == null || (board.length == 0 && board[0].length == 0)) {
+            return false;
+        }
+        if (word == null || "".equals(word)) {
+            return true;
+        }
+        boolean[][] visited = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    if (isExist(i, j, visited, word.substring(1), board)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word, char[][] board) {
+        if (word.length() == 0) {
+            return true;
+        }
+        visited[current_i][current_j] = true;
+        boolean top =
+            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[current_i - 1][current_j] && isExist(
+                current_i - 1, current_j, visited, word.substring(1), board);
+        boolean bottom =
+            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j] && !visited[current_i + 1][current_j]
+                && isExist(current_i + 1, current_j, visited, word.substring(1), board);
+        boolean left = current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0) && !visited[current_i][current_j - 1]
+            && isExist(current_i, current_j - 1, visited, word.substring(1), board);
+
+        boolean right =
+            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word.charAt(0) && !visited[current_i][current_j
+                + 1]
+                && isExist(current_i, current_j + 1, visited, word.substring(1), board);
+
+        if (top || bottom || left || right) {
+            return true;
+        } else {
+            visited[current_i][current_j] = false;
+            return false;
+        }
+    }
 }

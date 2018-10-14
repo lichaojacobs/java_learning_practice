@@ -1,5 +1,12 @@
 package com.jacobs.basic.algorithm.leetcode;
 
+import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.models.ListNode;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * @author lichao
  * @date 2018/09/09
@@ -312,5 +319,89 @@ public class TopInterviewQuestions {
             visited[current_i][current_j] = false;
             return false;
         }
+    }
+
+
+    // 19. Remove Nth Node From End of List
+    //    Given a linked list, remove the n-th node from the end of list and return its head.
+    //
+    //    Example:
+    //
+    //    Given linked list: 1->2->3->4->5, and n = 2.
+    //
+    //    After removing the second node from the end, the linked list becomes 1->2->3->5.
+    //    Note:
+    //
+    //    Given n will always be valid.
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null || n <= 0) {
+            return head;
+        }
+
+        ListNode preNode = head;
+        ListNode aftNode = head;
+
+        while (aftNode != null && n > 0) {
+            aftNode = aftNode.next;
+            n--;
+        }
+
+        // 此处需要处理头部节点被去掉的corner case
+        if (aftNode == null && n > 0) {
+            return head;
+        }
+        if (aftNode == null && n == 0) {
+            return head.next;
+        }
+
+        while (aftNode.next != null) {
+            preNode = preNode.next;
+            aftNode = aftNode.next;
+        }
+        preNode.next = preNode.next.next;
+        return head;
+    }
+
+    //102. Binary Tree Level Order Traversal
+    //    Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+    //
+    //    For example:
+    //    Given binary tree [3,9,20,null,null,15,7],
+    //        3
+    //        / \
+    //        9  20
+    //        /  \
+    //        15   7
+    //        return its level order traversal as:
+    //        [
+    //        [3],
+    //        [9,20],
+    //        [15,7]
+    //        ]
+
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            List<Integer> subList = new LinkedList<>();
+            for (int i = 0; i < levelNum; i++) {
+                if (queue.peek().left != null) {
+                    queue.offer(queue.peek().left);
+                }
+                if (queue.peek().right != null) {
+                    queue.offer(queue.peek().right);
+                }
+                subList.add(queue.poll().val);
+            }
+            resultList.add(subList);
+        }
+
+        return resultList;
     }
 }

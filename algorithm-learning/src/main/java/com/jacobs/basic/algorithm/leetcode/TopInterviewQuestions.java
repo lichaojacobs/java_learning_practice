@@ -15,7 +15,6 @@ public class TopInterviewQuestions {
 
     public static void main(String[] args) {
         sortColors(new int[]{2, 1});
-        System.out.println("");
     }
 
 
@@ -403,5 +402,120 @@ public class TopInterviewQuestions {
         }
 
         return resultList;
+    }
+
+    //215. Kth Largest Element in an Array
+    //    Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+    //
+    //    Example 1:
+    //
+    //    Input: [3,2,1,5,6,4] and k = 2
+    //    Output: 5
+    //    Example 2:
+    //
+    //    Input: [3,2,3,1,2,4,5,5,6] and k = 4
+    //    Output: 4
+    //    Note:
+    //    You may assume k is always valid, 1 ≤ k ≤ array's length.
+    public int findKthLargest(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        k = nums.length - k;
+        int low = 0;
+        int high = nums.length - 1;
+        int mid = 0;
+        while (low < high) {
+            mid = kthLargestPartitionHelper(nums, low, high);
+            if (mid < k) {
+                low = mid + 1;
+            } else if (mid > k) {
+                high = mid - 1;
+            } else {
+                break;
+            }
+        }
+
+        return nums[mid];
+    }
+
+    public int kthLargestPartitionHelper(int[] nums, int low, int high) {
+        int index = nums[low];
+        while (low < high) {
+            while (low < high && index <= nums[high]) {
+                high--;
+            }
+            nums[low] = nums[high];
+            while (low < high && index >= nums[low]) {
+                low++;
+            }
+            nums[high] = nums[low];
+        }
+        nums[low] = index;
+        return low;
+    }
+
+    /**
+     * 124. Binary Tree Maximum Path Sum
+     *
+     * Given a non-empty binary tree, find the maximum path sum.
+     *
+     * For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child
+     * connections. The path must contain at least one node and does not need to go through the root.
+     *
+     * 思路：最大和无非就是三种情况：左边，右边，或者是跨节点，或者就是该节点 我的方法没有跑通所有的test cases
+     */
+    public int maxPathSum(TreeNode root) {
+        if (root == null) {
+            return Integer.MIN_VALUE;
+        }
+        int[] maxSum = new int[1];
+        maxSum[0] = Integer.MIN_VALUE;
+        maxPathSumHelper(root, maxSum);
+        return maxSum[0];
+    }
+
+    public int maxPathSumHelper(TreeNode root, int[] maxSum) {
+        if (root == null) {
+            maxSum[0] = 0;
+            return 0;
+        }
+
+        int leftMax = maxPathSumHelper(root.left, maxSum);
+        int maxFromLeft = maxSum[0];
+
+        int rightMax = maxPathSumHelper(root.right, maxSum);
+        int maxFromRight = maxSum[0];
+
+        // root+right+left, root, root+left, root+right
+        int crossMax = Math.max(Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val), rightMax + root.val), root.val);
+        int currentMax = Math.max(Math.max(maxFromLeft, maxFromRight), crossMax);
+
+        //这里用一个数组记下局部最大值
+        maxSum[0] = currentMax;
+        //这里如果不return 跨节点的最大，则在上一层的时候没法确定是否与上一层的当前节点相连
+        return crossMax;
+    }
+
+
+    // 网友的解答
+    int max = Integer.MIN_VALUE;
+
+    public int maxPathSum2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        backtrack(root);
+        return max;
+    }
+
+    private int backtrack(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftSum = Math.max(0, backtrack(root.left));//less than 0, then not take left branch
+        int rightSum = Math.max(0, backtrack(root.right));//less than 0, then not take right branch
+        max = Math.max(max, leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
+        return Math.max(0, Math.max(root.val + leftSum, root.val + rightSum));//take left+root or right+root or root or 0
     }
 }

@@ -15,26 +15,27 @@ import java.util.stream.Collectors;
 public class Practice {
 
     public static void main(String[] args) {
-//    TreeNode root = new TreeNode(1);
-//////    root.left = new TreeNode(-2);
-//////    root.right = new TreeNode(3);
-//////    System.out.println(maxPathSum(root));
-//        double a = new BigDecimal(3.23557)
-//                .setScale(3, BigDecimal.ROUND_UP).doubleValue() * 10000;
-//        List<List<Long>> lists = new ArrayList<>();
-//        double logRatio = (new BigDecimal((double) (209129 - 210482) / 209129)
-//                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000);
-//
-//        double diffRatio = new BigDecimal((double) (330037 - 316478) / 330037)
-//                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000;
-//
-//        lists.add(Lists.newArrayList(1L, 2L));
-//        lists.add(Lists.newArrayList(3L, 4L));
-//        System.out.println(a);
-//        //System.out.println(String.format("list: %s", lists));
-//        System.out.println((int) Math.abs(diffRatio));
+        //    TreeNode root = new TreeNode(1);
+        //////    root.left = new TreeNode(-2);
+        //////    root.right = new TreeNode(3);
+        //////    System.out.println(maxPathSum(root));
+        //        double a = new BigDecimal(3.23557)
+        //                .setScale(3, BigDecimal.ROUND_UP).doubleValue() * 10000;
+        //        List<List<Long>> lists = new ArrayList<>();
+        //        double logRatio = (new BigDecimal((double) (209129 - 210482) / 209129)
+        //                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000);
+        //
+        //        double diffRatio = new BigDecimal((double) (330037 - 316478) / 330037)
+        //                .setScale(4, BigDecimal.ROUND_DOWN).doubleValue() * 10000;
+        //
+        //        lists.add(Lists.newArrayList(1L, 2L));
+        //        lists.add(Lists.newArrayList(3L, 4L));
+        //        System.out.println(a);
+        //        //System.out.println(String.format("list: %s", lists));
+        //        System.out.println((int) Math.abs(diffRatio));
         //System.out.println(calculateGrowth());
-        System.out.println(MoreThanHalfNum_Solution(new int[]{1, 2, 3, 2, 2, 2, 5, 4, 2}));
+        //        System.out.println(MoreThanHalfNum_Solution(new int[]{1, 2, 3, 2, 2, 2, 5, 4, 2}));
+        getTwoMinNumber(new int[]{2, 2, 3, 2, 1, 2, 5, 3, 2}).stream().forEach(System.out::println);
     }
 
     public static void mergeSort(int[] arr, int left, int right) {
@@ -105,7 +106,7 @@ public class Practice {
      * 在其他数都出现k次的数组中找到只出现一次的数
      *
      * @param arr 整形数组
-     * @param k   k 进制
+     * @param k k 进制
      * @return 返回只出现一次的数
      */
     public static int onceNum(int[] arr, int k) {
@@ -185,7 +186,7 @@ public class Practice {
     }
 
     public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd,
-                                  int inStart, int inEnd) {
+        int inStart, int inEnd) {
         if (preStart < preEnd) {
             return null;
         }
@@ -199,23 +200,23 @@ public class Practice {
         }
 
         root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart,
-                inStart, index - 1);
+            inStart, index - 1);
         root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd, index + 1,
-                inEnd);
+            inEnd);
 
         return root;
     }
 
     // Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
     // Given the sorted array: [-10,-3,0,5,9],
-//
-//  One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
-//
-//      0
-//      / \
-//      -3   9
-//      /   /
-//      -10  5
+    //
+    //  One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
+    //
+    //      0
+    //      / \
+    //      -3   9
+    //      /   /
+    //      -10  5
     public static TreeNode sortedArrayToBST(int[] nums) {
         if (nums == null || nums.length == 0) {
             return null;
@@ -237,8 +238,8 @@ public class Practice {
     }
 
     //  Given a binary tree and a sum, determine if the tree has a root-to-leaf
-//  path such that adding up all the values
-//  along the path equals the given sum.
+    //  path such that adding up all the values
+    //  along the path equals the given sum.
     public static boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) {
             return false;
@@ -256,12 +257,12 @@ public class Practice {
     }
 
     //  Given a binary tree, find the maximum path sum.
-//
-//  For this problem, a path is defined as any sequence of nodes from some starting node
-//
-//  to any node in the tree along the parent-child connections. The path must contain at least one node
-//
-//  and does not need to go through the root.
+    //
+    //  For this problem, a path is defined as any sequence of nodes from some starting node
+    //
+    //  to any node in the tree along the parent-child connections. The path must contain at least one node
+    //
+    //  and does not need to go through the root.
     //无非来自三个地方，左边，右边，跨节点，或者就是当前节点
     public static int maxPathSum(TreeNode root) {
         return help(root, new int[1]);
@@ -322,8 +323,8 @@ public class Practice {
         while (rows > 0) {
             String line = intput.next();
             List<Integer> lineArr = Arrays.stream(line.split(","))
-                                          .map(s -> Integer.valueOf(s))
-                                          .collect(Collectors.toList());
+                .map(s -> Integer.valueOf(s))
+                .collect(Collectors.toList());
 
             //每日增长
             if (lineArr.get(0) == 1) {
@@ -360,8 +361,8 @@ public class Practice {
             int target = Integer.valueOf(defineStrArr[1]);
 
             List<Integer> coninsArr = Arrays.stream(input.next().split(" "))
-                                            .map(Integer::valueOf)
-                                            .collect(Collectors.toList());
+                .map(Integer::valueOf)
+                .collect(Collectors.toList());
             if (numberOfCoins == coninsArr.size()) {
                 System.out.println(changeCoins(coninsArr, target));
             }
@@ -402,8 +403,8 @@ public class Practice {
     }
 
     //    数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
-//    例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
-//    由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+    //    例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
+    //    由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
     public static int MoreThanHalfNum_Solution(int[] array) {
         if (array == null || array.length == 0) {
             return 0;
@@ -459,5 +460,36 @@ public class Practice {
             result.add(integer);
         }
         return result;
+    }
+
+    /**
+     * 侯耀宗快手面试题
+     */
+    public static ArrayList<Integer> getTwoMinNumber(int[] nums) {
+        ArrayList<Integer> resultList = new ArrayList<>();
+        if (nums == null || nums.length <= 1) {
+            return resultList;
+        }
+
+        int firstMin = Integer.MAX_VALUE;
+        int secondMin = Integer.MAX_VALUE;
+        int thridMin = Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] < firstMin) {
+                thridMin = secondMin;
+                secondMin = firstMin;
+                firstMin = nums[i];
+            } else if (nums[i] < secondMin && nums[i] != firstMin) {
+                thridMin = secondMin;
+                secondMin = nums[i];
+            } else if (nums[i] < thridMin && nums[i] != secondMin && nums[i] != firstMin) {
+                thridMin = nums[i];
+            }
+        }
+
+        resultList.add(firstMin);
+        resultList.add(secondMin - firstMin > 1 ? secondMin : thridMin);
+        return resultList;
     }
 }

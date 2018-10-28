@@ -77,7 +77,7 @@ public class PrintZigZag {
         }
         if (head.right != null) {
           nLast = nLast == null ? head.right : nLast;
-          dq.offerLast(head.left);
+          dq.offerLast(head.right);
         }
       } else {
         head = dq.pollLast();

@@ -631,4 +631,57 @@ public class TopInterviewQuestions {
         visited[course] = false;
         return true;
     }
+
+
+    //   131. Palindrome Partitioning
+    // Given a string s, partition s such that every substring of the partition is a palindrome.
+    //
+    //    Return all possible palindrome partitioning of s.
+    //
+    //        Example:
+    //
+    //    Input: "aab"
+    //    Output:
+    //        [
+    //        ["aa","b"],
+    //        ["a","a","b"]
+    //        ]
+    // 利用动态规划判断是否为回文
+    // BFS 思想
+    public List<List<String>> palindromePartition(String s) {
+        List<List<String>> results = new ArrayList<>();
+        if (s == null || s.equals("")) {
+            return results;
+        }
+        char[] chars = s.toCharArray();
+        int len = chars.length;
+        boolean[][] palindromeMatrix = new boolean[len][len];
+        palindromePartitionHelper(chars, palindromeMatrix, results, new ArrayList<>(), 0);
+        return results;
+    }
+
+    public void palindromePartitionHelper(char[] chars, boolean[][] matrix, List<List<String>> result, ArrayList<String> currentResult,
+        int start) {
+        if (start >= chars.length && currentResult.size() > 0) {
+            result.add(new ArrayList<>(currentResult));
+        }
+
+        for (int i = start; i < chars.length; i++) {
+            if (isPalindrome(matrix, chars, start, i)) {
+                matrix[start][i] = true;
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int j = start; j <= i; j++) {
+                    stringBuilder.append(chars[j]);
+                }
+                currentResult.add(stringBuilder.toString());
+                // 截取了start-i作为一个record,下一个从i+1之后开始进入递归
+                palindromePartitionHelper(chars, matrix, result, currentResult, i + 1);
+                currentResult.remove(currentResult.size() - 1);
+            }
+        }
+    }
+
+    public boolean isPalindrome(boolean[][] matrix, char[] chars, int start, int end) {
+        return chars[start] == chars[end] && (end - start < 2 || matrix[start + 1][end - 1] == true);
+    }
 }

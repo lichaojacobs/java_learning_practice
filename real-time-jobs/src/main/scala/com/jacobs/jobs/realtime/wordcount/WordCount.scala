@@ -1,7 +1,10 @@
 package com.jacobs.jobs.realtime.wordcount
 
+import com.jacobs.jobs.realtime.wordcount.utils.ParquetWriters
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.api.scala._
+import org.apache.flink.core.fs.Path
+import org.apache.flink.streaming.api.functions.sink.filesystem.StreamingFileSink
 
 /**
   * Implements the "WordCount" program that computes a simple word occurrence histogram
@@ -61,7 +64,13 @@ object WordCount {
       env.execute("Scala WordCount Example")
     } else {
       println("Printing result to stdout. Use --output to specify output path.")
+      //      val sink = StreamingFileSink
+      //        .forBulkFormat(new Path("/Users/lichao15/Desktop"), ParquetWriters.forReflectRecord(classOf[WordCountDemo]))
+      //        .build()
       counts.print()
     }
   }
+
+  case class WordCountDemo(key: String, count: Int)
+
 }

@@ -1,13 +1,16 @@
 package com.jacobs.basic.algorithm.leetcode;
 
+import com.google.common.collect.Lists;
 import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import jdk.nashorn.internal.objects.NativeUint8Array;
 
 /**
  * @author lichao
@@ -17,12 +20,16 @@ public class TopInterviewQuestions {
 
     public static void main(String[] args) {
         //        sortColors(new int[]{2, 1});
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.left = new TreeNode(4);
-        root.right.right = new TreeNode(5);
-        zigzagLevelOrder(root);
+        //        TreeNode root = new TreeNode(1);
+        //        root.left = new TreeNode(2);
+        //        root.right = new TreeNode(3);
+        //        root.left.left = new TreeNode(4);
+        //        root.right.right = new TreeNode(5);
+        //        zigzagLevelOrder(root);
+        TopInterviewQuestions topInterviewQuestions = new TopInterviewQuestions();
+        System.out.println(topInterviewQuestions.wordBreak(
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
+            Lists.newArrayList("a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa")));
     }
 
 
@@ -683,5 +690,131 @@ public class TopInterviewQuestions {
 
     public boolean isPalindrome(boolean[][] matrix, char[] chars, int start, int end) {
         return chars[start] == chars[end] && (end - start < 2 || matrix[start + 1][end - 1] == true);
+    }
+
+    //    148. Sort List
+    //    Sort a linked list in O(n log n) time using constant space complexity.
+    //
+    //    Example 1:
+    //
+    //    Input: 4->2->1->3
+    //    Output: 1->2->3->4
+    //    Example 2:
+    //
+    //    Input: -1->5->3->4->0
+    //    Output: -1->0->3->4->5
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode breakNode = null, fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            breakNode = slow;
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        breakNode.next = null;
+        // step 2. sort each half
+        ListNode pre = sortList(head);
+        ListNode aft = sortList(slow);
+
+        return mergeListNode(pre, aft);
+    }
+
+    public ListNode mergeListNode(ListNode pre, ListNode aft) {
+        ListNode newHead = new ListNode(0);
+        ListNode nodeIndex = newHead;
+
+        while (pre != null && aft != null) {
+            if (pre.val < aft.val) {
+                nodeIndex.next = pre;
+                pre = pre.next;
+            } else {
+                nodeIndex.next = aft;
+                aft = aft.next;
+            }
+            nodeIndex = nodeIndex.next;
+        }
+
+        if (pre != null) {
+            nodeIndex.next = pre;
+        }
+        if (aft != null) {
+            nodeIndex.next = aft;
+        }
+
+        return newHead.next;
+    }
+
+
+    //    139. Word Break
+    //    Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+    //
+    //    Note:
+    //
+    //    The same word in the dictionary may be reused multiple times in the segmentation.
+    //    You may assume the dictionary does not contain duplicate words.
+    //    Example 1:
+    //
+    //    Input: s = "leetcode", wordDict = ["leet", "code"]
+    //    Output: true
+    //    Explanation: Return true because "leetcode" can be segmented as "leet code".
+    //    解法一：DFS，最后一个test case 超时
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.equals("") || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+
+        HashSet<String> wordSet = new HashSet<>(wordDict);
+        return workBeakHelper(s, 0, wordSet);
+    }
+
+    public boolean workBeakHelper(String rawStr, int start, HashSet<String> wordDict) {
+        if (start >= rawStr.length()) {
+            return false;
+        }
+        if (wordDict.contains(rawStr.substring(start))) {
+            return true;
+        }
+
+        boolean flag = false;
+        for (int i = start; i < rawStr.length(); i++) {
+            if (wordDict.contains(rawStr.substring(start, i))) {
+                flag = workBeakHelper(rawStr, i, wordDict);
+                if (flag) {
+                    return true;
+                }
+            }
+        }
+
+        return flag;
+    }
+
+    /**
+     * 采用动态规划思想
+     *
+     * 定义一个boolean dp[length+1],dp[i]表示长度为i的字符串是否能word break
+     */
+    public boolean wordBreak2(String s, List<String> wordDict) {
+        if (s == null || s.equals("") || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                //这里如果dp[j]为true，说明只需要判断j到i之间的字符串是否能word break
+                if (dp[j] && wordDict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[s.length()];
     }
 }

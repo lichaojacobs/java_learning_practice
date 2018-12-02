@@ -55,6 +55,10 @@
       <groupId>org.squirrelframework</groupId>
       <artifactId>squirrel-foundation</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.lmax</groupId>
+      <artifactId>disruptor</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

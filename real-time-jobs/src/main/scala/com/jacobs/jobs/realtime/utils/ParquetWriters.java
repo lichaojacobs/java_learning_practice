@@ -1,4 +1,4 @@
-package com.jacobs.jobs.realtime.wordcount.utils;
+package com.jacobs.jobs.realtime.utils;
 
 import java.io.IOException;
 import org.apache.avro.Schema;

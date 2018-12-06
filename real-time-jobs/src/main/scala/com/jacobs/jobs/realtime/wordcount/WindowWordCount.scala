@@ -1,6 +1,6 @@
 package com.jacobs.jobs.realtime.wordcount
 
-import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
 
 /**

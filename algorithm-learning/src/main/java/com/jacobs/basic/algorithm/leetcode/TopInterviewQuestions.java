@@ -27,9 +27,8 @@ public class TopInterviewQuestions {
         //        root.right.right = new TreeNode(5);
         //        zigzagLevelOrder(root);
         TopInterviewQuestions topInterviewQuestions = new TopInterviewQuestions();
-        System.out.println(topInterviewQuestions.wordBreak(
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
-            Lists.newArrayList("a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa")));
+        long time = System.currentTimeMillis() / 1000;
+        System.out.println(time - time % 120);
     }
 
 
@@ -816,5 +815,30 @@ public class TopInterviewQuestions {
         }
 
         return dp[s.length()];
+    }
+
+
+    //236. Lowest Common Ancestor of a Binary Tree（最近公共祖先）
+    //    All of the nodes' values will be unique.
+    //    p and q are different and both values will exist in the binary tree
+    //    深度遍历(DFS)或者说树的先序遍历，遍历过程中如果找到匹配的节点就返回，
+    //    到最后如果left，right都不为空，说明当前的root即为公共的祖先
+    //    如果有一个为空，则只需要返回不为空的node到上层即可
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root == q || root == p) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if (left != null && right != null) {
+            return root;
+        } else {
+            return left != null ? left : right;
+        }
     }
 }

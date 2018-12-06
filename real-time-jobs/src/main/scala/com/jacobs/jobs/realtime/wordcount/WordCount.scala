@@ -1,10 +1,7 @@
 package com.jacobs.jobs.realtime.wordcount
 
-import com.jacobs.jobs.realtime.wordcount.utils.ParquetWriters
 import org.apache.flink.api.java.utils.ParameterTool
-import org.apache.flink.api.scala._
-import org.apache.flink.core.fs.Path
-import org.apache.flink.streaming.api.functions.sink.filesystem.StreamingFileSink
+import org.apache.flink.api.scala.ExecutionEnvironment
 
 /**
   * Implements the "WordCount" program that computes a simple word occurrence histogram

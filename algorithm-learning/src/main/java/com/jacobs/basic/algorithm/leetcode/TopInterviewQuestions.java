@@ -1,6 +1,7 @@
 package com.jacobs.basic.algorithm.leetcode;
 
 import com.google.common.collect.Lists;
+import com.jacobs.basic.algorithm.TreeLinkNode;
 import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 import java.util.ArrayDeque;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 import jdk.nashorn.internal.objects.NativeUint8Array;
 
 /**
@@ -27,8 +29,10 @@ public class TopInterviewQuestions {
         //        root.right.right = new TreeNode(5);
         //        zigzagLevelOrder(root);
         TopInterviewQuestions topInterviewQuestions = new TopInterviewQuestions();
-        long time = System.currentTimeMillis() / 1000;
-        System.out.println(time - time % 120);
+        TreeLinkNode root = new TreeLinkNode(1);
+        root.left = new TreeLinkNode(2);
+        root.right = new TreeLinkNode(3);
+        topInterviewQuestions.connect(root);
     }
 
 
@@ -839,6 +843,48 @@ public class TopInterviewQuestions {
             return root;
         } else {
             return left != null ? left : right;
+        }
+    }
+
+    //116. Populating Next Right Pointers in Each Node
+    //    Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+    //
+    //    Initially, all next pointers are set to NULL.
+    //
+    //        Note:
+    //
+    //    You may only use constant extra space.
+    //    Recursive approach is fine, implicit stack space does not count as extra space for this problem.
+    //    You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
+    public void connect(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+        Deque<TreeLinkNode> queue = new LinkedList<>();
+        queue.offerFirst(root);
+        //记录同一层最后一个节点
+        TreeLinkNode levelLastNode = root;
+        //记录同一层前驱节点
+        TreeLinkNode levelPreNode = null;
+        while (!queue.isEmpty()) {
+            TreeLinkNode curr = queue.pollLast();
+            if (curr.left != null) {
+                queue.offerFirst(curr.left);
+            }
+            if (curr.right != null) {
+                queue.offerFirst(curr.right);
+            }
+            //如果前驱为空的话说明是一层的开始
+            if (levelPreNode != null) {
+                levelPreNode.next = curr;
+            }
+            levelPreNode = curr;
+            //栈输出如果是上一层最后一个节点
+            if (curr == levelLastNode) {
+                levelLastNode = curr.right;
+                curr.next = null;
+                levelPreNode = null;
+            }
         }
     }
 }

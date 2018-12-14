@@ -1,6 +1,5 @@
 package com.jacobs.basic.algorithm.leetcode;
 
-import com.google.common.collect.Lists;
 import com.jacobs.basic.algorithm.TreeLinkNode;
 import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
@@ -11,8 +10,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
-import jdk.nashorn.internal.objects.NativeUint8Array;
 
 /**
  * @author lichao

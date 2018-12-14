@@ -2,6 +2,7 @@ package com.jacobs.jobs.realtime.wordcount
 
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.api.scala.ExecutionEnvironment
+import org.apache.flink.streaming.api.scala._
 
 /**
   * Implements the "WordCount" program that computes a simple word occurrence histogram

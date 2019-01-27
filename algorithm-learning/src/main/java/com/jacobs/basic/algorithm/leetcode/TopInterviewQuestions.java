@@ -961,4 +961,62 @@ public class TopInterviewQuestions {
 
         return 0;
     }
+
+    /**
+     * 210. Course Schedule II
+     *
+     * There are a total of n courses you have to take, labeled from 0 to n-1.
+     *
+     * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair:
+     * [0,1]
+     *
+     * Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all
+     * courses.
+     *
+     * There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty
+     * array.
+     *
+     * 有向无环图，用BFS的方法解决，逐渐抹去入度为0的节点以及他们的边，将大问题化小
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        //记录节点的入度
+        int[] incLinkCounts = new int[numCourses];
+        ArrayList<Integer>[] graph = new ArrayList[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList();
+        }
+        //构建图
+        for (int i = 0; i < prerequisites.length; i++) {
+            int from = prerequisites[i][1];
+            int to = prerequisites[i][0];
+            graph[from].add(to);
+            incLinkCounts[to]++;
+        }
+
+        //BFS
+        int[] order = new int[incLinkCounts.length];
+        Queue<Integer> toVisit = new ArrayDeque<>();
+        for (int i = 0; i < incLinkCounts.length; i++) {
+            if (incLinkCounts[i] == 0) {
+                toVisit.offer(i);
+            }
+        }
+
+        int index = 0;
+        while (!toVisit.isEmpty()) {
+            int from = toVisit.poll();
+            order[index++] = from;
+            //去除与它相关联的所有依赖边
+            for (int to : graph[from]) {
+                //入度减1
+                incLinkCounts[to]--;
+                //如果入度满足为0的情况，则加入下一轮削减的过程
+                if (incLinkCounts[to] == 0) {
+                    toVisit.offer(to);
+                }
+            }
+        }
+
+        return index == incLinkCounts.length ? order : new int[0];
+    }
 }

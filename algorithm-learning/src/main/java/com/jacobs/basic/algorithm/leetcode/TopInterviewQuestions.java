@@ -631,12 +631,15 @@ public class TopInterviewQuestions {
         if (visited[course]) {
             return false;
         }
+        //标记为访问过
         visited[course] = true;
         for (int i = 0; i < graph[course].size(); i++) {
+            //dfs 查看路径是否有死循环
             if (!canFinishDFSHelper(graph, visited, (int) graph[course].get(i))) {
                 return false;
             }
         }
+        //将标记改回来，方便下一次循环使用
         visited[course] = false;
         return true;
     }
@@ -936,5 +939,26 @@ public class TopInterviewQuestions {
             }
             return false;
         }
+    }
+
+    /**
+     * 287. Find the Duplicate Number
+     *
+     * Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive),
+     *
+     * prove that at least one duplicate number must exist.
+     *
+     * Assume that there is only one duplicate number, find the duplicate one.
+     *
+     * 快慢指针的思路，暂时没懂
+     *
+     * https://leetcode.com/problems/find-the-duplicate-number/discuss/72846/My-easy-understood-solution-with-O(n)-time-and-O(1)-space-without-modifying-the-array.-With-clear-explanation.
+     */
+    public int findDuplicate(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+
+        return 0;
     }
 }

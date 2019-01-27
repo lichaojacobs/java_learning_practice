@@ -3,6 +3,7 @@ package com.jacobs.basic.algorithm;
 import com.google.common.collect.Lists;
 import com.jacobs.basic.algorithm.array.MaxChildListSum;
 
+import com.jacobs.basic.algorithm.binarytree.BinaryTree;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collector;
@@ -185,8 +186,7 @@ public class Practice {
         return constructNode(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
     }
 
-    public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd,
-        int inStart, int inEnd) {
+    public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd) {
         if (preStart < preEnd) {
             return null;
         }
@@ -199,10 +199,8 @@ public class Practice {
             }
         }
 
-        root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart,
-            inStart, index - 1);
-        root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd, index + 1,
-            inEnd);
+        root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart, inStart, index - 1);
+        root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd, index + 1, inEnd);
 
         return root;
     }
@@ -322,9 +320,7 @@ public class Practice {
 
         while (rows > 0) {
             String line = intput.next();
-            List<Integer> lineArr = Arrays.stream(line.split(","))
-                .map(s -> Integer.valueOf(s))
-                .collect(Collectors.toList());
+            List<Integer> lineArr = Arrays.stream(line.split(",")).map(s -> Integer.valueOf(s)).collect(Collectors.toList());
 
             //每日增长
             if (lineArr.get(0) == 1) {
@@ -360,9 +356,7 @@ public class Practice {
             int numberOfCoins = Integer.valueOf(defineStrArr[0]);
             int target = Integer.valueOf(defineStrArr[1]);
 
-            List<Integer> coninsArr = Arrays.stream(input.next().split(" "))
-                .map(Integer::valueOf)
-                .collect(Collectors.toList());
+            List<Integer> coninsArr = Arrays.stream(input.next().split(" ")).map(Integer::valueOf).collect(Collectors.toList());
             if (numberOfCoins == coninsArr.size()) {
                 System.out.println(changeCoins(coninsArr, target));
             }
@@ -491,5 +485,181 @@ public class Practice {
         resultList.add(firstMin);
         resultList.add(secondMin - firstMin > 1 ? secondMin : thridMin);
         return resultList;
+    }
+
+    //values数组分别保存左右子树最大搜索二叉树的节点数，最小值，和最大值
+    public static TreeNode getSearchTreeWithMaxNodes(TreeNode treeNode, int[] values) {
+        if (treeNode == null) {
+            values[0] = 0;
+            values[1] = Integer.MIN_VALUE;
+            values[2] = Integer.MAX_VALUE;
+            return treeNode;
+        }
+
+        int value = treeNode.val;
+        TreeNode left = treeNode.left;
+        TreeNode right = treeNode.right;
+        TreeNode lBst = getSearchTreeWithMaxNodes(treeNode.left, values);
+
+        int lSize = values[0];
+        int lMin = values[1];
+        int lMax = values[2];
+
+        TreeNode rBst = getSearchTreeWithMaxNodes(treeNode.left, values);
+        int rSize = values[0];
+        int rMin = values[1];
+        int rMax = values[2];
+
+        //首先看是否满足第一种情况:以当前节点为头，当然也得确定左右子树的头节点与获取到搜索树的头节点相同
+        if (left == lBst && right == rBst && value >= lMax && value <= rMin) {
+            values[0] = lSize + rSize + 1;
+            return treeNode;
+        } else {
+            values[0] = Math.max(lSize, rSize);
+            return lSize > rSize ? lBst : rBst;
+        }
+    }
+
+    /**
+     * 找到搜索二叉树的两个位置错误的节点，中序遍历即可
+     */
+    public static TreeNode[] getTwoErrorNodes(TreeNode root) {
+        TreeNode[] errs = new TreeNode[2];
+        if (root == null) {
+            return errs;
+        }
+
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode preNode = null;
+        TreeNode head = root;
+        while (!stack.isEmpty() || head != null) {
+            if (head != null) {
+                stack.push(head);
+                head = head.left;
+            } else {
+                //pop
+                TreeNode curr = stack.pop();
+                if (preNode != null) {
+                    if (preNode.val > curr.val) {
+                        if (errs[0] == null) {
+                            errs[0] = curr;
+                        } else {
+                            errs[1] = curr;
+                            //找到两个节点，不需要继续遍历了
+                            break;
+                        }
+                        preNode = curr;
+                        head = curr.right;
+                    }
+                }
+            }
+        }
+
+        return errs;
+    }
+
+
+    /**
+     * 判断一个后续遍历的数组是否是搜索二叉树
+     */
+    public boolean isPostArrSearchTree(int[] postArr) {
+        if (postArr == null || postArr.length == 0) {
+            return false;
+        }
+
+        //递归的搞，比根节点大的在右边，比根节点小的在左边
+        return isPost(postArr, 0, postArr.length - 1);
+    }
+
+    public boolean isPost(int[] arr, int start, int end) {
+        if (start == end) {
+            return true;
+        }
+
+        int less = -1;
+        int more = end;
+        for (int i = start; i < end; i++) {
+            if (arr[i] < arr[end]) {
+                less = i;
+            } else {
+                more = more == end ? i : more;
+            }
+        }
+
+        //如果没有左子树或右子树
+        if (less == -1 || more == end) {
+            return isPost(arr, start, end - 1);
+        }
+        //如果不满足单调性
+        if (less != more - 1) {
+            return false;
+        }
+        return isPost(arr, start, less) && isPost(arr, more, end - 1);
+    }
+
+    /**
+     * 根据后续遍历构建搜索二叉树
+     */
+    public TreeNode constructBST(int[] postArr) {
+        if (postArr == null || postArr.length == 0) {
+            return null;
+        }
+
+        return constructBSTHelper(postArr, 0, postArr.length - 1);
+    }
+
+    public TreeNode constructBSTHelper(int[] postArr, int start, int end) {
+        if (start >= end) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(postArr[end]);
+        int less = -1;
+        int more = end;
+        for (int i = start; i < end; i++) {
+            if (postArr[i] < postArr[end]) {
+                less = i;
+            } else {
+                more = more == end ? i : more;
+            }
+        }
+        root.left = constructBST(postArr, start, less);
+        root.right = constructBST(postArr, more, end - 1);
+
+        return root;
+    }
+
+    /**
+     * 从二叉树的中续遍历中找到某个节点的后续节点
+     */
+    public TreeNode getNextNodeFromInTraverse(TreeNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.right != null) {
+            return getLeftMost1(node);
+        } else {
+            TreeNode parent = node.parent;
+            //如果不是头节点，且不是父节点的左节点
+            while (parent != null && parent.left != node) {
+                node = parent;
+                parent = node.parent;
+            }
+
+            return parent;
+        }
+    }
+
+    public TreeNode getLeftMost1(TreeNode node) {
+        if (node == null) {
+            return node;
+        }
+
+        while (node.left != null) {
+            node = node.left;
+        }
+
+        return node;
     }
 }

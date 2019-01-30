@@ -3,102 +3,85 @@ package com.jacobs.basic.algorithm;
 import java.util.HashMap;
 
 /**
- * Created by lichao on 2017/9/22.
+ * * leetcode 146. LRU Cache
+ *
+ * @author lichao
+ * @date 2019/01/30
  */
 public class LRUCache {
 
-  private class Node {
+    private class Node {
 
-    Node prev;
-    Node next;
-    int key;
-    int value;
+        int key;
+        int value;
+        Node pre;
+        Node next;
 
-    public Node(int key, int value) {
-      this.key = key;
-      this.value = value;
-      this.prev = null;
-      this.next = null;
-    }
-  }
-
-  private int capacity;
-  private HashMap<Integer, Node> hs = new HashMap<Integer, Node>();
-  private Node head = new Node(-1, -1);
-  private Node tail = new Node(-1, -1);
-
-  // @param capacity, an integer
-  public LRUCache(int capacity) {
-    // write your code here
-    this.capacity = capacity;
-    tail.prev = head;
-    head.next = tail;
-  }
-
-  // @return an integer
-  public int get(int key) {
-    // write your code here
-    if (!hs.containsKey(key)) {
-      return -1;
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.pre = null;
+            this.next = null;
+        }
     }
 
-    // remove current
-    Node current = hs.get(key);
-    current.prev.next = current.next;
-    current.next.prev = current.prev;
+    static int DEFAULT_CAPACITY = 3;
+    HashMap<Integer, Node> cache = new HashMap<>();
+    Node head = new Node(-1, -1);
+    Node tail = new Node(-1, -1);
+    int capacity;
 
-    // move current to tail
-    move_to_tail(current);
+    public LRUCache(int capacity) {
+        if (capacity > 0) {
+            this.capacity = capacity;
+        } else {
+            this.capacity = DEFAULT_CAPACITY;
+        }
 
-    return hs.get(key).value;
-
-
-  }
-
-  // @param key, an integer
-  // @param val, an integer
-  // @return nothing
-  public void set(int key, int value) {
-    // write your code here
-    if (get(key) != -1) {
-      hs.get(key).value = value;
-      return;
+        // 初始化双向链表
+        head.next = tail;
+        tail.pre = head;
     }
 
-    if (hs.size() == capacity) {
-      hs.remove(head.next.key);
-      head.next = head.next.next;
-      head.next.prev = head;
+    public int get(int key) {
+        if (cache.get(key) == null) {
+            return -1;
+        }
+
+        // remove current node in linkedList
+        Node current = cache.get(key);
+        current.pre.next = current.next;
+        current.next.pre = current.pre;
+
+        // 移到末尾，表示最新使用的节点
+        moveToTail(current);
+
+        return current.value;
     }
 
-    Node insert = new Node(key, value);
-    hs.put(key, insert);
-    move_to_tail(insert);
-  }
+    public void moveToTail(Node curr) {
+        curr.pre = tail.pre;
+        tail.pre = curr;
+        curr.pre.next = curr;
+        curr.next = tail;
+    }
 
-  private void move_to_tail(Node current) {
-    current.prev = tail.prev;
-    tail.prev = current;
-    current.prev.next = current;
-    current.next = tail;
-  }
+    public void put(int key, int value) {
+        // 说明已经存在相同的key
+        if (get(key) != -1) {
+            cache.get(key).value = value;
+            return;
+        }
 
-  public static void main(String[] as) throws Exception {
-    LRUCache cache = new LRUCache(3);
-    cache.set(2, 2);
-    cache.set(1, 1);
+        // 如果超过了容量
+        if (cache.size() == capacity) {
+            cache.remove(head.next.key);
+            head.next = head.next.next;
+            head.next.pre = head;
+        }
 
-    System.out.println(cache.get(2));
-    System.out.println(cache.get(1));
-    System.out.println(cache.get(2));
-
-    cache.set(3, 3);
-    cache.set(4, 4);
-
-    System.out.println(cache.get(3));
-    System.out.println(cache.get(2));
-    System.out.println(cache.get(1));
-    System.out.println(cache.get(4));
-
-  }
+        Node curr = new Node(key, value);
+        cache.put(key, curr);
+        moveToTail(curr);
+    }
 }

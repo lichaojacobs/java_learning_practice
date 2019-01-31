@@ -662,4 +662,112 @@ public class Practice {
 
         return node;
     }
+
+    /**
+     * 统计和生成所有不同的二叉树
+     *
+     * 给定整数n，n<1代表空树结构，否则代表中序遍历的结果为{1,2,3,...,N}。请返回可能的二叉树结构有多少
+     *
+     * 思路：以1为头节点的，不可能有左子树，故而以1为头节点有多少种可能的结构，完全取决于1的右子树有多少种可能结构，1的右子树有N-1个节点，所以有num(N-1)种可能
+     */
+    public int numTrees(int n) {
+        if (n < 2) {
+            return 1;
+        }
+        //使用动态规划，减少重复计算
+        int[] num = new int[n + 1];
+        num[0] = 1;
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < i + 1; j++) {
+                //以j作为二叉树头节点
+                num[j] = num[j - 1] * num[i - j];
+            }
+        }
+
+        return num[n];
+    }
+
+    /**
+     * 进阶：统计和生成所有不同的二叉树，并返回所有二叉树的头节点
+     */
+    public List<TreeNode> generateTrees(int n) {
+        return generate(1, n);
+    }
+
+    public List<TreeNode> generate(int start, int end) {
+        List<TreeNode> resultNodes = new LinkedList<>();
+        if (start > end) {
+            resultNodes.add(null);
+        }
+        TreeNode head = null;
+        for (int i = start; i < end + 1; i++) {
+            head = new TreeNode(i);
+            //得出所有可能的左子树list
+            List<TreeNode> leftNodes = generate(start, i - 1);
+            List<TreeNode> rightNodes = generate(i + 1, end);
+            for (TreeNode l : leftNodes) {
+                for (TreeNode r : rightNodes) {
+                    head.left = l;
+                    head.right = r;
+                    resultNodes.add(cloneTree(head));
+                }
+            }
+        }
+        return resultNodes;
+    }
+
+    public TreeNode cloneTree(TreeNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        TreeNode newHead = new TreeNode(head.val);
+        newHead.left = cloneTree(head.left);
+        newHead.right = cloneTree(head.right);
+        return newHead;
+    }
+
+    /**
+     * 统计完全二叉树的节点数：给定一颗完全二叉树的头节点head，返回这颗树的节点个数；要求时间负责度低于O(N)的解法
+     *
+     * 看树的最左节点能到哪一层
+     *
+     * 层数记为h, 整个递归过程记为bs(node,l,h)，node表示当前节点，l表示node所在的层数，h表示整颗树的层数是始终不变的
+     *
+     * bs(node, l ,h )的返回值表示以node为头的完全二叉树的节点数是多少
+     *
+     * 1，右子树的最左节点能到达最后一层的情况: 说明左子树是满二叉树, 整体结果就是 2^(h-l)+bs(node.right,l+1,h)
+     *
+     * 2.右子树的最左节点没有到最后一层：说明整颗右子树都是满二叉树，且层数为h-l-1，整体结果就是 2^(h-l-1)+bs(node.left,l+1,h)
+     */
+    public int getTreeNodesNumOfBST(TreeNode head) {
+        if (head == null) {
+            return 0;
+        }
+
+        return bs(head, 1, getMostLeftLevel(head, 1));
+    }
+
+    public int bs(TreeNode curr, int l, int h) {
+        if (l == h) {
+            //叶子节点，直接返回1到上层累加即可
+            return 1;
+        }
+
+        //看看右子树是否到达了最后一层
+        if (getMostLeftLevel(curr.right, l + 1) == h) {
+            return (1 << (h - l)) + bs(curr.right, l + 1, h);
+        } else {
+            return (1 << (h - l - 1)) + bs(curr.left, l + 1, h);
+        }
+    }
+
+    public int getMostLeftLevel(TreeNode head, int level) {
+        while (head != null) {
+            level++;
+            head = head.left;
+        }
+
+        return level - 1;
+    }
 }

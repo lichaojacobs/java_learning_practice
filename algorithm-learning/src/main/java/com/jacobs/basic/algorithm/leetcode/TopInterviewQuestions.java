@@ -60,7 +60,8 @@ public class TopInterviewQuestions {
         int len1 = nums1.length;
         int len2 = nums2.length;
         int preIndex = (len1 + len2) / 2;
-        int[] mids = (len1 + len2) % 2 == 0 ? new int[]{preIndex - 1, preIndex} : new int[]{preIndex};
+        int[] mids =
+            (len1 + len2) % 2 == 0 ? new int[]{preIndex - 1, preIndex} : new int[]{preIndex};
         //一次归并
         int start1 = 0;
         int start2 = 0;
@@ -311,23 +312,28 @@ public class TopInterviewQuestions {
         return false;
     }
 
-    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word, char[][] board) {
+    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word,
+        char[][] board) {
         if (word.length() == 0) {
             return true;
         }
         visited[current_i][current_j] = true;
         boolean top =
-            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[current_i - 1][current_j] && isExist(
+            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[
+                current_i - 1][current_j] && isExist(
                 current_i - 1, current_j, visited, word.substring(1), board);
         boolean bottom =
-            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j] && !visited[current_i + 1][current_j]
+            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j]
+                && !visited[current_i + 1][current_j]
                 && isExist(current_i + 1, current_j, visited, word.substring(1), board);
         boolean left =
-            current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0) && !visited[current_i][current_j - 1] && isExist(
+            current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0)
+                && !visited[current_i][current_j - 1] && isExist(
                 current_i, current_j - 1, visited, word.substring(1), board);
 
         boolean right =
-            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word.charAt(0) && !visited[current_i][current_j
+            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word
+                .charAt(0) && !visited[current_i][current_j
                 + 1] && isExist(current_i, current_j + 1, visited, word.substring(1), board);
 
         if (top || bottom || left || right) {
@@ -478,8 +484,9 @@ public class TopInterviewQuestions {
      *
      * Given a non-empty binary tree, find the maximum path sum.
      *
-     * For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child
-     * connections. The path must contain at least one node and does not need to go through the root.
+     * For this problem, a path is defined as any sequence of nodes from some starting node to any
+     * node in the tree along the parent-child connections. The path must contain at least one node
+     * and does not need to go through the root.
      *
      * 思路：最大和无非就是三种情况：左边，右边，或者是跨节点，或者就是该节点 我的方法没有跑通所有的test cases
      */
@@ -506,7 +513,9 @@ public class TopInterviewQuestions {
         int maxFromRight = maxSum[0];
 
         // root+right+left, root, root+left, root+right
-        int crossMax = Math.max(Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val), rightMax + root.val), root.val);
+        int crossMax = Math.max(
+            Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val),
+                rightMax + root.val), root.val);
         int currentMax = Math.max(Math.max(maxFromLeft, maxFromRight), crossMax);
 
         //这里用一个数组记下局部最大值
@@ -533,8 +542,10 @@ public class TopInterviewQuestions {
         }
         int leftSum = Math.max(0, backtrack(root.left));//less than 0, then not take left branch
         int rightSum = Math.max(0, backtrack(root.right));//less than 0, then not take right branch
-        max = Math.max(max, leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
-        return Math.max(0, Math.max(root.val + leftSum, root.val + rightSum));//take left+root or right+root or root or 0
+        max = Math.max(max,
+            leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
+        return Math.max(0, Math.max(root.val + leftSum,
+            root.val + rightSum));//take left+root or right+root or root or 0
     }
 
     //Given a binary tree, return the zigzag level order traversal of its nodes' values.
@@ -673,7 +684,8 @@ public class TopInterviewQuestions {
         return results;
     }
 
-    public void palindromePartitionHelper(char[] chars, boolean[][] matrix, List<List<String>> result, ArrayList<String> currentResult,
+    public void palindromePartitionHelper(char[] chars, boolean[][] matrix,
+        List<List<String>> result, ArrayList<String> currentResult,
         int start) {
         if (start >= chars.length && currentResult.size() > 0) {
             result.add(new ArrayList<>(currentResult));
@@ -695,7 +707,8 @@ public class TopInterviewQuestions {
     }
 
     public boolean isPalindrome(boolean[][] matrix, char[] chars, int start, int end) {
-        return chars[start] == chars[end] && (end - start < 2 || matrix[start + 1][end - 1] == true);
+        return chars[start] == chars[end] && (end - start < 2
+            || matrix[start + 1][end - 1] == true);
     }
 
     //    148. Sort List
@@ -945,7 +958,8 @@ public class TopInterviewQuestions {
     /**
      * 287. Find the Duplicate Number
      *
-     * Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive),
+     * Given an array nums containing n + 1 integers where each integer is between 1 and n
+     * (inclusive),
      *
      * prove that at least one duplicate number must exist.
      *
@@ -968,14 +982,14 @@ public class TopInterviewQuestions {
      *
      * There are a total of n courses you have to take, labeled from 0 to n-1.
      *
-     * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair:
-     * [0,1]
+     * Some courses may have prerequisites, for example to take course 0 you have to first take
+     * course 1, which is expressed as a pair: [0,1]
      *
-     * Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all
-     * courses.
+     * Given the total number of courses and a list of prerequisite pairs, return the ordering of
+     * courses you should take to finish all courses.
      *
-     * There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty
-     * array.
+     * There may be multiple correct orders, you just need to return one of them. If it is
+     * impossible to finish all courses, return an empty array.
      *
      * 有向无环图，用BFS的方法解决，逐渐抹去入度为0的节点以及他们的边，将大问题化小
      */
@@ -1019,5 +1033,59 @@ public class TopInterviewQuestions {
         }
 
         return index == incLinkCounts.length ? order : new int[0];
+    }
+
+
+    /**
+     * 227 Basic Calculator II
+     *
+     * Implement a basic calculator to evaluate a simple expression string.
+     *
+     * The expression string contains only non-negative integers, +, -, *, / operators and empty
+     * spaces . The integer division should truncate toward zero.
+     *
+     * Example 1:
+     *
+     * Input: "3+2*2" Output: 7
+     */
+    public int calculate(String s) {
+        if (s == null || s.equals("")) {
+            return -1;
+        }
+        char[] operators = s.toCharArray();
+        Stack<Integer> stack = new Stack<>();
+        int num = 0;
+        //初始化符号
+        char sign = '+';
+        for (int i = 0; i < s.length(); i++) {
+            //连续的数字，可能不止一位
+            if (Character.isDigit(s.charAt(i))) {
+                num = num * 10 + s.charAt(i) - '0';
+            }
+            //如果是符号
+            if (!Character.isDigit(s.charAt(i)) && ' ' != s.charAt(i) || i == s.length() - 1) {
+                if (sign == '-') {
+                    stack.push(-num);
+                }
+                if (sign == '+') {
+                    stack.push(num);
+                }
+                if (sign == '*') {
+                    stack.push(stack.pop() * num);
+                }
+                if (sign == '/') {
+                    stack.push(stack.pop() / num);
+                }
+                //重新赋值新的操作符
+                sign = s.charAt(i);
+                num = 0;
+            }
+        }
+
+        int re = 0;
+        for (int i : stack) {
+            re += i;
+        }
+        return re;
     }
 }

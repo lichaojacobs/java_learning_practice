@@ -1088,4 +1088,38 @@ public class TopInterviewQuestions {
         }
         return re;
     }
+
+    /**
+     * 230. Kth Smallest Element in a BST
+     *
+     * Given a binary search tree, write a function kthSmallest to find the kth smallest element in
+     * it.
+     *
+     * Note: You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+     *
+     * 思路： 1. 二分去查找，相当于数当前节点左边有多少个，如果大于k则往左边，小于往右边，等于返回当前节点
+     *
+     * 2. 或者采用非递归的中序遍历
+     */
+    public int kthSmallest(TreeNode root, int k) {
+        int currNodeNum = countNodes(root.left);
+        if (k <= currNodeNum) {
+            return kthSmallest(root.left, k);
+        } else if (k > currNodeNum + 1) {
+            // 1 is counted as current node
+            return kthSmallest(root.right, k - 1 - currNodeNum);
+        }
+
+        return root.val;
+    }
+
+    /***
+     * 计算以n为根节点的的节点数量
+     */
+    public int countNodes(TreeNode n) {
+        if (n == null) {
+            return 0;
+        }
+        return 1 + countNodes(n.left) + countNodes(n.right);
+    }
 }

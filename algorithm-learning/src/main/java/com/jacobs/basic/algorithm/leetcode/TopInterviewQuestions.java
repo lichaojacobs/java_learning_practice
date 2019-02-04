@@ -61,8 +61,7 @@ public class TopInterviewQuestions {
         int len1 = nums1.length;
         int len2 = nums2.length;
         int preIndex = (len1 + len2) / 2;
-        int[] mids =
-            (len1 + len2) % 2 == 0 ? new int[]{preIndex - 1, preIndex} : new int[]{preIndex};
+        int[] mids = (len1 + len2) % 2 == 0 ? new int[]{preIndex - 1, preIndex} : new int[]{preIndex};
         //一次归并
         int start1 = 0;
         int start2 = 0;
@@ -313,28 +312,23 @@ public class TopInterviewQuestions {
         return false;
     }
 
-    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word,
-        char[][] board) {
+    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word, char[][] board) {
         if (word.length() == 0) {
             return true;
         }
         visited[current_i][current_j] = true;
         boolean top =
-            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[
-                current_i - 1][current_j] && isExist(
+            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[current_i - 1][current_j] && isExist(
                 current_i - 1, current_j, visited, word.substring(1), board);
         boolean bottom =
-            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j]
-                && !visited[current_i + 1][current_j]
+            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j] && !visited[current_i + 1][current_j]
                 && isExist(current_i + 1, current_j, visited, word.substring(1), board);
         boolean left =
-            current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0)
-                && !visited[current_i][current_j - 1] && isExist(
+            current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0) && !visited[current_i][current_j - 1] && isExist(
                 current_i, current_j - 1, visited, word.substring(1), board);
 
         boolean right =
-            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word
-                .charAt(0) && !visited[current_i][current_j
+            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word.charAt(0) && !visited[current_i][current_j
                 + 1] && isExist(current_i, current_j + 1, visited, word.substring(1), board);
 
         if (top || bottom || left || right) {
@@ -485,9 +479,8 @@ public class TopInterviewQuestions {
      *
      * Given a non-empty binary tree, find the maximum path sum.
      *
-     * For this problem, a path is defined as any sequence of nodes from some starting node to any
-     * node in the tree along the parent-child connections. The path must contain at least one node
-     * and does not need to go through the root.
+     * For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child
+     * connections. The path must contain at least one node and does not need to go through the root.
      *
      * 思路：最大和无非就是三种情况：左边，右边，或者是跨节点，或者就是该节点 我的方法没有跑通所有的test cases
      */
@@ -514,9 +507,7 @@ public class TopInterviewQuestions {
         int maxFromRight = maxSum[0];
 
         // root+right+left, root, root+left, root+right
-        int crossMax = Math.max(
-            Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val),
-                rightMax + root.val), root.val);
+        int crossMax = Math.max(Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val), rightMax + root.val), root.val);
         int currentMax = Math.max(Math.max(maxFromLeft, maxFromRight), crossMax);
 
         //这里用一个数组记下局部最大值
@@ -543,10 +534,8 @@ public class TopInterviewQuestions {
         }
         int leftSum = Math.max(0, backtrack(root.left));//less than 0, then not take left branch
         int rightSum = Math.max(0, backtrack(root.right));//less than 0, then not take right branch
-        max = Math.max(max,
-            leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
-        return Math.max(0, Math.max(root.val + leftSum,
-            root.val + rightSum));//take left+root or right+root or root or 0
+        max = Math.max(max, leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
+        return Math.max(0, Math.max(root.val + leftSum, root.val + rightSum));//take left+root or right+root or root or 0
     }
 
     //Given a binary tree, return the zigzag level order traversal of its nodes' values.
@@ -685,8 +674,7 @@ public class TopInterviewQuestions {
         return results;
     }
 
-    public void palindromePartitionHelper(char[] chars, boolean[][] matrix,
-        List<List<String>> result, ArrayList<String> currentResult,
+    public void palindromePartitionHelper(char[] chars, boolean[][] matrix, List<List<String>> result, ArrayList<String> currentResult,
         int start) {
         if (start >= chars.length && currentResult.size() > 0) {
             result.add(new ArrayList<>(currentResult));
@@ -708,8 +696,7 @@ public class TopInterviewQuestions {
     }
 
     public boolean isPalindrome(boolean[][] matrix, char[] chars, int start, int end) {
-        return chars[start] == chars[end] && (end - start < 2
-            || matrix[start + 1][end - 1] == true);
+        return chars[start] == chars[end] && (end - start < 2 || matrix[start + 1][end - 1] == true);
     }
 
     //    148. Sort List
@@ -957,40 +944,18 @@ public class TopInterviewQuestions {
     }
 
     /**
-     * 287. Find the Duplicate Number
-     *
-     * Given an array nums containing n + 1 integers where each integer is between 1 and n
-     * (inclusive),
-     *
-     * prove that at least one duplicate number must exist.
-     *
-     * Assume that there is only one duplicate number, find the duplicate one.
-     *
-     * 快慢指针的思路，暂时没懂
-     *
-     * https://leetcode.com/problems/find-the-duplicate-number/discuss/72846/My-easy-understood-solution-with-O(n)-time-and-O(1)-space-without-modifying-the-array.-With-clear-explanation.
-     */
-    public int findDuplicate(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return -1;
-        }
-
-        return 0;
-    }
-
-    /**
      * 210. Course Schedule II
      *
      * There are a total of n courses you have to take, labeled from 0 to n-1.
      *
-     * Some courses may have prerequisites, for example to take course 0 you have to first take
-     * course 1, which is expressed as a pair: [0,1]
+     * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair:
+     * [0,1]
      *
-     * Given the total number of courses and a list of prerequisite pairs, return the ordering of
-     * courses you should take to finish all courses.
+     * Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all
+     * courses.
      *
-     * There may be multiple correct orders, you just need to return one of them. If it is
-     * impossible to finish all courses, return an empty array.
+     * There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty
+     * array.
      *
      * 有向无环图，用BFS的方法解决，逐渐抹去入度为0的节点以及他们的边，将大问题化小
      */
@@ -1042,8 +1007,8 @@ public class TopInterviewQuestions {
      *
      * Implement a basic calculator to evaluate a simple expression string.
      *
-     * The expression string contains only non-negative integers, +, -, *, / operators and empty
-     * spaces . The integer division should truncate toward zero.
+     * The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should
+     * truncate toward zero.
      *
      * Example 1:
      *
@@ -1093,8 +1058,7 @@ public class TopInterviewQuestions {
     /**
      * 230. Kth Smallest Element in a BST
      *
-     * Given a binary search tree, write a function kthSmallest to find the kth smallest element in
-     * it.
+     * Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
      *
      * Note: You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
      *
@@ -1128,15 +1092,15 @@ public class TopInterviewQuestions {
      * 238. Product(乘积) of Array Except Self
      *
      *
-     * Given an array nums of n integers where n > 1,  return an array output such that output[i] is
-     * equal to the product of all the elements of nums except nums[i].
+     * Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the
+     * elements of nums except nums[i].
      *
      * Example:
      *
      * Input:  [1,2,3,4] Output: [24,12,8,6] Note: Please solve it without division and in O(n).
      *
-     * Follow up: Could you solve it with constant space complexity? (The output array does not
-     * count as extra space for the purpose of space complexity analysis.)
+     * Follow up: Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of
+     * space complexity analysis.)
      *
      * 思路：从头到尾，再从尾到头过一遍，第一遍得出除了num[i]之外左边所有元素的乘积，第二遍再乘上除了num[i]之外所有元素的乘积
      */
@@ -1161,11 +1125,10 @@ public class TopInterviewQuestions {
     /**
      * 240. Search a 2D Matrix II
      *
-     * Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has
-     * the following properties:
+     * Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
      *
-     * Integers in each row are sorted in ascending from left to right. Integers in each column are
-     * sorted in ascending from top to bottom. Example:
+     * Integers in each row are sorted in ascending from left to right. Integers in each column are sorted in ascending from top to bottom.
+     * Example:
      *
      * Consider the following matrix:
      *
@@ -1209,8 +1172,7 @@ public class TopInterviewQuestions {
     /**
      * 279. Perfect Squares
      *
-     * Given a positive integer n, find the least number of perfect square numbers (for example, 1,
-     * 4, 9, 16, ...) which sum to n.
+     * Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
      *
      * Example 1:
      *
@@ -1236,15 +1198,38 @@ public class TopInterviewQuestions {
     }
 
     /**
-     * Given an array nums containing n + 1 integers where each integer is between 1 and n
-     * (inclusive), prove that at least one duplicate number must exist. Assume that there is only
-     * one duplicate number, find the duplicate one.
+     * 287. Find the Duplicate Number
      *
-     * Example 1:
+     * Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive),
      *
-     * Input: [1,3,4,2,2] Output: 2
+     * prove that at least one duplicate number must exist. Assume that there is only one duplicate number,
+     *
+     * find the duplicate one.
+     *
+     * Example 1: Input: [1,3,4,2,2] Output: 2
+     *
+     * You must use only constant, O(1) extra space. Your runtime complexity should be less than O(n2).
+     *
+     * 思路：快慢指针，相当于处理链表有环问题，把array看作是一个链表，index对应的value相当于指向下一个节点的指针
+     *
+     * 类似于: (0,1),(1,3),(2,4),(3,2)(4,2) => (0,1)->(1,3)->(3,2)->(2,4)->(4,2)
      */
     public int findDuplicate(int[] nums) {
-        
+        if (nums.length > 1) {
+            int slow = nums[0];
+            int fast = nums[nums[0]];
+            while (slow != fast) {
+                slow = nums[slow];
+                fast = nums[nums[fast]];
+            }
+
+            fast = 0;
+            while (fast != slow) {
+                fast = nums[fast];
+                slow = nums[slow];
+            }
+            return slow;
+        }
+        return -1;
     }
 }

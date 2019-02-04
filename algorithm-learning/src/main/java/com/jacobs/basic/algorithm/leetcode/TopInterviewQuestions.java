@@ -5,6 +5,7 @@ import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1121,5 +1122,129 @@ public class TopInterviewQuestions {
             return 0;
         }
         return 1 + countNodes(n.left) + countNodes(n.right);
+    }
+
+    /**
+     * 238. Product(乘积) of Array Except Self
+     *
+     *
+     * Given an array nums of n integers where n > 1,  return an array output such that output[i] is
+     * equal to the product of all the elements of nums except nums[i].
+     *
+     * Example:
+     *
+     * Input:  [1,2,3,4] Output: [24,12,8,6] Note: Please solve it without division and in O(n).
+     *
+     * Follow up: Could you solve it with constant space complexity? (The output array does not
+     * count as extra space for the purpose of space complexity analysis.)
+     *
+     * 思路：从头到尾，再从尾到头过一遍，第一遍得出除了num[i]之外左边所有元素的乘积，第二遍再乘上除了num[i]之外所有元素的乘积
+     */
+    public int[] productExceptSelf(int[] nums) {
+        int[] res = new int[nums.length];
+        res[0] = 1;
+
+        //从左到右
+        for (int i = 1; i < nums.length; i++) {
+            res[i] = res[i - 1] * nums[i - 1];
+        }
+        //从右边到左
+        int right = 1;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            res[i] *= right;
+            right *= nums[i];
+        }
+
+        return res;
+    }
+
+    /**
+     * 240. Search a 2D Matrix II
+     *
+     * Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has
+     * the following properties:
+     *
+     * Integers in each row are sorted in ascending from left to right. Integers in each column are
+     * sorted in ascending from top to bottom. Example:
+     *
+     * Consider the following matrix:
+     *
+     * [ [1,   4,  7, 11, 15],
+     *
+     * [2,   5,  8, 12, 19],
+     *
+     * [3,   6,  9, 16, 22],
+     *
+     * [10, 13, 14, 17, 24],
+     *
+     * [18, 21, 23, 26, 30] ] Given target = 5, return true.
+     *
+     * Given target = 20, return false.
+     *
+     * 思路：复杂度O(M+N) 但不是二分查找的实现
+     *
+     * 从matrix 右上角开始，如果target小于matrix[i][j] 则说明肯定不会出现在当前列
+     *
+     * 如果target大于matrix[i][j] 则说明肯定不会出现在当前行，这样逐一排除是线性的复杂度
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0) {
+            return false;
+        }
+
+        int row = 0;
+        int col = matrix[0].length - 1;
+        while (row <= matrix.length - 1 && col >= 0) {
+            if (target == matrix[row][col]) {
+                return true;
+            } else if (target > matrix[row][col]) {
+                row++;
+            } else {
+                col--;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 279. Perfect Squares
+     *
+     * Given a positive integer n, find the least number of perfect square numbers (for example, 1,
+     * 4, 9, 16, ...) which sum to n.
+     *
+     * Example 1:
+     *
+     * Input: n = 12 Output: 3 Explanation: 12 = 4 + 4 + 4
+     *
+     * 思路：采用动态规划的思路，保存n前面最优的分解方式dp[i]表示i的最优平方分解的方式是多少种
+     */
+    public int numSquares(int n) {
+        if (n < 0) {
+            return -1;
+        }
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, n + 1);
+        dp[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            //采用取平方的方式，能更快速的定位
+            for (int j = (int) Math.sqrt(i); j > 0; j--) {
+                dp[i] = Math.min(dp[i], 1 + dp[i - j * j]);
+            }
+        }
+
+        return dp[n];
+    }
+
+    /**
+     * Given an array nums containing n + 1 integers where each integer is between 1 and n
+     * (inclusive), prove that at least one duplicate number must exist. Assume that there is only
+     * one duplicate number, find the duplicate one.
+     *
+     * Example 1:
+     *
+     * Input: [1,3,4,2,2] Output: 2
+     */
+    public int findDuplicate(int[] nums) {
+        
     }
 }

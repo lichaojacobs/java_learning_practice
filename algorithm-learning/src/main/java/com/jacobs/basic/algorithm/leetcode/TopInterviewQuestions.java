@@ -33,7 +33,7 @@ public class TopInterviewQuestions {
         //        root.left = new TreeLinkNode(2);
         //        root.right = new TreeLinkNode(3);
         //        topInterviewQuestions.connect(root);
-        System.out.println(1 << 2);
+        System.out.println(2 | 1);
     }
 
 
@@ -61,7 +61,8 @@ public class TopInterviewQuestions {
         int len1 = nums1.length;
         int len2 = nums2.length;
         int preIndex = (len1 + len2) / 2;
-        int[] mids = (len1 + len2) % 2 == 0 ? new int[]{preIndex - 1, preIndex} : new int[]{preIndex};
+        int[] mids =
+            (len1 + len2) % 2 == 0 ? new int[]{preIndex - 1, preIndex} : new int[]{preIndex};
         //一次归并
         int start1 = 0;
         int start2 = 0;
@@ -312,23 +313,28 @@ public class TopInterviewQuestions {
         return false;
     }
 
-    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word, char[][] board) {
+    public boolean isExist(int current_i, int current_j, boolean[][] visited, String word,
+        char[][] board) {
         if (word.length() == 0) {
             return true;
         }
         visited[current_i][current_j] = true;
         boolean top =
-            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[current_i - 1][current_j] && isExist(
+            current_i - 1 >= 0 && word.charAt(0) == board[current_i - 1][current_j] && !visited[
+                current_i - 1][current_j] && isExist(
                 current_i - 1, current_j, visited, word.substring(1), board);
         boolean bottom =
-            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j] && !visited[current_i + 1][current_j]
+            current_i + 1 < board.length && word.charAt(0) == board[current_i + 1][current_j]
+                && !visited[current_i + 1][current_j]
                 && isExist(current_i + 1, current_j, visited, word.substring(1), board);
         boolean left =
-            current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0) && !visited[current_i][current_j - 1] && isExist(
+            current_j - 1 >= 0 && board[current_i][current_j - 1] == word.charAt(0)
+                && !visited[current_i][current_j - 1] && isExist(
                 current_i, current_j - 1, visited, word.substring(1), board);
 
         boolean right =
-            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word.charAt(0) && !visited[current_i][current_j
+            current_j + 1 < board[current_i].length && board[current_i][current_j + 1] == word
+                .charAt(0) && !visited[current_i][current_j
                 + 1] && isExist(current_i, current_j + 1, visited, word.substring(1), board);
 
         if (top || bottom || left || right) {
@@ -459,18 +465,18 @@ public class TopInterviewQuestions {
     }
 
     public int kthLargestPartitionHelper(int[] nums, int low, int high) {
-        int index = nums[low];
+        int pivot = nums[low];
         while (low < high) {
-            while (low < high && index <= nums[high]) {
+            while (low < high && pivot <= nums[high]) {
                 high--;
             }
             nums[low] = nums[high];
-            while (low < high && index >= nums[low]) {
+            while (low < high && pivot >= nums[low]) {
                 low++;
             }
             nums[high] = nums[low];
         }
-        nums[low] = index;
+        nums[low] = pivot;
         return low;
     }
 
@@ -479,8 +485,9 @@ public class TopInterviewQuestions {
      *
      * Given a non-empty binary tree, find the maximum path sum.
      *
-     * For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child
-     * connections. The path must contain at least one node and does not need to go through the root.
+     * For this problem, a path is defined as any sequence of nodes from some starting node to any
+     * node in the tree along the parent-child connections. The path must contain at least one node
+     * and does not need to go through the root.
      *
      * 思路：最大和无非就是三种情况：左边，右边，或者是跨节点，或者就是该节点 我的方法没有跑通所有的test cases
      */
@@ -507,7 +514,9 @@ public class TopInterviewQuestions {
         int maxFromRight = maxSum[0];
 
         // root+right+left, root, root+left, root+right
-        int crossMax = Math.max(Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val), rightMax + root.val), root.val);
+        int crossMax = Math.max(
+            Math.max(Math.max(leftMax + rightMax + root.val, leftMax + root.val),
+                rightMax + root.val), root.val);
         int currentMax = Math.max(Math.max(maxFromLeft, maxFromRight), crossMax);
 
         //这里用一个数组记下局部最大值
@@ -534,8 +543,10 @@ public class TopInterviewQuestions {
         }
         int leftSum = Math.max(0, backtrack(root.left));//less than 0, then not take left branch
         int rightSum = Math.max(0, backtrack(root.right));//less than 0, then not take right branch
-        max = Math.max(max, leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
-        return Math.max(0, Math.max(root.val + leftSum, root.val + rightSum));//take left+root or right+root or root or 0
+        max = Math.max(max,
+            leftSum + rightSum + root.val);//root,left + root, right + root, left + right + root;
+        return Math.max(0, Math.max(root.val + leftSum,
+            root.val + rightSum));//take left+root or right+root or root or 0
     }
 
     //Given a binary tree, return the zigzag level order traversal of its nodes' values.
@@ -674,7 +685,8 @@ public class TopInterviewQuestions {
         return results;
     }
 
-    public void palindromePartitionHelper(char[] chars, boolean[][] matrix, List<List<String>> result, ArrayList<String> currentResult,
+    public void palindromePartitionHelper(char[] chars, boolean[][] matrix,
+        List<List<String>> result, ArrayList<String> currentResult,
         int start) {
         if (start >= chars.length && currentResult.size() > 0) {
             result.add(new ArrayList<>(currentResult));
@@ -696,7 +708,8 @@ public class TopInterviewQuestions {
     }
 
     public boolean isPalindrome(boolean[][] matrix, char[] chars, int start, int end) {
-        return chars[start] == chars[end] && (end - start < 2 || matrix[start + 1][end - 1] == true);
+        return chars[start] == chars[end] && (end - start < 2
+            || matrix[start + 1][end - 1] == true);
     }
 
     //    148. Sort List
@@ -948,14 +961,14 @@ public class TopInterviewQuestions {
      *
      * There are a total of n courses you have to take, labeled from 0 to n-1.
      *
-     * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair:
-     * [0,1]
+     * Some courses may have prerequisites, for example to take course 0 you have to first take
+     * course 1, which is expressed as a pair: [0,1]
      *
-     * Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all
-     * courses.
+     * Given the total number of courses and a list of prerequisite pairs, return the ordering of
+     * courses you should take to finish all courses.
      *
-     * There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty
-     * array.
+     * There may be multiple correct orders, you just need to return one of them. If it is
+     * impossible to finish all courses, return an empty array.
      *
      * 有向无环图，用BFS的方法解决，逐渐抹去入度为0的节点以及他们的边，将大问题化小
      */
@@ -1007,8 +1020,8 @@ public class TopInterviewQuestions {
      *
      * Implement a basic calculator to evaluate a simple expression string.
      *
-     * The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should
-     * truncate toward zero.
+     * The expression string contains only non-negative integers, +, -, *, / operators and empty
+     * spaces . The integer division should truncate toward zero.
      *
      * Example 1:
      *
@@ -1058,7 +1071,8 @@ public class TopInterviewQuestions {
     /**
      * 230. Kth Smallest Element in a BST
      *
-     * Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+     * Given a binary search tree, write a function kthSmallest to find the kth smallest element in
+     * it.
      *
      * Note: You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
      *
@@ -1092,15 +1106,15 @@ public class TopInterviewQuestions {
      * 238. Product(乘积) of Array Except Self
      *
      *
-     * Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the
-     * elements of nums except nums[i].
+     * Given an array nums of n integers where n > 1,  return an array output such that output[i] is
+     * equal to the product of all the elements of nums except nums[i].
      *
      * Example:
      *
      * Input:  [1,2,3,4] Output: [24,12,8,6] Note: Please solve it without division and in O(n).
      *
-     * Follow up: Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of
-     * space complexity analysis.)
+     * Follow up: Could you solve it with constant space complexity? (The output array does not
+     * count as extra space for the purpose of space complexity analysis.)
      *
      * 思路：从头到尾，再从尾到头过一遍，第一遍得出除了num[i]之外左边所有元素的乘积，第二遍再乘上除了num[i]之外所有元素的乘积
      */
@@ -1125,10 +1139,11 @@ public class TopInterviewQuestions {
     /**
      * 240. Search a 2D Matrix II
      *
-     * Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+     * Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has
+     * the following properties:
      *
-     * Integers in each row are sorted in ascending from left to right. Integers in each column are sorted in ascending from top to bottom.
-     * Example:
+     * Integers in each row are sorted in ascending from left to right. Integers in each column are
+     * sorted in ascending from top to bottom. Example:
      *
      * Consider the following matrix:
      *
@@ -1172,7 +1187,8 @@ public class TopInterviewQuestions {
     /**
      * 279. Perfect Squares
      *
-     * Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+     * Given a positive integer n, find the least number of perfect square numbers (for example, 1,
+     * 4, 9, 16, ...) which sum to n.
      *
      * Example 1:
      *
@@ -1200,15 +1216,18 @@ public class TopInterviewQuestions {
     /**
      * 287. Find the Duplicate Number
      *
-     * Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive),
+     * Given an array nums containing n + 1 integers where each integer is between 1 and n
+     * (inclusive),
      *
-     * prove that at least one duplicate number must exist. Assume that there is only one duplicate number,
+     * prove that at least one duplicate number must exist. Assume that there is only one duplicate
+     * number,
      *
      * find the duplicate one.
      *
      * Example 1: Input: [1,3,4,2,2] Output: 2
      *
-     * You must use only constant, O(1) extra space. Your runtime complexity should be less than O(n2).
+     * You must use only constant, O(1) extra space. Your runtime complexity should be less than
+     * O(n2).
      *
      * 思路：快慢指针，相当于处理链表有环问题，把array看作是一个链表，index对应的value相当于指向下一个节点的指针
      *
@@ -1231,5 +1250,236 @@ public class TopInterviewQuestions {
             return slow;
         }
         return -1;
+    }
+
+    /**
+     * 最长递增子序列长度
+     *
+     * 300. Longest Increasing Subsequence
+     *
+     * Given an unsorted array of integers, find the length of longest increasing subsequence.
+     *
+     * Example:
+     *
+     * Input: [10,9,2,5,3,7,101,18]
+     *
+     * Output: 4 Explanation: The longest increasing subsequence is [2,3,7,101], therefore the
+     * length is 4. Note:
+     *
+     * There may be more than one LIS combination, it is only necessary for you to return the
+     * length. Your algorithm should run in O(n2) complexity.
+     */
+    public int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        int maxLength = 1;
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[j] + 1, dp[i]);
+                    maxLength = Math.max(dp[i], maxLength);
+                }
+            }
+        }
+        return maxLength;
+    }
+
+    /**
+     * 300. Longest Increasing Subsequence
+     *
+     * O(nlogn)的解法
+     *
+     * tails is an array storing the smallest tail of all increasing subsequences with length i+1 in
+     * tails[i]. For example, say we have nums = [4,5,6,3], then all the available increasing
+     * subsequences are:
+     *
+     * len = 1   :      [4], [5], [6], [3]   => tails[0] = 3
+     *
+     * len = 2   :      [4, 5], [5, 6] => tails[1] = 5
+     *
+     * len = 3   :      [4, 5, 6]            => tails[2] = 6
+     */
+    public int lengthOfLIS2(int[] nums) {
+        int[] tails = new int[nums.length];
+        int size = 0;
+        for (int x : nums) {
+            int i = 0, j = size;
+            while (i != j) {
+                int m = (i + j) / 2;
+                if (tails[m] < x) {
+                    i = m + 1;
+                } else {
+                    j = m;
+                }
+            }
+            tails[i] = x;
+            if (i == size) {
+                ++size;
+            }
+        }
+        return size;
+    }
+
+    /**
+     * 322. Coin Change
+     *
+     * You are given coins of different denominations and a total amount of money amount. Write a
+     * function to compute the fewest number of coins that you need to make up that amount. If that
+     * amount of money cannot be made up by any combination of the coins, return -1.
+     *
+     * Example 1:
+     *
+     * Input: coins = [1, 2, 5], amount = 11
+     *
+     * Output: 3 Explanation: 11 = 5 + 5 + 1
+     */
+    public int coinChange(int[] coins, int amount) {
+        if (coins == null || coins.length == 0) {
+            return 0;
+        }
+
+        //dp[i][j] 表示以0..i种货币换总数j的货币需要的最少货币数量
+        int[][] dp = new int[coins.length][amount + 1];
+        int max = Integer.MAX_VALUE;
+        for (int j = 1; j < amount + 1; j++) {
+            dp[0][j] = max;
+            if ((j - coins[0] >= 0) && dp[0][j - coins[0]] != max) {
+                dp[0][j] = dp[0][j - coins[0]] + 1;
+            }
+        }
+
+        int left = 0;
+        //状态方程为:dp[i][j]=Math.min(dp[i-1][j],(dp[i][j-arr[i]]+1))
+        // dp[i-1][j]是上层循环的时候就计算好的结果，所以只需要计算同一层就可以了
+        //这里其实已经体现张数了，因为同层的话，如果全用某一张货币的话，循环aim确实能体现张数
+        for (int i = 1; i < coins.length; i++) {
+            for (int j = 1; j < amount + 1; j++) {
+                left = max;
+                if (j - coins[i] > 0 && dp[i][j - coins[i]] != max) {
+                    left = dp[i][j - coins[i]] + 1;
+                }
+                dp[i][j] = Math.min(left, dp[i - 1][j]);
+            }
+        }
+
+        return dp[coins.length - 1][amount] != max ? dp[coins.length - 1][amount] : -1;
+    }
+
+    /**
+     * 324. Wiggle Sort II
+     *
+     * Given an unsorted array nums, reorder it such that nums[0] < nums[1] > nums[2] < nums[3]....
+     *
+     * Example 1:
+     *
+     * Input: nums = [1, 5, 1, 1, 6, 4]
+     *
+     * Output: One possible answer is [1, 4, 1, 5, 1, 6].
+     *
+     * 思路：https://leetcode.com/problems/wiggle-sort-ii/discuss/77682/Step-by-step-explanation-of-index-mapping-in-Java
+     *
+     * 思路其实就是找kth smallest element,当size为奇数时，k是size一半，当size为奇数时,k是size/2+1，等array一分为二，再依次左右递归
+     */
+    public void wiggleSort(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return;
+        }
+
+        int median = findKthLargest(nums, (nums.length + 1) / 2);
+        int n = nums.length;
+
+        int left = 0, i = 0, right = n - 1;
+        while (i <= right) {
+            if (nums[newIndex(i, n)] > median) {
+                swap(nums, newIndex(left++, n), newIndex(i++, n));
+            } else if (nums[newIndex(i, n)] < median) {
+                swap(nums, newIndex(right--, n), newIndex(i, n));
+            } else {
+                i++;
+            }
+        }
+    }
+
+    private int newIndex(int index, int n) {
+        return (1 + 2 * index) % (n | 1);
+    }
+
+    /**
+     * 93. Restore IP Addresses
+     *
+     * Given a string containing only digits, restore it by returning all possible valid IP address
+     * combinations.
+     *
+     * Example:
+     *
+     * Input: "25525511135" Output: ["255.255.11.135", "255.255.111.35"]
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> resultList = new ArrayList<>();
+        if (s == null && s.equals("")) {
+            return resultList;
+        }
+
+        restoreIp(s, resultList, 0, "", 0);
+        return resultList;
+    }
+
+    private void restoreIp(String ip, List<String> resultList, int start, String restored,
+        int count) {
+        if (count > 4) {
+            return;
+        }
+        if (count == 4 && start == ip.length()) {
+            resultList.add(restored);
+            return;
+        }
+
+        for (int i = 1; i < 4; i++) {
+            if (start + i > ip.length()) {
+                break;
+            }
+            String s = ip.substring(start, start + i);
+            if ((s.startsWith("0") && s.length() > 1) || (i == 3 && Integer.parseInt(s) >= 256)) {
+                continue;
+            }
+            restoreIp(ip, resultList, start + i, restored + s + (count == 3 ? "" : "."), count + 1);
+        }
+    }
+
+    /**
+     * 328. Odd Even Linked List
+     *
+     * Given a singly linked list, group all odd nodes together followed by the even nodes. Please
+     * note here we are talking about the node number and not the value in the nodes.
+     *
+     * You should try to do it in place. The program should run in O(1) space complexity and
+     * O(nodes) time complexity.
+     *
+     * Example 1:
+     *
+     * Input: 1->2->3->4->5->NULL
+     *
+     * Output: 1->3->5->2->4->NULL
+     */
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode odd = head;
+        ListNode evenHead = head.next;
+        ListNode even = evenHead;
+
+        while (odd.next != null && even.next != null) {
+            odd.next = even.next;
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+
+        odd.next = evenHead;
+        return head;
     }
 }

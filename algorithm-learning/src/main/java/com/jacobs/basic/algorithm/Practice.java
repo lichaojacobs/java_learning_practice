@@ -1,12 +1,13 @@
 package com.jacobs.basic.algorithm;
 
-import com.google.common.collect.Lists;
-import com.jacobs.basic.algorithm.array.MaxChildListSum;
-
-import com.jacobs.basic.algorithm.binarytree.BinaryTree;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
@@ -186,7 +187,8 @@ public class Practice {
         return constructNode(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
     }
 
-    public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd) {
+    public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd,
+        int inStart, int inEnd) {
         if (preStart < preEnd) {
             return null;
         }
@@ -199,8 +201,10 @@ public class Practice {
             }
         }
 
-        root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart, inStart, index - 1);
-        root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd, index + 1, inEnd);
+        root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart,
+            inStart, index - 1);
+        root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd,
+            index + 1, inEnd);
 
         return root;
     }
@@ -320,7 +324,8 @@ public class Practice {
 
         while (rows > 0) {
             String line = intput.next();
-            List<Integer> lineArr = Arrays.stream(line.split(",")).map(s -> Integer.valueOf(s)).collect(Collectors.toList());
+            List<Integer> lineArr = Arrays.stream(line.split(",")).map(s -> Integer.valueOf(s))
+                .collect(Collectors.toList());
 
             //每日增长
             if (lineArr.get(0) == 1) {
@@ -356,7 +361,8 @@ public class Practice {
             int numberOfCoins = Integer.valueOf(defineStrArr[0]);
             int target = Integer.valueOf(defineStrArr[1]);
 
-            List<Integer> coninsArr = Arrays.stream(input.next().split(" ")).map(Integer::valueOf).collect(Collectors.toList());
+            List<Integer> coninsArr = Arrays.stream(input.next().split(" ")).map(Integer::valueOf)
+                .collect(Collectors.toList());
             if (numberOfCoins == coninsArr.size()) {
                 System.out.println(changeCoins(coninsArr, target));
             }
@@ -769,5 +775,103 @@ public class Practice {
         }
 
         return level - 1;
+    }
+
+    /**
+     * 左神动态规划：判断目标字符串是否由另外两个字符串交叉组成（字符串内部相对顺序不变）
+     */
+    public boolean isCrossStr(String str1, String str2, String aim) {
+        if (str1 == null || str2 == null || aim == null) {
+            return false;
+        }
+
+        char[] str1Chars = str1.toCharArray();
+        char[] str2Chars = str2.toCharArray();
+        char[] aimChars = aim.toCharArray();
+        if (aimChars.length != str1Chars.length + str2Chars.length) {
+            return false;
+        }
+
+        boolean[][] dp = new boolean[str1Chars.length + 1][str2Chars.length + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= str1Chars.length; i++) {
+            if (str1Chars[i - 1] != aimChars[i - 1]) {
+                break;
+            }
+            dp[i][0] = true;
+        }
+
+        for (int j = 1; j <= str2Chars.length; j++) {
+            if (str2Chars[j - 1] != aimChars[j - 1]) {
+                break;
+            }
+            dp[0][j] = true;
+        }
+
+        for (int i = 1; i <= str1Chars.length; i++) {
+            for (int j = 1; j <= str2Chars.length; j++) {
+                if ((str1.charAt(i - 1) == aim.charAt(i + j - 1) && dp[i - 1][j]) ||
+                    (str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j - 1])) {
+                    dp[i][j] = true;
+                }
+            }
+        }
+        return dp[str1Chars.length][str2Chars.length];
+    }
+
+
+    /**
+     * 跳跃游戏
+     */
+    public int getTheLeastJump(int[] arr) {
+        if (arr == null || arr.length <= 1) {
+            return 0;
+        }
+        //表示跳到位置i所需要的最少次数
+        int jump = 0;
+        int maxAttach = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (maxAttach < arr[i] + i) {
+                jump++;
+                maxAttach = arr[i] + i;
+            }
+        }
+
+        return jump;
+    }
+
+    /**
+     * n 皇后问题
+     */
+    public int NQueen(int n) {
+        if (n < 1) {
+            return n;
+        }
+        int[] records = new int[n];
+        return NQueenHelper(n, 0, records);
+    }
+
+    public int NQueenHelper(int n, int row, int[] records) {
+        if (row == n) {
+            return 1;
+        }
+        int res = 0;
+        for (int col = 0; col < n; col++) {
+            if (isNQueenValid(records, row, col)) {
+                records[row] = col;
+                res += NQueenHelper(n, row + 1, records);
+            }
+        }
+
+        return res;
+    }
+
+    public boolean isNQueenValid(int[] records, int row, int col) {
+        for (int i = 0; i < row; i++) {
+            if (col == records[i] || Math.abs(records[i] - col) == Math.abs(i - row)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

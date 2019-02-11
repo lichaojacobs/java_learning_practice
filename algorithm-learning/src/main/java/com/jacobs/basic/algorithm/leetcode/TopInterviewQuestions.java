@@ -7,10 +7,12 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -1481,5 +1483,83 @@ public class TopInterviewQuestions {
 
         odd.next = evenHead;
         return head;
+    }
+
+    /**
+     * 334. Increasing Triplet Subsequence
+     *
+     * Given an unsorted array return whether an increasing subsequence of length 3 exists or not in
+     * the array.
+     *
+     * Formally the function should:
+     *
+     * Return true if there exists i, j, k
+     *
+     * such that arr[i] < arr[j] < arr[k] given 0 ≤ i < j < k ≤ n-1 else return false.
+     *
+     * Note: Your algorithm should run in O(n) time complexity and O(1) space complexity.
+     *
+     * Example 1:
+     *
+     * Input: [1,2,3,4,5] Output: true 思路：类似耀宗那个求最小的两个值的题目，只需要维护更新两个全局变量即可
+     */
+    public boolean increasingTriplet(int[] nums) {
+        if (nums == null || nums.length < 3) {
+            return false;
+        }
+        //相当于维护三个全局变量，代表三个值，只是最后一个变量可以省去
+        int small = Integer.MAX_VALUE, big = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= small) {
+                small = nums[i];
+            } else if (nums[i] <= big) {
+                big = nums[i];
+            } else {
+                // return if you find a number bigger than both
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 347. Top K Frequent Elements
+     *
+     * Given a non-empty array of integers, return the k most frequent elements.
+     *
+     * Example 1:
+     *
+     * Input: nums = [1,1,1,2,2,3], k = 2 Output: [1,2]
+     *
+     * Note:
+     *
+     * You may assume k is always valid, 1 ≤ k ≤ number of unique elements. Your algorithm's time
+     * complexity must be better than O(n log n), where n is the array's size.
+     */
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int n : nums) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
+        }
+
+        //定义一个桶，bucket[i]表示出现频次为i次的key有多少
+        List<Integer>[] bucket = new List[nums.length + 1];
+        for (int n : map.keySet()) {
+            int freq = map.get(n);
+            if (bucket[freq] == null) {
+                bucket[freq] = new LinkedList<>();
+            }
+            bucket[freq].add(n);
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = bucket.length - 1; i >= 0 && res.size() < k; i--) {
+            if (bucket[i] != null) {
+                res.addAll(bucket[i]);
+            }
+        }
+
+        return res;
     }
 }

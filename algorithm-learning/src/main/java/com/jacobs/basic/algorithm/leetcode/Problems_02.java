@@ -2,8 +2,11 @@ package com.jacobs.basic.algorithm.leetcode;
 
 import com.alibaba.fastjson.JSON;
 import com.jacobs.basic.algorithm.TreeNode;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Created by lichao on 2017/10/22.
@@ -75,7 +78,7 @@ public class Problems_02 {
 //      ]
 //  ]
     public ArrayList<ArrayList<String>> findLadders_019(String start, String end,
-                                                        HashSet<String> dict) {
+        HashSet<String> dict) {
         return null;
     }
 
@@ -291,8 +294,9 @@ public class Problems_02 {
 //  Design an algorithm to find the maximum profit. You may complete at most two transactions.
 //      Note:
 //  You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
-    // 以空间换时间：以某一个位置 i 为分割，分别计算i 之前和之后的收益。
+    // 以空间换时间：以某一个位置 i 为分割，i表示第一次买完后卖出的位置，分别计算i 之前和之后的收益。
     // 由于分割后，i之后的值得重新计算，所以想到从后往前计算，这样就不需要每次分割都重新计算了，所以只需要3次遍历即可
+    // 由于是只允许交易两次，所以可以前后各算一次这样收益，再最后遍历一次得到最终的最大值
     public static int maxProfit_026(int[] prices) {
         if (prices == null || prices.length < 2) {
             return 0;
@@ -331,9 +335,6 @@ public class Problems_02 {
 
     /**
      * 上一题的另一种解决办法
-     *
-     * @param prices
-     * @return
      */
     public int maxProfit_027(int[] prices) {
         int oneBuy = Integer.MIN_VALUE;
@@ -341,9 +342,11 @@ public class Problems_02 {
         int twoBuy = Integer.MIN_VALUE;
         int twoBuyTwoSell = 0;
         for (int i = 0; i < prices.length; i++) {
-            oneBuy = Math.max(oneBuy, -prices[i]);//we set prices to negative, so the calculation of profit will be convenient
+            oneBuy = Math.max(oneBuy,
+                -prices[i]);//we set prices to negative, so the calculation of profit will be convenient
             oneBuyOneSell = Math.max(oneBuyOneSell, prices[i] + oneBuy);
-            twoBuy = Math.max(twoBuy, oneBuyOneSell - prices[i]);//we can buy the second only after first is sold
+            twoBuy = Math.max(twoBuy,
+                oneBuyOneSell - prices[i]);//we can buy the second only after first is sold
             twoBuyTwoSell = Math.max(twoBuyTwoSell, twoBuy + prices[i]);
         }
 
@@ -372,7 +375,7 @@ public class Problems_02 {
         for (int i = triangle.size() - 2; i >= 0; i--) {
             for (int j = 0; j < triangle.get(i).size(); j++) {
                 triangle.get(i).set(j, triangle.get(i).get(j) + Math
-                        .min(triangle.get(i + 1).get(j), triangle.get(i + 1).get(j + 1)));
+                    .min(triangle.get(i + 1).get(j), triangle.get(i + 1).get(j + 1)));
             }
         }
 

@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -30,7 +31,8 @@ public class TopInterviewQuestions {
         //        root.left.left = new TreeNode(4);
         //        root.right.right = new TreeNode(5);
         //        //        zigzagLevelOrder(root);
-        //        TopInterviewQuestions topInterviewQuestions = new TopInterviewQuestions();
+        TopInterviewQuestions topInterviewQuestions = new TopInterviewQuestions();
+        topInterviewQuestions.longestConsecutive(new int[]{100, 4, 200, 1, 3, 2});
         //        TreeLinkNode root = new TreeLinkNode(1);
         //        root.left = new TreeLinkNode(2);
         //        root.right = new TreeLinkNode(3);
@@ -1561,5 +1563,73 @@ public class TopInterviewQuestions {
         }
 
         return res;
+    }
+
+    /**
+     * [128] 最长连续序列 * 给定一个未排序的整数数组，找出最长连续序列的长度。
+     *
+     * 要求算法的时间复杂度为 O(n)。
+     *
+     * 示例:
+     *
+     * 输入: [100, 4, 200, 1, 3, 2] 输出: 4
+     *
+     * 解释: 最长连续序列是 [1, 2, 3, 4]。它的长度为 4。
+     */
+    public int longestConsecutive(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        Map<Integer, Integer> elementsMap = new HashMap<>();
+        elementsMap.put(nums[0], 1);
+        int maxLength = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (!elementsMap.containsKey(nums[i])) {
+                int left = elementsMap.getOrDefault(nums[i] - 1, 0);
+                int right = elementsMap.getOrDefault(nums[i] + 1, 0);
+
+                //如果左右都有了的话，相当于把左右两边连了起来
+                int curr = 1 + left + right;
+                if (curr > maxLength) {
+                    maxLength = curr;
+                }
+
+                //更新区间
+                elementsMap.put(nums[i], curr);
+                elementsMap.put(nums[i] - left, curr);
+                elementsMap.put(nums[i] + right, curr);
+            }
+        }
+
+        return maxLength;
+    }
+
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        Set<List<Integer>> res = new HashSet<>();
+        if (nums == null || nums.length == 0) {
+            return new ArrayList<>(res);
+        }
+
+        subsequencesHelper(res, new ArrayList<>(), nums, 0);
+        return new ArrayList<>(res);
+    }
+
+    public void subsequencesHelper(Set<List<Integer>> resultList, List<Integer> tempList,
+        int[] nums, int start) {
+        if ((tempList.size() >= 2)) {
+            resultList.add(new ArrayList<>(tempList));
+        }
+        if (start == nums.length) {
+            return;
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            if (tempList.isEmpty() || tempList.get(tempList.size() - 1) <= nums[i]) {
+                tempList.add(nums[i]);
+                subsequencesHelper(resultList, tempList, nums, i + 1);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
     }
 }

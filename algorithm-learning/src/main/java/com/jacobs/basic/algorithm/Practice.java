@@ -37,7 +37,9 @@ public class Practice {
         //        System.out.println((int) Math.abs(diffRatio));
         //System.out.println(calculateGrowth());
         //        System.out.println(MoreThanHalfNum_Solution(new int[]{1, 2, 3, 2, 2, 2, 5, 4, 2}));
-        getTwoMinNumber(new int[]{2, 2, 3, 2, 1, 2, 5, 3, 2}).stream().forEach(System.out::println);
+        //        getTwoMinNumber(new int[]{2, 2, 3, 2, 1, 2, 5, 3, 2}).stream().forEach(System.out::println);
+        Practice practice = new Practice();
+        practice.eatBreads(3);
     }
 
     public static void mergeSort(int[] arr, int left, int right) {
@@ -187,8 +189,7 @@ public class Practice {
         return constructNode(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);
     }
 
-    public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd,
-        int inStart, int inEnd) {
+    public TreeNode constructNode(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd) {
         if (preStart < preEnd) {
             return null;
         }
@@ -201,10 +202,8 @@ public class Practice {
             }
         }
 
-        root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart,
-            inStart, index - 1);
-        root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd,
-            index + 1, inEnd);
+        root.left = constructNode(preorder, inorder, preStart + 1, preStart + index - inStart, inStart, index - 1);
+        root.right = constructNode(preorder, inorder, preStart + index - inStart + 1, preEnd, index + 1, inEnd);
 
         return root;
     }
@@ -324,8 +323,7 @@ public class Practice {
 
         while (rows > 0) {
             String line = intput.next();
-            List<Integer> lineArr = Arrays.stream(line.split(",")).map(s -> Integer.valueOf(s))
-                .collect(Collectors.toList());
+            List<Integer> lineArr = Arrays.stream(line.split(",")).map(s -> Integer.valueOf(s)).collect(Collectors.toList());
 
             //每日增长
             if (lineArr.get(0) == 1) {
@@ -361,8 +359,7 @@ public class Practice {
             int numberOfCoins = Integer.valueOf(defineStrArr[0]);
             int target = Integer.valueOf(defineStrArr[1]);
 
-            List<Integer> coninsArr = Arrays.stream(input.next().split(" ")).map(Integer::valueOf)
-                .collect(Collectors.toList());
+            List<Integer> coninsArr = Arrays.stream(input.next().split(" ")).map(Integer::valueOf).collect(Collectors.toList());
             if (numberOfCoins == coninsArr.size()) {
                 System.out.println(changeCoins(coninsArr, target));
             }
@@ -810,8 +807,8 @@ public class Practice {
 
         for (int i = 1; i <= str1Chars.length; i++) {
             for (int j = 1; j <= str2Chars.length; j++) {
-                if ((str1.charAt(i - 1) == aim.charAt(i + j - 1) && dp[i - 1][j]) ||
-                    (str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j - 1])) {
+                if ((str1.charAt(i - 1) == aim.charAt(i + j - 1) && dp[i - 1][j]) || (str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j
+                    - 1])) {
                     dp[i][j] = true;
                 }
             }
@@ -873,5 +870,35 @@ public class Practice {
             }
         }
         return true;
+    }
+
+    /**
+     * 快手面试题：吃面包问题
+     */
+    public List<List<Integer>> eatBreads(int n) {
+        List<List<Integer>> result = new ArrayList<>();
+        eatBreadsHelper(n, result, new ArrayList<>());
+        return result;
+    }
+
+    public void eatBreadsHelper(int n, List<List<Integer>> result, List<Integer> tmp) {
+        if (n < 0) {
+            return;
+        }
+        if (n == 0) {
+            result.add(new ArrayList<>(tmp));
+        }
+
+        tmp.add(1);
+        eatBreadsHelper(n - 1, result, tmp);
+        tmp.remove(tmp.size() - 1);
+
+        tmp.add(2);
+        eatBreadsHelper(n - 2, result, tmp);
+        tmp.remove(tmp.size() - 1);
+
+        tmp.add(3);
+        eatBreadsHelper(n - 3, result, tmp);
+        tmp.remove(tmp.size() - 1);
     }
 }

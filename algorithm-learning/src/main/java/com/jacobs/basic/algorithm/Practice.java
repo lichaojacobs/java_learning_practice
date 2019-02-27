@@ -931,4 +931,29 @@ public class Practice {
         eatBreadsHelper(n - 3, result, tmp);
         tmp.remove(tmp.size() - 1);
     }
+
+    public int findCircleNum(int[][] M) {
+        int cols = M[0].length;
+        int rows = M.length;
+        int count = 0;
+        boolean[] visited = new boolean[M.length];
+
+        for (int i = 0; i < rows; i++) {
+            if (!visited[i]) {
+                count += 1;
+                visit(M, i, visited);
+            }
+        }
+
+        return count;
+    }
+
+    private void visit(int[][] M, int i, boolean[] visited) {
+        visited[i] = true;
+        for (int j = 0; j < M.length; j++) {
+            if (j != i && M[i][j] == 1 && !visited[j]) {
+                visit(M, j, visited);
+            }
+        }
+    }
 }

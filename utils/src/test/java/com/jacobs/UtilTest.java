@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import okhttp3.Credentials;
 import org.junit.Test;
 
 /**
@@ -14,6 +15,10 @@ public class UtilTest {
 
   private CommonHttpUtil commonHttpUtil = CommonHttpUtil.builder().build();
   private SimpleDateFormat simpleDateTime = new SimpleDateFormat("yyyy/MM/dd");
+
+  public static void main(String[] args) {
+    System.out.println(Credentials.basic("root","root"));
+  }
 
   @Test
   public void testGetMethod() {

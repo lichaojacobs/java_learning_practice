@@ -956,4 +956,35 @@ public class Practice {
             }
         }
     }
+
+    /**
+     * 接雨水 leetcode 42 头尾指针，
+     *
+     * 只需要维护最高的墙就行
+     */
+    public int trap(int[] height) {
+        if (height == null || height.length == 0) {
+            return 0;
+        }
+
+        int low = 0;
+        int high = height.length - 1;
+        int leftMax = 0;
+        int rightMax = 0;
+        int area = 0;
+
+        while (low <= high) {
+            leftMax = Math.max(leftMax, height[low]);
+            rightMax = Math.max(rightMax, height[high]);
+            if (leftMax < rightMax) {
+                area += leftMax - height[low];
+                low++;
+            } else {
+                area += rightMax - height[high];
+                high--;
+            }
+        }
+
+        return area;
+    }
 }

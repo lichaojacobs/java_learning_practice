@@ -11,7 +11,6 @@ import java.util.HashMap;
 public class LRUCache {
 
     private class Node {
-
         int key;
         int value;
         Node pre;

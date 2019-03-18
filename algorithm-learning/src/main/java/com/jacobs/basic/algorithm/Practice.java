@@ -987,4 +987,50 @@ public class Practice {
 
         return area;
     }
+
+    /**
+     * （商汤面试题给一个二维数组，值为int，每走一步只能由大到小走，求能走的最大路径是多少
+     *
+     * 利用动态规划，其实也不算动态规划，更偏向于记忆搜索
+     */
+    public int maxAchievePath(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] longest = new int[rows][cols];
+        int maxLength = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                longest[i][j] = calMax(matrix, longest, i, j);
+                if (maxLength < longest[i][j]) {
+                    maxLength = longest[i][j];
+                }
+            }
+        }
+
+        return maxLength;
+    }
+
+    private int calMax(int[][] matrix, int[][] longest, int i, int j) {
+        int max = 0;//保存周围节点的最大长度，最优子问题的变形;
+        if (longest[i][j] > 0) {
+            return longest[i][j];
+        }
+        if (i - 1 >= 0 && matrix[i][j] > matrix[i - 1][j] && max < calMax(matrix, longest, i - 1, j)) {
+            max = calMax(matrix, longest, i - 1, j);
+        }
+        if (j - 1 >= 0 && matrix[i][j] > matrix[i][j - 1] && max < calMax(matrix, longest, i, j - 1)) {
+            max = calMax(matrix, longest, i, j - 1);
+        }
+        if (i + 1 < matrix.length && matrix[i][j] > matrix[i + 1][j] && max < calMax(matrix, longest, i + 1, j)) {
+            max = calMax(matrix, longest, i + 1, j);
+        }
+        if (j + 1 < matrix[0].length && matrix[i][j] > matrix[i][j + 1] && max < calMax(matrix, longest, i, j + 1)) {
+            max = calMax(matrix, longest, i, j + 1);
+        }
+        return longest[i][j] = max + 1;
+    }
 }

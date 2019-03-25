@@ -3,10 +3,12 @@ package com.jacobs.basic.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -40,7 +42,8 @@ public class Practice {
         //        getTwoMinNumber(new int[]{2, 2, 3, 2, 1, 2, 5, 3, 2}).stream().forEach(System.out::println);
         Practice practice = new Practice();
         //        practice.eatBreads(3);
-        practice.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 4);
+        //        practice.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 4);
+        practice.permuteUnique(new int[]{1, 2, 3});
     }
 
     public int search(int[] nums, int target) {
@@ -353,7 +356,9 @@ public class Practice {
 
         while (rows > 0) {
             String line = intput.next();
-            List<Integer> lineArr = Arrays.stream(line.split(",")).map(s -> Integer.valueOf(s)).collect(Collectors.toList());
+            List<Integer> lineArr = Arrays.stream(line.split(","))
+                                          .map(s -> Integer.valueOf(s))
+                                          .collect(Collectors.toList());
 
             //每日增长
             if (lineArr.get(0) == 1) {
@@ -385,11 +390,15 @@ public class Practice {
         Scanner input = new Scanner(System.in);
         int loop = input.nextInt();
         while (loop > 0) {
-            String[] defineStrArr = input.next().split(" ");
+            String[] defineStrArr = input.next()
+                                         .split(" ");
             int numberOfCoins = Integer.valueOf(defineStrArr[0]);
             int target = Integer.valueOf(defineStrArr[1]);
 
-            List<Integer> coninsArr = Arrays.stream(input.next().split(" ")).map(Integer::valueOf).collect(Collectors.toList());
+            List<Integer> coninsArr = Arrays.stream(input.next()
+                                                         .split(" "))
+                                            .map(Integer::valueOf)
+                                            .collect(Collectors.toList());
             if (numberOfCoins == coninsArr.size()) {
                 System.out.println(changeCoins(coninsArr, target));
             }
@@ -837,8 +846,8 @@ public class Practice {
 
         for (int i = 1; i <= str1Chars.length; i++) {
             for (int j = 1; j <= str2Chars.length; j++) {
-                if ((str1.charAt(i - 1) == aim.charAt(i + j - 1) && dp[i - 1][j]) || (str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j
-                    - 1])) {
+                if ((str1.charAt(i - 1) == aim.charAt(i + j - 1) && dp[i - 1][j]) || (
+                    str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j - 1])) {
                     dp[i][j] = true;
                 }
             }
@@ -1032,5 +1041,47 @@ public class Practice {
             max = calMax(matrix, longest, i, j + 1);
         }
         return longest[i][j] = max + 1;
+    }
+
+
+    /**
+     * leetcode [47] 全排列 II
+     *
+     * https://leetcode-cn.com/problems/permutations-ii/description/
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> resultList = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return resultList;
+        }
+        //sort是为了保证去重逻辑
+        Arrays.sort(nums);
+        dfs(nums, 0, resultList);
+        return resultList;
+    }
+
+    public void dfs(int[] nums, int start, List<List<Integer>> res) {
+        if (start == nums.length - 1) {
+            List<Integer> temp = new ArrayList<>();
+            for (int i = 0; i < nums.length; i++) {
+                temp.add(nums[i]);
+            }
+            res.add(temp);
+            return;
+        }
+        Set<Integer> appeared = new HashSet<>();
+        for (int i = start; i < nums.length; i++) {
+            if (appeared.add(nums[i])) {
+                swap(nums, start, i);
+                dfs(nums, start + 1, res);
+                swap(nums, i, start);
+            }
+        }
+    }
+
+    public void swap(int[] arr, int n1, int n2) {
+        int temp = arr[n1];
+        arr[n1] = arr[n2];
+        arr[n2] = temp;
     }
 }

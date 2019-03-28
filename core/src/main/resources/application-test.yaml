@@ -66,6 +66,14 @@ kafka:
 #    decrypt: true
 #    connectionUrl: jdbc:kylin://ali-hz-data-platform-7:7070/weixiaobao
 
+# distributed lock配置
+curator:
+  retryCount: 5
+  elapsedTimeMs: 5000
+  connectString: localhost:2181
+  sessionTimeoutMs: 60000
+  connectionTimeoutMs: 5000
+
 mysql:
   common:
     userName: root

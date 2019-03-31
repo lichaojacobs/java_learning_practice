@@ -11,7 +11,7 @@
 - 一些算法，语言方面的练习
   - 算法: leetcode, nowcoder, swordoffer，以及算法红皮书等
   - 语言技术: kotlin, java8函数式，多线程等
-  - 框架: akka，zookeeper等
+  - 框架: akka，zookeeper，Disruptor等
   
 ### core
 - springboot相关练习

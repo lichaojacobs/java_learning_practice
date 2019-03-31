@@ -1,4 +1,4 @@
-package com.jacobs.basic.multithread;
+package com.jacobs.basic.multithread.disruptor;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventFactory;
@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadFactory;
  * @author lichao
  * @date 2018/12/02
  */
-public class DisruptorMain {
+public class DisruptorWithSingleProducer {
 
     public static void main(String[] args) throws Exception {
         // 队列中的元素
@@ -42,10 +42,15 @@ public class DisruptorMain {
         EventFactory<Element> factory = () -> new Element();
 
         // 处理Event的handler
-        EventHandler<Element> handler = (element, sequence, endOfBatch) -> System.out.println("Element: " + element.get());
+        EventHandler<Element> handler = (element, sequence, endOfBatch) -> System.out.println(
+            "Consume element: " + element.get());
 
-        // 阻塞策略
+        // 消费者的阻塞策略
         BlockingWaitStrategy strategy = new BlockingWaitStrategy();
+
+        //生产者的等待策略
+        //暂时只有休眠1ns.
+        //LockSupport.parkNanos(1);
 
         // 指定RingBuffer的大小
         int bufferSize = 16;

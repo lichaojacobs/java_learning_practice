@@ -15,6 +15,7 @@
   
 ### core
 - springboot相关练习
+  - 基于curator fremework的分布式锁封装
   - hbase封装
   - javapoet尝试
   - elasticserach 封装

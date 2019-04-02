@@ -2,13 +2,14 @@ package com.jacobs.basic.multithread.disruptor;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
+import lombok.Getter;
 
 /**
  * @author lichao
  * @date 2019/03/31
  */
 public class Producer {
-
+    @Getter
     private final String producerName;
     private final RingBuffer<Order> ringBuffer;
 

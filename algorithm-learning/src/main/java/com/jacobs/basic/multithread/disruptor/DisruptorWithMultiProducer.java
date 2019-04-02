@@ -1,18 +1,17 @@
 package com.jacobs.basic.multithread.disruptor;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
-import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.ExceptionHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SequenceBarrier;
 import com.lmax.disruptor.WorkerPool;
-import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 
 /**
+ * Disruptor 多生产者，多消费者的情况
+ *
  * @author lichao
  * @date 2019/03/31
  */
@@ -30,6 +29,7 @@ public class DisruptorWithMultiProducer {
             consumers[i] = new Consumer("c" + i);
         }
 
+        //添加多个消费者
         WorkerPool<Order> workerPool = new WorkerPool<Order>(ringBuffer, barriers, new IntEventExceptionHandler(),
             consumers);
 
@@ -47,8 +47,7 @@ public class DisruptorWithMultiProducer {
                     e.printStackTrace();
                 }
                 for (int j = 0; j < 100; j++) {
-                    p.onData(UUID.randomUUID()
-                                 .toString());
+                    p.onData(String.format("%s, element: %d", p.getProducerName(), j));
                 }
             }).start();
         }
@@ -56,7 +55,7 @@ public class DisruptorWithMultiProducer {
         System.out.println("---------------开始生产-----------------");
         latch.countDown();
         Thread.sleep(5000);
-        System.out.println("总数:" + consumers[0].getCount());
+        System.out.println("总数:" + consumers[1].getCount());
     }
 
     static class IntEventExceptionHandler implements ExceptionHandler {

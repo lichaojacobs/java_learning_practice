@@ -30,7 +30,7 @@ public class DisruptorWithSingleProducer {
 
         }
 
-        // 生产者的线程工厂
+        // 线程工厂
         ThreadFactory threadFactory = new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
@@ -42,8 +42,12 @@ public class DisruptorWithSingleProducer {
         EventFactory<Element> factory = () -> new Element();
 
         // 处理Event的handler
-        EventHandler<Element> handler = (element, sequence, endOfBatch) -> System.out.println(
-            "Consume element: " + element.get());
+        EventHandler<Element> handler = (element, sequence, endOfBatch) -> {
+            System.out.println("consumer sleep...");
+            //模拟消费者阻塞情况
+            Thread.sleep(1000000L);
+            System.out.println("Consume element: " + element.get());
+        };
 
         // 消费者的阻塞策略
         BlockingWaitStrategy strategy = new BlockingWaitStrategy();
@@ -62,6 +66,7 @@ public class DisruptorWithSingleProducer {
         disruptor.handleEventsWith(handler);
 
         // 启动disruptor的线程
+        // 默认也启动一个消费者线程
         disruptor.start();
 
         RingBuffer<Element> ringBuffer = disruptor.getRingBuffer();
@@ -74,6 +79,7 @@ public class DisruptorWithSingleProducer {
                 Element event = ringBuffer.get(sequence);
                 // 设置该位置元素的值
                 event.set(l);
+                System.out.println("Produce element: " + event.get());
             } finally {
                 ringBuffer.publish(sequence);
             }

@@ -10,8 +10,8 @@
 
   <packaging>pom</packaging>
   <modules>
-    <module>core</module>
-    <module>algorithm-learning</module>
+    <module>core-web</module>
+    <module>basic-learning</module>
     <module>netty-learning</module>
     <module>utils</module>
     <module>real-time-jobs</module>

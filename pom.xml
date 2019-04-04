@@ -261,6 +261,30 @@
         <artifactId>disruptor</artifactId>
         <version>3.3.4</version>
       </dependency>
+
+      <!--apache calcite-->
+      <dependency>
+        <groupId>org.apache.calcite.avatica</groupId>
+        <artifactId>avatica-core</artifactId>
+        <version>1.13.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.calcite</groupId>
+        <artifactId>calcite-core</artifactId>
+        <version>1.19.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.calcite</groupId>
+        <artifactId>calcite-core</artifactId>
+        <type>test-jar</type>
+        <version>1.19.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.calcite</groupId>
+        <artifactId>calcite-linq4j</artifactId>
+        <version>1.19.0</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 

@@ -15,6 +15,7 @@
     <module>netty-learning</module>
     <module>utils</module>
     <module>real-time-jobs</module>
+    <module>spring-webflux</module>
   </modules>
 
   <repositories>

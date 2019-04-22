@@ -84,4 +84,12 @@ class Person3(name: String) {
 //{ [参数: 参数类型]…… -> 函数体 }
 val sum = { a: Int, b: Int -> a + b }
 
+object HelloKotlin {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val hello = "Hello Kotlin!"
+        println(hello)
+    }
+}
+
 

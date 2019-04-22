@@ -69,6 +69,12 @@
       <artifactId>curator-recipes</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.hubspot.jinjava</groupId>
+      <artifactId>jinjava</artifactId>
+      <version>LATEST</version>
+    </dependency>
+
     <!--apache calcite-->
     <dependency>
       <groupId>org.apache.calcite.avatica</groupId>

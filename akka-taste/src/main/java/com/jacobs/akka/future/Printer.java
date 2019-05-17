@@ -1,4 +1,4 @@
-package com.jacobs.basic.akka.future;
+package com.jacobs.akka.future;
 
 import akka.actor.UntypedActor;
 import akka.event.Logging;
@@ -13,8 +13,8 @@ public class Printer extends UntypedActor {
   @Override
   public void onReceive(Object msg) throws Throwable {
     if (msg instanceof Integer) {
-      System.out.println("Printer:" + msg);
-    }
+            System.out.println("Printer:" + msg);
+        }
     if (msg == FutureWorker.Msg.DONE) {
       log.info("stop working");
     }

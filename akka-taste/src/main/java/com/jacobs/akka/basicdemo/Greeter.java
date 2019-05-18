@@ -1,4 +1,4 @@
-package com.jacobs.akka;
+package com.jacobs.akka.basicdemo;
 
 import akka.actor.UntypedActor;
 

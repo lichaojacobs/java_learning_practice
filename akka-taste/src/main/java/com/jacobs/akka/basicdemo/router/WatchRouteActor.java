@@ -1,6 +1,6 @@
-package com.jacobs.akka.router;
+package com.jacobs.akka.basicdemo.router;
 
-import com.jacobs.akka.MyWorker;
+import com.jacobs.akka.basicdemo.MyWorker;
 
 import java.util.ArrayList;
 import java.util.List;

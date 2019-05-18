@@ -14,9 +14,10 @@
         <module>basic-learning</module>
         <module>netty-learning</module>
         <module>utils</module>
-        <module>real-time-jobs</module>
+        <module>flink-demos</module>
         <module>spring-webflux</module>
         <module>akka-taste</module>
+        <module>spark-demos</module>
     </modules>
 
     <properties>
@@ -25,12 +26,14 @@
         <java.version>1.8</java.version>
         <logstash-logback.version>4.4</logstash-logback.version>
         <scala.binary.version>2.12.2</scala.binary.version>
+        <scala.binary.version2>2.12</scala.binary.version2>
         <scala.version>2.12.2</scala.version>
         <flink.version>1.6.0</flink.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.version>1.3.30</kotlin.version>
         <spring.boot.version>2.1.4.RELEASE</spring.boot.version>
+        <spark.version>2.4.0</spark.version>
     </properties>
 
     <!--<parent>-->
@@ -125,6 +128,16 @@
             <dependency>
                 <groupId>com.typesafe.akka</groupId>
                 <artifactId>akka-actor_2.12</artifactId>
+                <version>2.5.22</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-testkit_2.12</artifactId>
+                <version>2.5.22</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-remote_2.12</artifactId>
                 <version>2.5.22</version>
             </dependency>
             <!--curator start-->

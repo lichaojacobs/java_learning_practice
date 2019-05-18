@@ -1,4 +1,4 @@
-package com.jacobs.akka.future;
+package com.jacobs.akka.basicdemo.future;
 
 import akka.actor.UntypedActor;
 import akka.event.Logging;

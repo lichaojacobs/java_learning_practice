@@ -1,7 +1,7 @@
-package com.jacobs.akka.future;
+package com.jacobs.akka.basicdemo.future;
 
-import com.jacobs.akka.MyWorker;
-import com.jacobs.akka.WatchActor;
+import com.jacobs.akka.basicdemo.MyWorker;
+import com.jacobs.akka.basicdemo.WatchActor;
 import com.typesafe.config.ConfigFactory;
 
 import akka.actor.ActorRef;

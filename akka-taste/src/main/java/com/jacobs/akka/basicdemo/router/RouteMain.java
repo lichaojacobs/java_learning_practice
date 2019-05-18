@@ -1,6 +1,6 @@
-package com.jacobs.akka.router;
+package com.jacobs.akka.basicdemo.router;
 
-import com.jacobs.akka.MyWorker;
+import com.jacobs.akka.basicdemo.MyWorker;
 import com.typesafe.config.ConfigFactory;
 
 import akka.actor.ActorRef;

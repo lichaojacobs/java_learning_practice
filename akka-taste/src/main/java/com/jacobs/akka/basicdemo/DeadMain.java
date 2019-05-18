@@ -1,4 +1,4 @@
-package com.jacobs.akka;
+package com.jacobs.akka.basicdemo;
 
 import com.typesafe.config.ConfigFactory;
 

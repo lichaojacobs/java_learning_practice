@@ -119,12 +119,12 @@ object InteractionExamples {
       .setStringOrderType("alphabetAsc")
 
     val stringEncodedDf = stringIndexer.fit(df).transform(df)
-    val oneHotEncoderEstimator = new OneHotEncoderEstimator().setInputCols(Array("name_index"))
-      .setOutputCols(Array("encoded_name"))
+    val oneHotEncoderEstimator = new OneHotEncoderEstimator().setInputCols(Array("name_index", "length"))
+      .setOutputCols(Array("encoded_name", "encoded_length"))
 
     val oneHotEncodedDf = oneHotEncoderEstimator.fit(stringEncodedDf).transform(stringEncodedDf)
     oneHotEncodedDf.show(truncate = false)
-    val interaction = new Interaction().setInputCols(Array("length", "encoded_name")).setOutputCol("comb_age_city")
+    val interaction = new Interaction().setInputCols(Array("encoded_length", "encoded_name")).setOutputCol("comb_encoded_length_name")
     val interacted = interaction.transform(oneHotEncodedDf)
 
     interacted.show(truncate = false)

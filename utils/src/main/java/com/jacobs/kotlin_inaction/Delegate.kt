@@ -1,3 +1,5 @@
+package com.jacobs.kotlin_inaction
+
 /**
  * Created by lichao on 2017/5/26.
  */
@@ -9,7 +11,7 @@ class Example {
     override fun toString() = "Example Class"
 }
 
-class Delegate() {
+class Delegate {
     operator fun getValue(thisRef: Any?, prop: KProperty<*>): String {
         return "$thisRef, thank you for delegating '${prop.name}' to me!"
     }
@@ -19,7 +21,7 @@ class Delegate() {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val e = Example()
     println(e.p)
     e.p = "NEW"

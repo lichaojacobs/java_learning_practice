@@ -1,9 +1,11 @@
+package com.jacobs.kotlin_inaction
+
 //kotlin控制流程写法(类似scala) 如果我们把 if 语句当作表达式使用，那么一定要有 else 部分
 fun max(a: Int, b: Int) = if (a < b) b else a
 
 fun testWhen(x: Int): Unit {
     when (x) {
-    //使用 "," 分隔多个条件
+        //使用 "," 分隔多个条件
         1, 2 -> println("x = $x")
         else -> println("x is neither 1 nor 2")
     }
@@ -87,8 +89,7 @@ val sum = { a: Int, b: Int -> a + b }
 object HelloKotlin {
     @JvmStatic
     fun main(args: Array<String>) {
-        val hello = "Hello Kotlin!"
-        println(hello)
+        println(sum(1, 2))
     }
 }
 

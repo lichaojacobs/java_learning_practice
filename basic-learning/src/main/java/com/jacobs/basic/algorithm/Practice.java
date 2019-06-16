@@ -43,7 +43,41 @@ public class Practice {
         Practice practice = new Practice();
         //        practice.eatBreads(3);
         //        practice.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 4);
-        practice.permuteUnique(new int[]{1, 2, 3});
+//        practice.permuteUnique(new int[]{1, 2, 3});
+        practice.letterCombinations("23");
+    }
+
+    /**
+     * leetcode: 17
+     * 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+     *
+     * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+     * @param digits
+     * @return
+     */
+    public List<String> letterCombinations(String digits) {
+        String[] charMapping = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        List<String> results = new ArrayList<>();
+        if (digits == null || "".equals(digits)) {
+            return results;
+        }
+        char[] numChars = digits.toCharArray();
+        letterHepler(numChars, charMapping, results, "", 0);
+        return results;
+    }
+
+    private void letterHepler(char[] numChars, String[] charMapping, List<String> results, String result, int start) {
+        if (start == numChars.length) {
+            results.add(result);
+            return;
+        }
+        // 注意这里不是全排序不需要
+        // for (int j = start; j < numChars.length; j++) {
+        char[] letterChars = charMapping[numChars[start] - '2'].toCharArray();
+        for (int i = 0; i < letterChars.length; i++) {
+            String temp = String.valueOf(letterChars[i]);
+            letterHepler(numChars, charMapping, results, result + temp, start + 1);
+        }
     }
 
     public int search(int[] nums, int target) {
@@ -357,8 +391,8 @@ public class Practice {
         while (rows > 0) {
             String line = intput.next();
             List<Integer> lineArr = Arrays.stream(line.split(","))
-                                          .map(s -> Integer.valueOf(s))
-                                          .collect(Collectors.toList());
+                    .map(s -> Integer.valueOf(s))
+                    .collect(Collectors.toList());
 
             //每日增长
             if (lineArr.get(0) == 1) {
@@ -391,14 +425,14 @@ public class Practice {
         int loop = input.nextInt();
         while (loop > 0) {
             String[] defineStrArr = input.next()
-                                         .split(" ");
+                    .split(" ");
             int numberOfCoins = Integer.valueOf(defineStrArr[0]);
             int target = Integer.valueOf(defineStrArr[1]);
 
             List<Integer> coninsArr = Arrays.stream(input.next()
-                                                         .split(" "))
-                                            .map(Integer::valueOf)
-                                            .collect(Collectors.toList());
+                    .split(" "))
+                    .map(Integer::valueOf)
+                    .collect(Collectors.toList());
             if (numberOfCoins == coninsArr.size()) {
                 System.out.println(changeCoins(coninsArr, target));
             }
@@ -847,7 +881,7 @@ public class Practice {
         for (int i = 1; i <= str1Chars.length; i++) {
             for (int j = 1; j <= str2Chars.length; j++) {
                 if ((str1.charAt(i - 1) == aim.charAt(i + j - 1) && dp[i - 1][j]) || (
-                    str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j - 1])) {
+                        str2.charAt(j - 1) == aim.charAt(i + j - 1) && dp[i][j - 1])) {
                     dp[i][j] = true;
                 }
             }

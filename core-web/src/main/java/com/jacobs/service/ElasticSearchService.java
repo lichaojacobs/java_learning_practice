@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 /**
  * Created by lichao on 2017/2/17.
  */
-@Component
-@Conditional({ElasticServiceCondition.class})
+//@Component
+//@Conditional({ElasticServiceCondition.class})
 public class ElasticSearchService {
 
   @Autowired

@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author lichao
  * @date 2017/11/10

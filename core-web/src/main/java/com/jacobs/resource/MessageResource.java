@@ -1,19 +1,28 @@
 package com.jacobs.resource;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.common.collect.Lists;
 import com.jacobs.module.messagecloud.CommonResponse;
 import com.jacobs.module.messagecloud.Product;
 import com.jacobs.module.messagecloud.Topic;
+
 import io.github.yedaxia.apidocs.ApiDoc;
 import lombok.Data;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 消息云接口
  */
+@Slf4j
 @RestController
 @RequestMapping("/v1")
 public class MessageResource {
@@ -32,6 +41,7 @@ public class MessageResource {
             @RequestParam(value = "name") String name,
             @RequestParam(value = "description", required = false) String description
     ) {
+        log.info("saveProduct api called");
         return new CommonResponse();
     }
 
@@ -49,6 +59,7 @@ public class MessageResource {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "count", defaultValue = "10") int count
     ) {
+        log.info("productList api called");
         return Lists.newArrayList();
     }
 
@@ -66,7 +77,7 @@ public class MessageResource {
      * @param bcpId             钱包Id
      * @return
      */
-    @PreAuthorize("hasRole(#productId+'_ADMIN')")
+//    @PreAuthorize("hasRole(#productId+'_ADMIN')")
     @ApiDoc(CommonResponse.class)
     @PostMapping(value = "/{productId}/topics", produces = "application/json")
     public CommonResponse saveTopic(
@@ -91,7 +102,7 @@ public class MessageResource {
      * @param count     pageSize
      * @return
      */
-    @PreAuthorize("hasRole(#productId+'_ADMIN')")
+//    @PreAuthorize("hasRole(#productId+'_ADMIN')")
     @ApiDoc(Topic[].class)
     @GetMapping(value = "/{productId}/topics", produces = "application/json")
     public List<Topic> topicList(
@@ -100,9 +111,9 @@ public class MessageResource {
             @RequestParam(value = "count", defaultValue = "10") int count
     ) {
         return Lists.newArrayList(Topic.builder()
-                                       .topicKey("testTopicSecurity")
-                                       .description("测试")
-                                       .build());
+                .topicKey("testTopicSecurity")
+                .description("测试")
+                .build());
     }
 
     /**
@@ -113,7 +124,7 @@ public class MessageResource {
      * @param stateType 状态类型: 启动，停止，释放资源
      * @return
      */
-    @PreAuthorize("hasRole(#productId+'_ADMIN')")
+//    @PreAuthorize("hasRole(#productId+'_ADMIN')")
     @ApiDoc(CommonResponse.class)
     @PutMapping(value = "/{productId}/topics/{topicId}/state", produces = "application/json")
     public CommonResponse updateTopicState(
@@ -132,7 +143,7 @@ public class MessageResource {
      * @param bcpId     bcp钱包Id
      * @return
      */
-    @PreAuthorize("hasRole(#productId+'_ADMIN')")
+//    @PreAuthorize("hasRole(#productId+'_ADMIN')")
     @ApiDoc(CommonResponse.class)
     @PutMapping(value = "/{productId}/topics/{topicId}/bcp", produces = "application/json")
     public CommonResponse updateTopicBCPId(
@@ -152,7 +163,7 @@ public class MessageResource {
      * @param manageType 0：扩容，1：缩容
      * @return
      */
-    @PreAuthorize("hasRole(#productId+'_ADMIN')")
+//    @PreAuthorize("hasRole(#productId+'_ADMIN')")
     @ApiDoc(ManageResponse.class)
     @PutMapping(value = "/{productId}/topics/{topicId}/instances", produces = "application/json")
     public ManageResponse topicInstanceManage(

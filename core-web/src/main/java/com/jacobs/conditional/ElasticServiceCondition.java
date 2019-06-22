@@ -18,6 +18,6 @@ public class ElasticServiceCondition extends SpringBootCondition {
       AnnotatedTypeMetadata annotatedTypeMetadata) {
     String properties = conditionContext.getEnvironment().getProperty("elasticsearch.clusterName");
     log.info("elasticsearch property: {}", properties);
-    return new ConditionOutcome(!StringUtils.isBlank(properties), "elasticsearch property");
+    return new ConditionOutcome(StringUtils.isNotBlank(properties), "elasticsearch property");
   }
 }

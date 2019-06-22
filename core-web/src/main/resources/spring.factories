@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springframework.boot.actuate.autoconfigure.EndpointAutoConfiguration,\
-com.jacobs.endpoint.EndPointAutoConfig
+org.springframework.boot.actuate.autoconfigure.EndpointAutoConfiguration

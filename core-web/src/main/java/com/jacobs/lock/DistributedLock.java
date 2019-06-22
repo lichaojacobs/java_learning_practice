@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
  * @date 2019/03/28
  */
 @Slf4j
-@Service("DistributedLock")
+//@Service("DistributedLock")
 public class DistributedLock {
 
     @Autowired

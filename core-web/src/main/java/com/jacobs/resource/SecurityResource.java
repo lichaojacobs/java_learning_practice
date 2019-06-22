@@ -1,33 +1,28 @@
 package com.jacobs.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.jacobs.exception.CommonException;
 import com.jacobs.exception.CommonRestException;
 import com.jacobs.module.User;
 import com.jacobs.service.DemoService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.github.yedaxia.apidocs.ApiDoc;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 /**
  * 测试接口
  */
 @RestController
-public class DemoResource implements ApplicationContextAware {
+public class SecurityResource implements ApplicationContextAware {
 
     @Autowired
     DemoService demoService;
@@ -82,22 +77,22 @@ public class DemoResource implements ApplicationContextAware {
 
     ApplicationContext applicationContext;
 
-    @GetMapping(value = "/login_auto", produces = {"application/json"})
-    public String login(
-            HttpServletRequest request) {
-        AuthenticationManager authManager = applicationContext.getBean(AuthenticationManager.class);
-        Authentication authentication = authManager
-                .authenticate(new UsernamePasswordAuthenticationToken("lichao", "123456"));
-
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-        // Create a new session and add the security context.
-        //这里要注意更新session
-        HttpSession session = request.getSession(true);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-
-        return "success";
-    }
+//    @GetMapping(value = "/login_auto", produces = {"application/json"})
+//    public String login(
+//            HttpServletRequest request) {
+//        AuthenticationManager authManager = applicationContext.getBean(AuthenticationManager.class);
+//        Authentication authentication = authManager
+//                .authenticate(new UsernamePasswordAuthenticationToken("lichao", "123456"));
+//
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        securityContext.setAuthentication(authentication);
+//        // Create a new session and add the security context.
+//        //这里要注意更新session
+//        HttpSession session = request.getSession(true);
+//        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+//
+//        return "success";
+//    }
 
     @RequestMapping(value = "/login", produces = {"application/json"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String login() {

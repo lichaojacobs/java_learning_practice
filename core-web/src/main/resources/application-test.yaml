@@ -2,14 +2,6 @@ spring:
   application:
     name: java_learning_project
   profiles: test
-  boot:
-    admin:
-      url: http://ali-hz-hbase-name-treeNode:12309
-      username: mobvoi
-      password: mobvoi
-  gson:
-    converter:
-      enable: false
 #      client:
 #        service-url: http://testHost:50000
 
@@ -39,25 +31,25 @@ spring:
 #        testOnBorrow: true
 
 server:
-  port: 9000
+  port: 8881
 
 #elasticsearch:
 #  clusterName: test
 #  nodes:
 #    - 127.0.0.1:9300
 
-redis:
-  name: common
-  connection: 127.0.0.1:6379
-  password: igTuujYzZSSVd75X
+#redis:
+#  name: common
+#  connection: 127.0.0.1:6379
+#  password: igTuujYzZSSVd75X
 
 #hbase:
 #  quorum: 127.0.0.1
 #  port: 2181
 
-kafka:
-  servers: localhost:9092
-  groupID: weixiaobao_group
+#kafka:
+#  servers: localhost:9092
+#  groupID: weixiaobao_group
 
 #kylin:
 #  weixiaobao:
@@ -74,14 +66,19 @@ curator:
   sessionTimeoutMs: 60000
   connectionTimeoutMs: 5000
 
-mysql:
-  common:
-    userName: root
-    passWord: lichao0903
-    decrypt: false
-    masterUrl: jdbc:mysql://127.0.0.1:3306/kmap?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
-  bussiness:
-    userName: root
-    passWord: lichao0903
-    decrypt: false
-    masterUrl: jdbc:mysql://127.0.0.1:3306/kmap?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+
+dataarch.common.hive.jdbc.client:
+  enable: false # 只有enable为true时，才会扫描并创建hive jdbc client pool相关bean
+  userName: test
+  masterUrl: jdbc:hive2://xxxx:2181/default;serviceDiscoveryMode=zooKeeper;
+  zooKeeperNamespace=xxxx;
+  #pool 可以不配，不配将采用默认的配置
+  pool:
+    initialSize: 5 #配置初始化连接池大小(默认是5)
+    minIdle: 5 #最小连接池数量(默认是5)
+    maxActive: 10 #最大连接池数量（默认是10）
+    maxWait: 60000 #获取连接的最大等待时间，默认是60s
+    testOnBorrow: false #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+    testOnReturn: false # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+    testWhileIdle: true #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效
+    timeBetweenEvictionRunsMillis: 60000 #有两个含义：1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明

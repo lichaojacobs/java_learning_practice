@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Data
-@Component
-@ConfigurationProperties(prefix = "curator")
+//@Component
+//@ConfigurationProperties(prefix = "curator")
 public class ZkConfig {
 
     private int retryCount;

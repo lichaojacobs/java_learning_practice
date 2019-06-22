@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 //@AutoGenerateRowMapper(scanPackage = "com.example.module", annotationFilter = RowMapper.class, outPath = "core/src/main/java/")
 public class Application {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 }

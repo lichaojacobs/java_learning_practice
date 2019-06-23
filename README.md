@@ -25,6 +25,7 @@
   - elasticserach 封装
   - jersey 封装
   - spring security练习
+  - 基于druid pool的hive jdbc client pool封装；扩展BeanPropertyRowMappper，实现轻量级ORM框架
   
 ### netty_learning
 - 《netty权威指南第五版》的相关练习demo

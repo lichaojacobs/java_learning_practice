@@ -11,7 +11,8 @@ public class ProblemsMedium_11 {
     }
 
     /**
-     * leetcode: 74 搜索二维矩阵
+     * leetcode 74
+     * 搜索二维矩阵
      * @param matrix
      * @param target
      * @return
@@ -54,5 +55,57 @@ public class ProblemsMedium_11 {
         }
 
         return false;
+    }
+
+    /**
+     * leetcode 59
+     * 给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
+     * @param n
+     * @return
+     */
+    public int[][] generateMatrix(int n) {
+        int[][] matrix = new int[n][n];
+        int starti = 0;
+        int startj = 0;
+        int endi = n - 1;
+        int endj = n - 1;
+
+        int val = 1;
+        while (val <= n * n && starti <= endi && startj <= endj) {
+            int cursori = starti;
+            int cursorj = startj;
+            // 从左到右
+            while (cursorj <= endj) {
+                matrix[cursori][cursorj++] = val++;
+            }
+            // 需要去除重复
+            cursori++;
+            cursorj--;
+            // 上到下
+            while (cursori <= endi) {
+                matrix[cursori++][cursorj] = val++;
+            }
+            cursorj--;
+            cursori--;
+
+            // 从右到左
+            while (cursorj >= startj) {
+                matrix[cursori][cursorj--] = val++;
+            }
+            cursori--;
+            cursorj++;
+
+            // 从下到上
+            while (cursori > starti) {
+                matrix[cursori--][cursorj] = val++;
+            }
+
+            starti++;
+            startj++;
+            endi--;
+            endj--;
+        }
+
+        return matrix;
     }
 }

@@ -1,5 +1,9 @@
 package com.jacobs.basic.algorithm.leetcode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author lichao
  * Created on 2019-06-22
@@ -169,5 +173,35 @@ public class ProblemsMedium_11 {
             if (i < 2 || n > nums[i - 2])
                 nums[i++] = n;
         return i;
+    }
+
+    /**
+     * leetcode 89
+     *
+     * 格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个位数的差异。
+     * 给定一个代表编码总位数的非负整数 n，打印其格雷编码序列。格雷编码序列必须以 0 开头。
+     *
+     * 输入: 2
+     * 输出: [0,1,3,2]
+     * 解释:
+     * 00 - 0
+     * 01 - 1
+     * 11 - 3
+     * 10 - 2
+     * @param n
+     * @return
+     */
+    public List<Integer> grayCode(int n) {
+        if (n == 0) {
+            return Arrays.asList(0);
+        }
+        List<Integer> prev = grayCode(n - 1);
+        List<Integer> next = new ArrayList<Integer>(prev);
+        int pow = 1 << (n - 1);
+        for (int i = prev.size() - 1; i >= 0; i--) {
+            // 对前面得到的每一项在高位加上1，生成新的一项
+            next.add(prev.get(i) | pow);
+        }
+        return next;
     }
 }

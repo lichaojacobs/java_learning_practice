@@ -108,4 +108,66 @@ public class ProblemsMedium_11 {
 
         return matrix;
     }
+
+    /**
+     * leetcode 80 删除排序数组中的重复项 II
+     *
+     * 给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素最多出现两次，返回移除后数组的新长度。
+     *
+     * 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 1) {
+            return 1;
+        }
+        // 由后往前挪的过程中length也随着减小
+        int length = nums.length;
+        int count = 1;
+        // 从index位置开始处理重复的记录
+        int index = 1;
+        while (index < length) {
+            if (nums[index] != nums[index - 1]) {
+                index++;
+                count = 1;
+                continue;
+            }
+            // 如果相等且没超过2的话，继续往后处理
+            if (count < 2) {
+                count++;
+                index++;
+                continue;
+            }
+            // 如果超过了2，把后面不为nums[index]的数往前覆盖，同时将count置为1
+            // 处理原始数组的index，需要将后面的数往前挪
+            int afterIndex = index + 1;
+            while (afterIndex < nums.length && nums[afterIndex] == nums[index]) {
+                afterIndex++;
+            }
+            // 找到第一个不等于nums[index]，将后面的覆盖前面的
+            int copyIndex = index;
+            while (afterIndex < length) {
+                nums[copyIndex++] = nums[afterIndex++];
+            }
+            // 覆盖完后，再更改数组长度
+            length = copyIndex;
+            count = 1;
+        }
+
+        return length;
+    }
+
+    /**
+     * leetcode 80 推荐解法
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates2(int[] nums) {
+        int i = 0;
+        for (int n : nums)
+            if (i < 2 || n > nums[i - 2])
+                nums[i++] = n;
+        return i;
+    }
 }

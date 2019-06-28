@@ -10,8 +10,10 @@ import java.util.List;
  */
 public class ProblemsMedium_11 {
     public static void main(String[] args) {
-        int[][] matrix = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 50}};
-        System.out.println(searchMatrix(matrix, 3));
+//        int[][] matrix = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 50}};
+//        System.out.println(searchMatrix(matrix, 3));
+        int[] nums = new int[]{1, 2, 2};
+        System.out.println(subsetsWithDup(nums));
     }
 
     /**
@@ -203,5 +205,43 @@ public class ProblemsMedium_11 {
             next.add(prev.get(i) | pow);
         }
         return next;
+    }
+
+    /**
+     *leetcode 90 子集
+     *
+     * 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+     *
+     * 说明：解集不能包含重复的子集。
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> resultList = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return resultList;
+        }
+        // 首先得排序
+        Arrays.sort(nums);
+        helper(resultList, new ArrayList<>(), 0, nums);
+        return resultList;
+    }
+
+    public static void helper(List<List<Integer>> resultList, List<Integer> tmp, int start, int[]
+            nums) {
+        if (start <= nums.length) {
+            resultList.add(new ArrayList<>(tmp));
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            // i > start是关键，说明已经添加一轮到resultList里面了并出栈了，这一轮是重复的
+            if (i > start && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            tmp.add(nums[i]);
+            //注意这里是i+1，否则i为1，start回归0的时候，再进入helper start+1还是为1，会造成重复计算
+            helper(resultList, tmp, i + 1, nums);
+            tmp.remove(tmp.size() - 1);
+        }
     }
 }

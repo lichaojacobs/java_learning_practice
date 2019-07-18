@@ -23,13 +23,13 @@
   
 ### core-web
 - springboot相关练习
-  - 基于curator fremework的分布式锁封装
-  - hbase封装
-  - javapoet尝试
-  - elasticserach 封装
-  - jersey 封装
-  - spring security练习
-  - 基于druid pool的hive jdbc client pool封装；扩展BeanPropertyRowMappper，实现轻量级ORM框架
+    - jersey 封装
+    - spring security练习
+- 基于curator fremework的分布式锁封装
+- hbase封装
+- javapoet尝试
+- elasticserach 封装
+- 基于druid pool的hive jdbc client pool封装；扩展BeanPropertyRowMappper，实现轻量级ORM框架
   
 ### netty_learning
 - 《netty权威指南第五版》的相关练习demo
@@ -41,6 +41,7 @@
 ### spark-demos
 
 - standalone模式下的spark 示例demo
+- spark MLlib api 练习
 - 注意：运行时需要预先下载官方[spark安装包](https://spark.apache.org/downloads.html)，将jars下的jar包依赖添加到spark-demos依赖里
 
 

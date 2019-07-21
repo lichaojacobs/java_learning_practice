@@ -1,6 +1,7 @@
 package com.jacobs.basic.algorithm.linklist;
 
 import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.models.ListNode;
 
 /**
  * Created by lichao on 2016/12/4.
@@ -90,6 +91,64 @@ public class ReverseNode {
         }
 
         return phead;
+    }
+
+    /**
+     * [92] 反转链表 II
+     * 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+     *
+     * 说明:
+     * 1 ≤ m ≤ n ≤ 链表长度。
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (m <= 0 || n <= 0 || m >= n) {
+            return head;
+        }
+
+        // 计算反转开始的前一个节点和后一个节点
+        int len = 0;
+        ListNode pHead = head;
+        ListNode fromNode = null;
+        ListNode toNode = null;
+        while (pHead != null) {
+            len++;
+            if (len == m - 1) {
+                fromNode = pHead;
+            }
+            if (len == n + 1) {
+                toNode = pHead;
+            }
+            pHead = pHead.next;
+        }
+        // 过长则直接返回原链表
+        if (n > len) {
+            return head;
+        }
+
+        // 判断是否需要置换返回的头部节点
+        pHead = fromNode == null ? head : fromNode.next;
+        ListNode pre = pHead;
+        ListNode curr = pHead;
+        ListNode aft = pHead;
+        while (curr.next != toNode) {
+            aft = curr.next;
+            curr.next = aft.next;
+            aft.next = pre;
+            pre = aft;
+        }
+
+        // 最后衔接转换后的几段链表
+        if (fromNode != null) {
+            fromNode.next = pre;
+            // 这时直接返回原头节点，说明是在中间的部位反转
+            return head;
+        }
+        //说明从头部开始反转
+        return pre;
     }
 
 }

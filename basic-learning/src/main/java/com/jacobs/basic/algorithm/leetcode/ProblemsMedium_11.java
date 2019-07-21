@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.jacobs.basic.algorithm.TreeNode;
+import com.jacobs.basic.models.ListNode;
+
 /**
  * @author lichao
  * Created on 2019-06-22
@@ -243,5 +246,39 @@ public class ProblemsMedium_11 {
             helper(resultList, tmp, i + 1, nums);
             tmp.remove(tmp.size() - 1);
         }
+    }
+
+    /**
+     *[109] 有序链表转换二叉搜索树
+     *
+     * 给定一个单链表，其中的元素按升序排序，将其转换为高度平衡的二叉搜索树。
+     *
+     * 本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+     * @param head
+     * @return
+     */
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        return toBST(head, null);
+    }
+
+    public TreeNode toBST(ListNode head, ListNode tail) {
+        ListNode slow = head;
+        ListNode fast = head;
+        if (head == tail) {
+            return null;
+        }
+
+        // 有序链表即想到二分
+        while (fast != tail && fast.next != tail) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        TreeNode root = new TreeNode(slow.val);
+        root.left = toBST(head, slow);
+        root.right = toBST(slow.next, tail);
+        return root;
     }
 }

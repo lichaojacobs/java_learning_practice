@@ -16,7 +16,15 @@ public class ProblemsMedium_11 {
 //        int[][] matrix = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 50}};
 //        System.out.println(searchMatrix(matrix, 3));
         int[] nums = new int[]{1, 2, 2};
-        System.out.println(subsetsWithDup(nums));
+//        System.out.println(subsetsWithDup(nums));
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+//        root.right = new TreeNode(5);
+        root.left.left = new TreeNode(3);
+//        root.left.right = new TreeNode(4);
+//        root.right.right = new TreeNode(6);
+
+        flatten(root);
     }
 
     /**
@@ -281,4 +289,85 @@ public class ProblemsMedium_11 {
         root.right = toBST(slow.next, tail);
         return root;
     }
+
+    /**
+     * 114. 二叉树展开为链表
+     * 给定一个二叉树，原地将它展开为链表。
+     *
+     * 例如，给定二叉树
+     *
+     *     1
+     *    / \
+     *   2   5
+     *  / \   \
+     * 3   4   6
+     * 将其展开为：
+     *
+     * 1
+     *  \
+     *   2
+     *    \
+     *     3
+     *      \
+     *       4
+     *        \
+     *         5
+     *          \
+     *           6
+     *
+     * @param root
+     */
+    public static void flatten(TreeNode root) {
+        flattenHelper(root);
+    }
+
+    //递归式返回的是当前根结点，左链表或者右链表最后的尾节点（因为头节点就是root.left或root.right，只需记录尾节点即可）
+    public static TreeNode flattenHelper(TreeNode root) {
+        //自身为null或者无左右节点
+        if (root == null || (root.left == null && root.right == null)) {
+            return root;
+        }
+
+        //采用后续遍历的方式，从下往上，从左往右去变更树节点的关系
+        TreeNode leftEndNode = flattenHelper(root.left);
+        TreeNode rightEndNode = flattenHelper(root.right);
+        if (leftEndNode != null) {
+            // 此时root左右两个节点变更关系
+            leftEndNode.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+        return rightEndNode == null ? leftEndNode : rightEndNode;
+    }
+
+    //另一种方式
+//    public void flatten(TreeNode root) {
+//        if (root == null) {
+//            return;
+//        }
+//        flattenHelper(root);
+//    }
+//
+//    public void flattenHelper(TreeNode root) {
+//        // 自身为null或者无左右节点
+//        if (root == null) {
+//            return;
+//        }
+//
+//        TreeNode left = root.left;
+//        TreeNode right = root.right;
+//        root.left = null;
+//        // 采用后续遍历的方式，从下往上，从左往右去变更树节点的关系
+//        flattenHelper(root.left);
+//        flattenHelper(root.right);
+//
+//        // 此时root左右两个节点变更关系
+//        root.right = left;
+//        TreeNode curr = root;
+//        while (curr.right != null) {
+//            curr = curr.right;
+//        }
+//        // 再接上右边的节点
+//        curr.right = right;
+//    }
 }

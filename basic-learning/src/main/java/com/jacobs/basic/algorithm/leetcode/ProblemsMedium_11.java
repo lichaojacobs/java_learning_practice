@@ -370,4 +370,51 @@ public class ProblemsMedium_11 {
 //        // 再接上右边的节点
 //        curr.right = right;
 //    }
+
+
+    /**
+     * @lc app=leetcode.cn id=137 lang=java
+     * [137] 只出现一次的数字 II
+     *
+     * https://leetcode-cn.com/problems/single-number-ii/description/
+     *
+     * 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。
+     *
+     *
+     * 示例 1:
+     *
+     * 输入: [2,2,3,2]
+     * 输出: 3
+     *
+     *
+     * 示例 2:
+     *
+     * 输入: [0,1,0,1,0,1,99]
+     * 输出: 99
+     *
+     * 思路：将数变成二进制之后，就是数各个位置上1的个数了；可延伸到每个元素出现k次，找只出现一次的元素
+     */
+    public int singleNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        // 将数变成二进制之后，就是数各个位置上1的个数了
+        int ans = 0;
+        for (int i = 0; i < 32; i++) {
+            int sum = 0;
+            for (int j = 0; j < nums.length; j++) {
+                if (((nums[j] >> i) & 1) == 1) {
+                    sum++;
+                    // 如果该位置上1的个数能被3整除，说明该位置上目标数没做贡献
+                    sum %= 3;
+                }
+            }
+            // 完成一个位置的计算后将中间结果加上即可
+            if (sum != 0) {
+                ans |= sum << i;
+            }
+        }
+
+        return ans;
+    }
 }

@@ -5,13 +5,24 @@ package com.jacobs.basic.algorithm;
  */
 public class TreeNode {
 
-  public int val;
-  public TreeNode next;
-  public TreeNode left;
-  public TreeNode right;
-  public TreeNode parent;
+    public int val;
+    public TreeNode next;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode parent;
 
-  public TreeNode(int data) {
-    this.val = data;
-  }
+    public TreeNode(int data) {
+        this.val = data;
+    }
+
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+                "val=" + val +
+                ", next=" + next +
+                ", left=" + left +
+                ", right=" + right +
+                ", parent=" + parent +
+                '}';
+    }
 }

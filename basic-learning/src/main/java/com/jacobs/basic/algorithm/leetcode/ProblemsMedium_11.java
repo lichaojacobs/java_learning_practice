@@ -1,5 +1,8 @@
 package com.jacobs.basic.algorithm.leetcode;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +28,66 @@ public class ProblemsMedium_11 {
 //        root.right.right = new TreeNode(6);
 
         flatten(root);
+        String str = " @ @";
+        String[] arr = str.split("@");
+        System.out.println(arr);
+
+        System.out.println(8 >> 8);
+
+        byte[] bytes = new byte[]{
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+        };
+
+        System.out.println(toKey(100, (byte) '+'));
+
+        System.out.println(0xF);
+
+        root.left = new TreeNode(2);
+
+        Object test = (Object) root;
+
+        System.out.println(test.toString());
+
+    }
+
+    private static final byte[] HEX_BYTES = new byte[]{
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+    };
+    private static final byte POSITIVE_MARKER = (byte) '=';
+    private static final byte NEGATIVE_MARKER = (byte) '*';
+
+    static byte[] toKey(Object value, byte prefix) {
+        final byte[] result;
+        int bytes;
+
+        if (value instanceof Integer) {
+            bytes = Integer.SIZE;
+        } else if (value instanceof Long) {
+            bytes = Long.SIZE;
+        } else if (value instanceof Short) {
+            bytes = Short.SIZE;
+        } else if (value instanceof Byte) {
+            bytes = Byte.SIZE;
+        } else {
+            throw new IllegalArgumentException(String.format("Type %s not allowed as key.",
+                    value.getClass().getName()));
+        }
+
+        bytes = bytes / Byte.SIZE;
+
+        byte[] key = new byte[bytes + 2];
+        long longValue = ((Number) value).longValue();
+        key[0] = prefix;
+        key[1] = longValue >= 0 ? POSITIVE_MARKER : NEGATIVE_MARKER;
+
+        for (int i = 0; i < key.length - 2; i++) {
+            int masked = (int) ((longValue >>> (4 * i)) & 0xF);
+            key[key.length - i - 1] = HEX_BYTES[masked];
+        }
+
+        result = key;
+
+        return result;
     }
 
     /**

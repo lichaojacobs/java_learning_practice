@@ -271,20 +271,15 @@ public class BoundedPriorityBlockingQueue<E> implements BlockingQueue<E> {
     }
 
     public static void main(String[] args) {
-//        BoundedPriorityBlockingQueue<AsyncTask> blockingQueue = new
-//                BoundedPriorityBlockingQueue<>(5);
-//
-//
-//        blockingQueue.offer(new AsyncTask("testMove", AsyncTaskPriorityEnum.MOVE.priority));
-//        for (int i = 1; i < 10; i++) {
-//            LOG.info(blockingQueue.offer(new AsyncTask("test", i)));
-//        }
-//        blockingQueue.offer(new AsyncTask("testMove2", AsyncTaskPriorityEnum.MOVE.priority));
-//        long test = 1574583779473L;
-//        System.out.println((int)test);
-        String str1 = "job_1574422178642_1113460";
-        String str2 = "job_1574837023678_30284";
-        System.out.println(str2.compareTo(str1));
+        BoundedPriorityBlockingQueue<AsyncTask> blockingQueue = new
+                BoundedPriorityBlockingQueue<>(5);
+
+
+        blockingQueue.offer(new AsyncTask("testMove", AsyncTaskPriorityEnum.MOVE.priority));
+        for (int i = 1; i < 10; i++) {
+            LOG.info(blockingQueue.offer(new AsyncTask("test", i)));
+        }
+        blockingQueue.offer(new AsyncTask("testMove2", AsyncTaskPriorityEnum.MOVE.priority));
     }
 }
 

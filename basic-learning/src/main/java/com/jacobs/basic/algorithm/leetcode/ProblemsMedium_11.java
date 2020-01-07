@@ -1,11 +1,9 @@
 package com.jacobs.basic.algorithm.leetcode;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import com.jacobs.basic.algorithm.TreeNode;
 import com.jacobs.basic.models.ListNode;
@@ -27,27 +25,20 @@ public class ProblemsMedium_11 {
 //        root.left.right = new TreeNode(4);
 //        root.right.right = new TreeNode(6);
 
-        flatten(root);
-        String str = " @ @";
-        String[] arr = str.split("@");
-        System.out.println(arr);
+//        flatten(root);
 
-        System.out.println(8 >> 8);
+        ListNode listNode = new ListNode(3);
+        listNode.next = new ListNode(1);
+        listNode.next.next = new ListNode(2);
+        listNode.next.next.next = new ListNode(5);
+        listNode.next.next.next.next = new ListNode(4);
 
-        byte[] bytes = new byte[]{
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
-        };
-
-        System.out.println(toKey(100, (byte) '+'));
-
-        System.out.println(0xF);
-
-        root.left = new TreeNode(2);
-
-        Object test = (Object) root;
-
-        System.out.println(test.toString());
-
+//        reorderList(listNode);
+        listNode = insertionSortList(listNode);
+        while (listNode != null) {
+            System.out.print(listNode.val + " ");
+            listNode = listNode.next;
+        }
     }
 
     private static final byte[] HEX_BYTES = new byte[]{
@@ -479,5 +470,184 @@ public class ProblemsMedium_11 {
         }
 
         return ans;
+    }
+
+    /*
+     * @lc app=leetcode.cn id=143 lang=java
+     *
+     * [143] 重排链表
+     *
+     * https://leetcode-cn.com/problems/reorder-list/description/
+     *
+     * 给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+     * 将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
+     *
+     * 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+     *
+     * 示例 1:
+     *
+     * 给定链表 1->2->3->4, 重新排列为 1->4->2->3.
+     *
+     * 示例 2:
+     *
+     * 给定链表 1->2->3->4->5, 重新排列为 1->5->2->4->3.
+     *
+     */
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode(int x) { val = x; }
+     * }
+     */
+    public static void reorderList(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return;
+        }
+        ListNode pre = head;
+        ListNode aft = head;
+        while (aft.next != null && aft.next.next != null) {
+            pre = pre.next;
+            aft = aft.next.next;
+        }
+
+        // found mid node
+        ListNode headReverse = pre.next;
+        pre.next = null;
+
+        // reverse nodes after mid node
+        pre = null;
+        while (headReverse != null) {
+            aft = headReverse.next;
+            headReverse.next = pre;
+            pre = headReverse;
+            headReverse = aft;
+        }
+        headReverse = pre;
+
+        // finally merge two list
+        ListNode cursor = head;
+        ListNode cursorReverse = headReverse;
+        int index = 0;
+        while (cursor != null && cursorReverse != null) {
+            if (index % 2 == 0) {
+                ListNode tmpAft = cursor.next;
+                cursor.next = cursorReverse;
+                cursor = tmpAft;
+            } else {
+                ListNode tmpAft = cursorReverse.next;
+                cursorReverse.next = cursor;
+                cursorReverse = tmpAft;
+            }
+            index++;
+        }
+    }
+
+    /*
+     * @lc app=leetcode.cn id=144 lang=java
+     *
+     * [144] 二叉树的前序遍历
+     *
+     * https://leetcode-cn.com/problems/binary-tree-preorder-traversal/description/
+     *
+     * 给定一个二叉树，返回它的 前序 遍历。
+     *
+     * 示例:
+     *
+     * 输入: [1,null,2,3]
+     * ⁠  1
+     * ⁠   \
+     * ⁠    2
+     * ⁠   /
+     * ⁠  3
+     *
+     * 输出: [1,2,3]
+     *
+     *
+     * 进阶: 递归算法很简单，你可以通过迭代算法完成吗？
+     *
+     */
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode(int x) { val = x; }
+     * }
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            resultList.add(node.val);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+
+        return resultList;
+    }
+
+    /**
+     * [147] 对链表进行插入排序
+     * https://leetcode-cn.com/problems/insertion-sort-list/description/
+     * @param head
+     * @return
+     */
+    public static ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode orderedNode = head;
+        ListNode cursorNode = head.next;
+        // make sure not in cycle
+        orderedNode.next = null;
+
+        while (cursorNode != null) {
+            ListNode aftNode = cursorNode.next;
+            // make sure not in cycle
+            cursorNode.next = null;
+            // check 两端的情况
+            if (cursorNode.val <= head.val) {
+                cursorNode.next = head;
+                // should update head ref
+                head = cursorNode;
+            } else if (cursorNode.val >= orderedNode.val) {
+                orderedNode.next = cursorNode;
+                orderedNode = cursorNode;
+            } else {
+                ListNode preNode = head;
+                ListNode currNode = head;
+                while (currNode != orderedNode.next) {
+                    if (currNode.val < cursorNode.val) {
+                        preNode = currNode;
+                        currNode = currNode.next;
+                        continue;
+                    }
+
+                    preNode.next = cursorNode;
+                    cursorNode.next = currNode;
+                    break;
+                }
+            }
+
+            cursorNode = aftNode;
+        }
+
+        return head;
     }
 }

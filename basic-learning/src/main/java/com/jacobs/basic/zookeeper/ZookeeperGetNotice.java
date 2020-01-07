@@ -31,6 +31,7 @@ public class ZookeeperGetNotice implements Watcher {
 
   @Override
   public void process(WatchedEvent event) {
+    System.out.println(event.toString());
     if (Event.KeeperState.SyncConnected == event.getState()) {
       if (Event.EventType.None == event.getType() && null == event.getPath()) {
         connectedSemaphore.countDown();

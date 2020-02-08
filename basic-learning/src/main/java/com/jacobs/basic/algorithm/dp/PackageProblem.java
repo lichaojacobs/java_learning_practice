@@ -8,6 +8,11 @@ import lombok.Data;
 
 /**
  * Created by lichao on 2017/2/20.
+ * i表示遍历的item，j表示目标的承重
+ * 如果能放下
+ * dp[i][j] = max(dp[i-1][j-w(j)]+v(j),dp[i-1][j])
+ * 如果不能放下
+ * dp[i][j] = dp[i-1][j]
  */
 public class PackageProblem {
   public static void main(String[] args) {

@@ -47,7 +47,7 @@ public class Practice {
         //        practice.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 4);
 //        practice.permuteUnique(new int[]{1, 2, 3});
         practice.letterCombinations("23");
-        System.out.println("job_1577276167463_2197".compareTo("job_1577197461127_381965"));
+        System.out.println("job_1577276167463_2197".getBytes().length);
     }
 
     /**

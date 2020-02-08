@@ -58,7 +58,6 @@ public class MaxMatrix {
     }
 
     return maxArea;
-
   }
 
   public int maxRecFromBottom(int[] height) {
@@ -74,6 +73,7 @@ public class MaxMatrix {
         int currentArea = (i - k - 1) * height[j];
         maxArea = Math.max(currentArea, maxArea);
       }
+      stack.push(i);
     }
     while (!stack.isEmpty()) {
       int j = stack.pop();

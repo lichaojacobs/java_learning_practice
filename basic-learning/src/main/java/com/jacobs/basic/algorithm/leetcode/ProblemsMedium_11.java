@@ -2,7 +2,13 @@ package com.jacobs.basic.algorithm.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 import com.jacobs.basic.algorithm.TreeNode;
@@ -16,12 +22,12 @@ public class ProblemsMedium_11 {
     public static void main(String[] args) {
 //        int[][] matrix = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 50}};
 //        System.out.println(searchMatrix(matrix, 3));
-        int[] nums = new int[]{1, 2, 2};
+//        int[] nums = new int[]{1, 2, 2};
 //        System.out.println(subsetsWithDup(nums));
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(2);
 //        root.right = new TreeNode(5);
-        root.left.left = new TreeNode(3);
+//        root.left.left = new TreeNode(3);
 //        root.left.right = new TreeNode(4);
 //        root.right.right = new TreeNode(6);
 
@@ -34,11 +40,24 @@ public class ProblemsMedium_11 {
         listNode.next.next.next.next = new ListNode(4);
 
 //        reorderList(listNode);
-        listNode = insertionSortList(listNode);
-        while (listNode != null) {
-            System.out.print(listNode.val + " ");
-            listNode = listNode.next;
-        }
+//        listNode = insertionSortList(listNode);
+//        while (listNode != null) {
+//            System.out.print(listNode.val + " ");
+//            listNode = listNode.next;
+//        }
+
+//        System.out.println(maxProduct(new int[]{0, 2}));
+//        System.out.println(findMin(new int[]{1, 2, 3}));
+//        findRepeatedDnaSequences("AAAAAAAAAAAA");
+
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        root.left.right = new TreeNode(4);
+//        rightSideView(root);
+
+//        System.out.println(minSubArrayLen(7, new int[]{2, 3, 1, 2, 4, 3, 6}));
+        System.out.println(rob(new int[]{0, 0}));
     }
 
     private static final byte[] HEX_BYTES = new byte[]{
@@ -649,5 +668,459 @@ public class ProblemsMedium_11 {
         }
 
         return head;
+    }
+
+    /**
+     * [152] 乘积最大子序列
+     *
+     * https://leetcode-cn.com/problems/maximum-product-subarray/description/
+     * 示例 1:
+     * 输入: [2,3,-2,4]
+     * 输出: 6
+     * 解释: 子数组 [2,3] 有最大乘积 6。
+     *
+     * 动态规划，由于可能有负数需维护最大值和最小值；对于每一个元素，可以选择加入，或不加入自成一组
+     * maxDP[i + 1] = max(maxDP[i] * A[i + 1], A[i + 1],minDP[i] * A[i + 1])
+     * minDP[i + 1] = min(minDP[i] * A[i + 1], A[i + 1],maxDP[i] * A[i + 1])
+     * dp[i + 1] = max(dp[i], maxDP[i + 1])
+     *
+     * @param nums
+     * @return
+     */
+    public static int maxProduct(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int result = nums[0];
+        int maxVal = nums[0];
+        int minVal = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            int temp = maxVal;
+            maxVal = Math.max(Math.max(temp * nums[i], nums[i]), minVal * nums[i]);
+            minVal = Math.min(Math.min(minVal * nums[i], nums[i]), temp * nums[i]);
+            result = Math.max(maxVal, result);
+        }
+
+        return result;
+    }
+
+    /**
+     * [153] 寻找旋转排序数组中的最小值
+     * https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/description/
+     *
+     * 输入: [3,4,5,1,2]
+     * 输出: 1
+     *
+     * @param nums
+     * @return
+     */
+    public static int findMin(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = 0;
+        while (left < right) {
+            if (left + 1 == right) {
+                if (nums[left] > nums[right]) {
+                    return nums[right];
+                } else {
+                    return nums[left];
+                }
+            }
+            mid = (left + right) / 2;
+            if (nums[left] < nums[mid] && nums[right] < nums[mid]) {
+                left = mid;
+            } else if (nums[right] > nums[mid] && nums[left] > nums[mid]) {
+                right = mid;
+            } else {
+                // 须考虑兼容非旋转数组
+                return nums[left];
+            }
+        }
+
+        return nums[mid];
+    }
+
+    /**
+     * [162] 寻找峰值
+     * 峰值元素是指其值大于左右相邻值的元素。
+     * https://leetcode-cn.com/problems/find-peak-element/description/
+     *
+     * 输入: nums = [1,2,1,3,5,6,4]
+     * 输出: 1 或 5
+     * 解释: 你的函数可以返回索引 1，其峰值元素为 2；或者返回索引 5， 其峰值元素为 6。
+     * 你的解法应该是 O(logN) 时间复杂度的。
+     * @param nums
+     * @return
+     */
+    public int findPeakElement(int[] nums) {
+        return helper(nums, 0, nums.length - 1);
+    }
+
+    public int helper(int[] num, int start, int end) {
+        if (start == end) {
+            return start;
+        } else if (start + 1 == end) {
+            if (num[start] > num[end]) return start;
+            return end;
+        } else {
+
+            int m = (start + end) / 2;
+
+            if (num[m] > num[m - 1] && num[m] > num[m + 1]) {
+
+                return m;
+
+            } else if (num[m - 1] > num[m] && num[m] > num[m + 1]) {
+
+                return helper(num, start, m - 1);
+
+            } else {
+
+                return helper(num, m + 1, end);
+
+            }
+
+        }
+    }
+
+    /**
+     *
+     * [166] 分数到小数
+     * https://leetcode-cn.com/problems/fraction-to-recurring-decimal/description/
+     * 给定两个整数，分别表示分数的分子 numerator 和分母 denominator，以字符串形式返回小数。
+     * 如果小数部分为循环小数，则将循环的部分括在括号内。
+     *
+     * 输入: numerator = 1, denominator = 2
+     * 输出: "0.5"
+     *
+     * @param numerator
+     * @param denominator
+     * @return
+     */
+    public static String fractionToDecimal(int numerator, int denominator) {
+        boolean isNegative = (numerator < 0 && denominator > 0 || numerator > 0 && denominator < 0) ? true : false;
+        long numeratorL = Math.abs((long) numerator);
+        long denominatorL = Math.abs((long) denominator);
+        Map<Long, Integer> previousRemains = new HashMap<>();
+        StringBuilder sb = new StringBuilder();
+        long quotian = numeratorL / denominatorL;
+        sb.append(quotian);
+
+        numeratorL %= denominatorL;
+        if (numeratorL != 0) {
+            sb.append(".");
+        }
+        int quotianIndex = 0;
+        while (numeratorL != 0) {
+            numeratorL *= 10;
+            quotian = Math.abs(numeratorL / denominatorL);
+            if (!previousRemains.containsKey(numeratorL)) {
+                sb.append(quotian);
+                previousRemains.put(numeratorL, quotianIndex++);
+            } else {
+                int firstIndex = 1 + previousRemains.get(numeratorL) + sb.indexOf(".");
+                sb.insert(firstIndex, '(');
+                sb.append(")");
+                break;
+            }
+            numeratorL %= denominatorL;
+        }
+        if (isNegative) {
+            sb.insert(0, "-");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * [187] 重复的DNA序列
+     *
+     * https://leetcode-cn.com/problems/repeated-dna-sequences/description/
+     * 所有 DNA 都由一系列缩写为 A，C，G 和 T 的核苷酸组成，例如：“ACGAATTCCG”。在研究 DNA 时，识别 DNA
+     * 中的重复序列有时会对研究非常有帮助。
+     *
+     * 编写一个函数来查找 DNA 分子中所有出现超过一次的 10 个字母长的序列（子串）。
+     * 示例：
+     *
+     * 输入：s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+     * 输出：["AAAAACCCCC", "CCCCCAAAAA"]
+     * @param s
+     * @return
+     */
+    public static List<String> findRepeatedDnaSequences(String s) {
+        List<String> resultList = new ArrayList<>();
+        if (s == null || s.equals("") || s.length() <= 10) {
+            return resultList;
+        }
+        Set<String> records = new HashSet<>();
+        Set<String> unRepeatedResult = new HashSet<>();
+        for (int i = 0; i + 9 < s.length(); i++) {
+            String ten = s.substring(i, i + 10);
+            if (!records.add(ten))
+                unRepeatedResult.add(ten);
+        }
+
+        return new ArrayList<>(unRepeatedResult);
+    }
+
+    /**
+     * [199] 二叉树的右视图
+     * https://leetcode-cn.com/problems/binary-tree-right-side-view/description/
+     *
+     * 示例:
+     * 输入: [1,2,3,null,5,null,4]
+     * 输出: [1, 3, 4]
+     * 解释:
+     *
+     * ⁠  1            <---
+     * ⁠/   \
+     * 2     3         <---
+     * ⁠\     \
+     * ⁠ 5     4       <---
+     *
+     * @param root
+     * @return
+     */
+    public static List<Integer> rightSideView(TreeNode root) {
+        List<Integer> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        TreeNode preLevelLast = root;
+        TreeNode nextLevelLast = root;
+        while (!queue.isEmpty()) {
+            TreeNode curr = queue.poll();
+            if (curr.left != null) {
+                queue.offer(curr.left);
+                nextLevelLast = curr.left;
+            }
+            if (curr.right != null) {
+                queue.offer(curr.right);
+                nextLevelLast = curr.right;
+            }
+            if (curr == preLevelLast) {
+                resultList.add(curr.val);
+                preLevelLast = nextLevelLast;
+            }
+        }
+
+        return resultList;
+    }
+
+    /**
+     * [201] 数字范围按位与
+     * https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/description/
+     * 给定范围 [m, n]，其中 0 <= m <= n <= 2147483647，返回此范围内所有数字的按位与（包含 m, n 两端点）。
+     *
+     * 示例 1: 
+     * 输入: [5,7]
+     * 输出: 4
+     *
+     * 示例 2:
+     * 输入: [0,1]
+     * 输出: 0
+     *
+     * 想法：考虑每一位的最终结果，只要有一个0，最终结果也就是0；此时只需要得出m，n的公共位即可
+     * @param m
+     * @param n
+     * @return
+     */
+    public int rangeBitwiseAnd(int m, int n) {
+        int i = 0;
+        for (; m != n; ++i) {
+            m >>= 1;
+            n >>= 1;
+        }
+        return n << i;
+    }
+
+    /**
+     * [209] 长度最小的子数组
+     *
+     * https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/
+     * 给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的连续子数组。如果不存在符合条件的连续子数组，返回 0。
+     *
+     * 示例: 
+     *
+     * 输入: s = 7, nums = [2,3,1,2,4,3]
+     * 输出: 2
+     * 解释: 子数组 [4,3] 是该条件下的长度最小的连续子数组。
+     *
+     * 想法：O(N)解法：双端指针，滑动窗口的方式来寻找符合条件的数组
+     * @param s
+     * @param nums
+     * @return
+     */
+    public static int minSubArrayLen(int s, int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        // 定义窗口指针
+        int leftPoint = 0;
+        int rightPoint = 0;
+        int sum = 0;
+        int minLen = 0;
+        while (rightPoint != nums.length) {
+            sum += nums[rightPoint];
+            if (sum >= s) {
+                while ((sum - nums[leftPoint]) >= s) {
+                    sum = sum - nums[leftPoint];
+                    // 左窗口右移
+                    leftPoint++;
+                }
+
+                minLen = minLen == 0 ? (rightPoint - leftPoint) + 1 : Math.min(minLen, (rightPoint -
+                        leftPoint) + 1);
+            }
+            rightPoint++;
+        }
+
+        return minLen;
+    }
+
+    /**
+     * [213] 打家劫舍 II
+     *
+     * https://leetcode-cn.com/problems/house-robber-ii/description/
+     * 你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都围成一圈，这意味着第一个房屋和最后一个房屋是紧挨着的。
+     * 同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+     * 给定一个代表每个房屋存放金额的非负整数数组，计算你在不触动警报装置的情况下，能够偷窃到的最高金额。
+     *
+     * 示例 1:
+     *
+     * 输入: [2,3,2]
+     * 输出: 3
+     * 解释: 你不能先偷窃 1 号房屋（金额 = 2），然后偷窃 3 号房屋（金额 = 2）, 因为他们是相邻的。
+     *
+     * 状态转移方程: dp(n) = max(dp(n-1),dp(n-2)+num)
+     * @param nums
+     * @return
+     */
+    public static int rob(int[] nums) {
+        if (nums.length == 0) return 0;
+        if (nums.length == 1) return nums[0];
+
+        // 考虑头元素和尾元素首尾相连，分两种情况考虑
+        return Math.max(robHelper(Arrays.copyOfRange(nums, 0, nums.length - 1)), robHelper(Arrays
+                .copyOfRange(nums, 1, nums.length)));
+    }
+
+    public static int robHelper(int[] nums) {
+        if (nums.length == 1) return nums[0];
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = nums[0] > nums[1] ? nums[0] : nums[1];
+
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        }
+
+        return dp[nums.length - 1];
+    }
+
+    /**
+     * [216] 组合总和 III
+     *
+     * https://leetcode-cn.com/problems/combination-sum-iii/description/
+     * 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+     * 说明：
+     * 所有数字都是正整数。
+     * 解集不能包含重复的组合。 
+     *
+     * 示例:
+     * 输入: k = 3, n = 9
+     * 输出: [[1,2,6], [1,3,5], [2,3,4]]
+     * @param k
+     * @param n
+     * @return
+     */
+    public static List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new ArrayList<>();
+        Stack<Integer> path = new Stack<>();
+        dfsHelper(path, res, k, n, 1);
+
+        return res;
+    }
+
+    public static void dfsHelper(Stack<Integer> path, List<List<Integer>> res, int k, int n, int
+            start) {
+        if (k < 0 || n < 0) return;
+        if (k == 0 && n == 0) {
+            if (!path.isEmpty())
+                res.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = start; i <= 9; i++) {
+            path.push(i);
+            dfsHelper(path, res, k - 1, n - i, i + 1);
+            path.pop();
+        }
+    }
+
+    /**
+     * [222] 完全二叉树的节点个数
+     * https://leetcode-cn.com/problems/count-complete-tree-nodes/description/
+     * 给出一个完全二叉树，求出该树的节点个数。
+     *
+     * @param root
+     * @return
+     */
+    public int countNodes(TreeNode root) {
+        if (root == null) return 0;
+        int d = computeHeight(root);
+        // if the tree contains 1 node
+        if (d == 0) return 1;
+
+        // 二分法找到最后一层最后一个节点
+        int left = 1, right = (int) Math.pow(2, d) - 1;
+        int pivot;
+        while (left <= right) {
+            pivot = (left + right) / 2;
+            if (exists(pivot, d, root)) {
+                left = pivot + 1;
+            } else {
+                right = pivot - 1;
+            }
+        }
+
+        return (int) Math.pow(2, d) - 1 + left;
+    }
+
+    public boolean exists(int idx, int height, TreeNode root) {
+        int left = 0, right = (int) Math.pow(2, height) - 1;
+        int pivot = 0;
+        TreeNode node = root;
+        for (int i = 0; i < height; i++) {
+            pivot = (left + right) / 2;
+            if (idx <= pivot) {
+                node = node.left;
+                right = pivot;
+            } else {
+                node = node.right;
+                left = pivot;
+            }
+        }
+
+        return node != null;
+    }
+
+    public int computeHeight(TreeNode root) {
+        int height = 0;
+        TreeNode node = root;
+        while (node.left != null) {
+            node = node.left;
+            height++;
+        }
+        return height;
     }
 }

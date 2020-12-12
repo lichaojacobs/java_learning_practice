@@ -3,9 +3,11 @@ package com.jacobs.basic.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
@@ -48,6 +50,18 @@ public class Practice {
 //        practice.permuteUnique(new int[]{1, 2, 3});
         practice.letterCombinations("23");
         System.out.println("job_1577276167463_2197".getBytes().length);
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("1", 1L);
+        Long val = map.get("1");
+        System.out.println(val);
+
+        val++;
+        System.out.println(val);
+        System.out.println(map.get("1"));
+
+        String hdfsCostPercent = String.format("%.2f", ((double) 22) / 40);
+        System.out.println("hdfsCostPercent " + hdfsCostPercent);
     }
 
     /**

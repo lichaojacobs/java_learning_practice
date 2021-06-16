@@ -77,7 +77,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>5.0.0.Alpha2</version>
+                <version>[4.1.42,)</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.hbase</groupId>
@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
-                <version>5.0.1</version>
+                <version>[6.8.13,)</version>
             </dependency>
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
@@ -274,7 +274,7 @@
             <dependency>
                 <groupId>org.apache.calcite</groupId>
                 <artifactId>calcite-core</artifactId>
-                <version>1.19.0</version>
+                <version>[1.26.0,)</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.calcite</groupId>
